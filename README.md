@@ -1,6 +1,10 @@
-# pipgogo iOS
+# PipGoGo iOS
 
-Initial SwiftUI client for pipgogo's Google/Cognito sign-in and authenticated account flow. Open `pipgogo.xcodeproj` directly in Xcode.
+**[View the roadmap and current progress](ROADMAP.md)** — Next: **2.6 · Pre-trip check-in**.
+
+**[Project time log](TIME_LOG.md)** — Work sessions, recorded time, and historical estimates.
+
+SwiftUI client for PipGoGo's Google/Cognito sign-in, authenticated account, traveler profile, recurring companions, and trip creation, editing, and deletion flows. Open `pipgogo.xcodeproj` directly in Xcode.
 
 ## Backend address
 
@@ -55,3 +59,7 @@ The signed-in account screen now includes an optional traveler profile editor. S
 ## Switching Google accounts
 
 Sign-in uses a shared browser session and `prompt=select_account`. Cognito Essentials/Managed Login v2 forwards this to Google so it can show available browser accounts. This supersedes the private-session workaround. Accounts present only in the Gmail app may not be listed; use another account on the Google page if needed. Reopening the app while signed in still restores/refreshes its Keychain session. CloudFormation details are in the backend `infra/managed-login.md`.
+
+Companion implementation and device acceptance: [docs/companions.md](docs/companions.md).
+
+Trip implementation and device acceptance: [docs/trips.md](docs/trips.md).

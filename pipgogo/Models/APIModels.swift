@@ -123,7 +123,7 @@ enum APIClientError: LocalizedError, Equatable {
         case .invalidResponse: "The server returned an invalid response."
         case .unauthorized: "Your session is no longer valid. Please sign in again."
         case .rejected(_, let error, _), .conflict(let error, _): error.message
-        case .connection: "Couldn’t connect to the pipgogo backend. Your request may not have finished; retry the same operation when connected."
+        case .connection: "Couldn’t connect to the PipGoGo backend. Your request may not have finished; retry the same operation when connected."
         case .decoding: "The server returned data this app could not read."
         }
     }

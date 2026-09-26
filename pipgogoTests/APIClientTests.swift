@@ -288,6 +288,94 @@ struct APIClientTests {
         #expect(items.contains(URLQueryItem(name: "logout_uri", value: "pipgogo://auth/logout")))
     }
 
+    @Test func companionServiceUsesAuthenticatedListPutAndTombstoneDelete() async throws {
+        let id = UUID()
+        let body = Companion(nickname: "Sam", relationship: "Friend", ageRange: "30–39", preferences: TravelerPreferences(languages: ["English"], interests: ["Art"], dietaryNeeds: ["Vegetarian"], accessibilityNeeds: ["Step-free"], pace: "relaxed", budgetComfort: "moderate", transportation: ["Train"]))
+        let record = APIRecord(id: id.uuidString.lowercased(), kind: "companion", version: 1, revision: 4, updatedAt: Date(timeIntervalSince1970: 1_800_000_000), deleted: false, data: body)
+        let tombstone = APIRecord(id: record.id, kind: "companion", version: 2, revision: 5, updatedAt: record.updatedAt, deleted: true, data: JSONValue.object([:]))
+        let session = queuedSession([
+            .init(body: try APIJSON.encoder().encode(APIRecordList(items: [record]))),
+            .init(body: try APIJSON.encoder().encode(record)),
+            .init(body: try APIJSON.encoder().encode(tombstone))
+        ])
+        let service = CompanionService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: session), authentication: TestTokens())
+        #expect(try await service.list() == [record])
+        let save = try APIRequest<APIRecord<JSONValue>>.put(.companion(id), body: body, expectedVersion: 0)
+        #expect(try await service.mutate(save).companion().data == body)
+        let delete = try APIRequest<APIRecord<JSONValue>>.delete(.companion(id), expectedVersion: 1)
+        let removed = try await service.mutate(delete)
+        #expect(removed.deleted && removed.data == .object([:]))
+        let calls = StubURLProtocol.requests
+        #expect(calls.map(\.httpMethod) == ["GET", "PUT", "DELETE"])
+        #expect(calls[0].url?.path == "/v1/companions")
+        #expect(calls[1].url?.path == "/v1/companions/\(record.id)")
+        #expect(calls[1].value(forHTTPHeaderField: "X-Expected-Version") == "0")
+        #expect(calls[2].value(forHTTPHeaderField: "X-Expected-Version") == "1")
+        #expect(calls[2].value(forHTTPHeaderField: "Idempotency-Key") == delete.idempotencyKey?.uuidString.lowercased())
+        #expect(calls.allSatisfy { $0.value(forHTTPHeaderField: "Authorization") == "Bearer original-token" })
+        let encoded = try APIJSON.decoder().decode(JSONValue.self, from: StubURLProtocol.bodies[1])
+        #expect(encoded["age_range"] == .string("30–39"))
+        #expect(encoded["preferences"]?["accessibility_needs"] == .array([.string("Step-free")]))
+        #expect(StubURLProtocol.bodies[2].isEmpty)
+    }
+
+    @Test func companionServicePreservesInUseErrorCode() async throws {
+        let payload = Data(#"{"error":{"code":"companion_in_use","message":"Remove the companion from trips first"}}"#.utf8)
+        let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: makeSession(status: 409, body: payload))
+        let service = CompanionService(client: client, authentication: TestTokens())
+        let request = try APIRequest<APIRecord<JSONValue>>.delete(.companion(UUID()), expectedVersion: 1)
+        await #expect(throws: APIClientError.conflict(APIErrorBody(code: "companion_in_use", message: "Remove the companion from trips first"), requestID: nil)) {
+            try await service.mutate(request)
+        }
+    }
+
+    @Test func tripServiceReadsBackendNullsAndSendsCreationContract() async throws {
+        let id = UUID()
+        let companionID = UUID().uuidString.lowercased()
+        let payload = Data("""
+        {"id":"\(id.uuidString.lowercased())","kind":"trip","version":1,"revision":2,"updated_at":"2026-09-26T10:00:00.123456Z","deleted":false,"data":{"destinations":["Japan"],"start_date":"2026-11-01","end_date":null,"accommodation":{"name":"Hotel","address":null,"check_in":null,"instructions":null,"reservation_reference":null},"arrival":null,"departure":null,"companion_ids":["\(companionID)"],"preferences":{"languages":[],"interests":[],"dietary_needs":[],"accessibility_needs":[],"pace":null,"budget_comfort":null,"transportation":[]},"budget_minor":null,"currency":null,"transportation_plan":null,"itinerary":[],"constraints":[]}}
+        """.utf8)
+        let list = Data("{\"items\":[".utf8) + payload + Data("]}".utf8)
+        let session = queuedSession([.init(body: list), .init(body: payload), .init(body: payload)])
+        let service = TripService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: session), authentication: TestTokens())
+        let records = try await service.list()
+        let record = try await service.load(id)
+        #expect(records.first == record)
+        #expect(record.data.endDate == nil && record.data.arrival == nil)
+        let request = try APIRequest<APIRecord<Trip>>.put(.trip(id), body: record.data, expectedVersion: 0)
+        _ = try await service.save(request)
+        let calls = StubURLProtocol.requests
+        #expect(calls.map(\.httpMethod) == ["GET", "GET", "PUT"])
+        #expect(calls[0].url?.path == "/v1/trips")
+        #expect(calls[2].url?.path == "/v1/trips/\(id.uuidString.lowercased())")
+        #expect(calls[2].value(forHTTPHeaderField: "X-Expected-Version") == "0")
+        #expect(calls[2].value(forHTTPHeaderField: "Idempotency-Key") == request.idempotencyKey?.uuidString.lowercased())
+        #expect(calls.allSatisfy { $0.value(forHTTPHeaderField: "Authorization") == "Bearer original-token" })
+        let encoded = try APIJSON.decoder().decode(JSONValue.self, from: StubURLProtocol.bodies[2])
+        #expect(encoded["start_date"] == .string("2026-11-01"))
+        #expect(encoded["companion_ids"] == .array([.string(companionID)]))
+    }
+
+    @Test func tripUpdateAndDeleteUseVersionsAndDecodeEmptyTombstone() async throws {
+        let id = UUID()
+        let body = Trip(destinations: ["Kyoto"], companionIDs: [], itinerary: ["Garden"])
+        let record = APIRecord(id: id.uuidString.lowercased(), kind: "trip", version: 4, revision: 7, updatedAt: Date(), deleted: false, data: body)
+        let tombstone = APIRecord(id: record.id, kind: "trip", version: 5, revision: 8, updatedAt: record.updatedAt, deleted: true, data: JSONValue.object([:]))
+        let session = queuedSession([.init(body: try APIJSON.encoder().encode(record)), .init(body: try APIJSON.encoder().encode(tombstone))])
+        let service = TripService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: session), authentication: TestTokens())
+        let update = try APIRequest<APIRecord<Trip>>.put(.trip(id), body: body, expectedVersion: 3)
+        #expect(try await service.save(update).data == body)
+        let deletion = try APIRequest<APIRecord<JSONValue>>.delete(.trip(id), expectedVersion: 4)
+        let result = try await service.delete(deletion)
+        #expect(result.deleted && result.data == .object([:]))
+        let calls = StubURLProtocol.requests
+        #expect(calls.map(\.httpMethod) == ["PUT", "DELETE"])
+        #expect(calls[0].value(forHTTPHeaderField: "X-Expected-Version") == "3")
+        #expect(calls[1].value(forHTTPHeaderField: "X-Expected-Version") == "4")
+        #expect(calls[1].value(forHTTPHeaderField: "Idempotency-Key") == deletion.idempotencyKey?.uuidString.lowercased())
+        #expect(calls[1].url?.path == "/v1/trips/\(record.id)" && StubURLProtocol.bodies[1].isEmpty)
+    }
+
     private func makeSession(status: Int, body: Data) -> URLSession {
         StubURLProtocol.response = HTTPURLResponse(url: URL(string: "https://example.invalid/v1/me")!, statusCode: status, httpVersion: nil, headerFields: nil)!
         StubURLProtocol.body = body

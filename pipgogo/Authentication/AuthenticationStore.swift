@@ -17,6 +17,8 @@ final class AuthenticationStore {
 
     private(set) var state: State = .restoring
     let profileStore: ProfileStore
+    let companionStore: CompanionStore
+    let tripStore: TripStore
     private let configuration: AppConfiguration
     private let authentication: AuthenticationService
     private let apiClient: APIClient
@@ -26,6 +28,8 @@ final class AuthenticationStore {
         let auth = authentication ?? AuthenticationService(configuration: configuration)
         let client = apiClient ?? APIClient(baseURL: configuration.backendBaseURL)
         profileStore = ProfileStore(service: ProfileService(client: client, authentication: auth))
+        companionStore = CompanionStore(service: CompanionService(client: client, authentication: auth))
+        tripStore = TripStore(service: TripService(client: client, authentication: auth))
         self.configuration = configuration
         self.authentication = auth
         self.apiClient = client
@@ -42,6 +46,8 @@ final class AuthenticationStore {
 
     func signIn() async {
         profileStore.reset()
+        companionStore.reset()
+        tripStore.reset()
         state = .signingIn
         do {
             let verifier = try PKCE.randomURLSafeString(byteCount: 64)
@@ -71,6 +77,8 @@ final class AuthenticationStore {
 
     func signOut() async {
         profileStore.reset()
+        companionStore.reset()
+        tripStore.reset()
         state = .signingOut
         var message: String?
         do { try await authentication.clearAndRevoke() }

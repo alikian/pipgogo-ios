@@ -5,6 +5,8 @@ struct AccountView: View {
     let isSigningOut: Bool
     let signOut: () -> Void
     var profileStore: ProfileStore? = nil
+    var companionStore: CompanionStore? = nil
+    var tripStore: TripStore? = nil
 
     var body: some View {
         NavigationStack {
@@ -19,13 +21,27 @@ struct AccountView: View {
                 } header: {
                     Text("Your account")
                 } footer: {
-                    Text("pipgogo uses your Cognito access token only for authenticated backend requests.")
+                    Text("PipGoGo uses your Cognito access token only for authenticated backend requests.")
                 }
 
+                if let tripStore, let companionStore {
+                    Section {
+                        NavigationLink { TripListView(store: tripStore, companions: companionStore) } label: {
+                            Label("Trips", systemImage: "suitcase.rolling")
+                        }.disabled(isSigningOut)
+                    }
+                }
                 if let profileStore {
                     Section {
                         NavigationLink { ProfileView(store: profileStore) } label: {
                             Label("Traveler profile", systemImage: "person.text.rectangle")
+                        }.disabled(isSigningOut)
+                    }
+                }
+                if let companionStore {
+                    Section {
+                        NavigationLink { CompanionListView(store: companionStore) } label: {
+                            Label("Companions", systemImage: "person.2")
                         }.disabled(isSigningOut)
                     }
                 }
@@ -39,7 +55,7 @@ struct AccountView: View {
                     .disabled(isSigningOut)
                 }
             }
-            .navigationTitle("pipgogo")
+            .navigationTitle("PipGoGo")
         }
     }
 }
@@ -52,7 +68,7 @@ struct AccountLoadingView: View {
                 Text("Loading your account…")
                     .foregroundStyle(.secondary)
             }
-            .navigationTitle("pipgogo")
+            .navigationTitle("PipGoGo")
         }
     }
 }
@@ -72,7 +88,7 @@ struct AccountErrorView: View {
                 Button("Try again", action: retry).buttonStyle(.borderedProminent)
                 Button("Sign out", role: .destructive, action: signOut)
             }
-            .navigationTitle("pipgogo")
+            .navigationTitle("PipGoGo")
         }
     }
 }

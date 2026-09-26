@@ -16,7 +16,7 @@ struct WelcomeView: View {
                     .foregroundStyle(.indigo)
                     .accessibilityHidden(true)
                 VStack(spacing: 10) {
-                    Text("pipgogo")
+                    Text("PipGoGo")
                         .font(.largeTitle.bold())
                     Text("A thoughtful travel companion for the journey ahead.")
                         .font(.title3)

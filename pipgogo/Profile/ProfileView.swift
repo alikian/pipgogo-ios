@@ -48,13 +48,13 @@ struct ProfileView: View {
                         }
                     }
                     Section {
-                        entries("Languages", values: $store.draft.preferences.languages)
+                        LanguageSelectionView(languages: $store.draft.preferences.languages)
                         entries("Interests", values: $store.draft.preferences.interests)
                         entries("Dietary needs", values: $store.draft.preferences.dietaryNeeds)
                         entries("Accessibility needs", values: $store.draft.preferences.accessibilityNeeds)
                         entries("Transportation preferences", values: $store.draft.preferences.transportation)
                     } header: { Text("Preferences") } footer: {
-                        Text("One entry per line, up to 30 per list. Each entry can contain up to 300 characters.")
+                        Text("For text preferences, use one entry per line, up to 30 per list. Each entry can contain up to 300 characters.")
                     }
                     Section("Travel style") {
                         Picker("Pace", selection: preference(\.pace)) {
