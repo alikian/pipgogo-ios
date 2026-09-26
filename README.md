@@ -4,7 +4,7 @@ Initial SwiftUI client for pipgogo's Google/Cognito sign-in and authenticated ac
 
 ## Backend address
 
-Debug builds use `http://localhost:8765`. Change `PIPGOGO_BACKEND_BASE_URL` in the app target's Debug build settings when testing on a physical device. Release builds intentionally use `https://api.pipgogo.invalid` until hosting exists and contain no HTTP transport exception.
+Debug Simulator builds use `http://localhost:8765`; Debug device builds currently use `http://192.168.0.156:8765`. Update `PIPGOGO_BACKEND_BASE_URL` and the Debug ATS exception if the Mac address changes. Release builds intentionally use `https://api.pipgogo.invalid` until hosting exists and contain no HTTP transport exception.
 
 ## Local backend
 
@@ -43,3 +43,15 @@ The app uses `https://auth.pipgogo.com` for sign-in, token exchange, and logout.
 The native callback remains `pipgogo://auth/callback`. Domain and certificate resources
 are managed in the backend CloudFormation templates; see its `infra/custom-domain.md`.
 Rebuild/reinstall to pick up domain configuration changes.
+
+## Shared API client
+
+Milestone 2.1 provides authenticated requests, immutable retry-safe writes, generic records and structured conflicts. See [the integration guide](docs/api-client.md) before adding profile or trip screens.
+
+## Traveler profile
+
+The signed-in account screen now includes an optional traveler profile editor. See [profile behavior and acceptance checks](docs/traveler-profile.md).
+
+## Switching Google accounts
+
+Sign-in uses a shared browser session and `prompt=select_account`. Cognito Essentials/Managed Login v2 forwards this to Google so it can show available browser accounts. This supersedes the private-session workaround. Accounts present only in the Gmail app may not be listed; use another account on the Google page if needed. Reopening the app while signed in still restores/refreshes its Keychain session. CloudFormation details are in the backend `infra/managed-login.md`.

@@ -24,6 +24,19 @@ struct OAuthCallbackTests {
         }
     }
 
+    @Test func rejectsDuplicateParameters() {
+        let url = URL(string: "pipgogo://auth/callback?code=abc&state=expected&state=other")!
+        #expect(throws: AuthenticationError.invalidCallback) {
+            try OAuthCallback.authorizationCode(from: url, expectedCallback: callback, expectedState: "expected")
+        }
+    }
+
+    @Test func rejectsWrongLogoutCallback() {
+        #expect(throws: AuthenticationError.invalidCallback) {
+            try OAuthCallback.validateLogout(URL(string: "pipgogo://other/logout")!, expectedCallback: URL(string: "pipgogo://auth/logout")!)
+        }
+    }
+
     @Test func pkceChallengeMatchesKnownVector() {
         let verifier = "dBjftJeZ4CVP-mB92K27uhbUJU1p1r_wW1gFWFOEjXk"
         #expect(PKCE.challenge(for: verifier) == "E9Melhoa2OwvFrEMTJguCHaoeK1t8URWbuGJSstw-cM")

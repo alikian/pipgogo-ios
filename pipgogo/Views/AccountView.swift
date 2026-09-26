@@ -4,6 +4,7 @@ struct AccountView: View {
     let account: AccountRecord?
     let isSigningOut: Bool
     let signOut: () -> Void
+    var profileStore: ProfileStore? = nil
 
     var body: some View {
         NavigationStack {
@@ -21,6 +22,13 @@ struct AccountView: View {
                     Text("pipgogo uses your Cognito access token only for authenticated backend requests.")
                 }
 
+                if let profileStore {
+                    Section {
+                        NavigationLink { ProfileView(store: profileStore) } label: {
+                            Label("Traveler profile", systemImage: "person.text.rectangle")
+                        }.disabled(isSigningOut)
+                    }
+                }
                 Section {
                     Button(role: .destructive, action: signOut) {
                         HStack {

@@ -6,7 +6,11 @@ enum OAuthCallback {
               let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
             throw AuthenticationError.invalidCallback
         }
-        let values = Dictionary(uniqueKeysWithValues: (components.queryItems ?? []).map { ($0.name, $0.value ?? "") })
+        var values: [String: String] = [:]
+        for item in components.queryItems ?? [] {
+            guard values[item.name] == nil else { throw AuthenticationError.invalidCallback }
+            values[item.name] = item.value ?? ""
+        }
         guard values["state"] == expectedState else { throw AuthenticationError.stateMismatch }
         if let error = values["error"] {
             throw AuthenticationError.authorizationFailed(values["error_description"] ?? error)

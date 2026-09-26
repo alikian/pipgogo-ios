@@ -16,15 +16,19 @@ final class AuthenticationStore {
     }
 
     private(set) var state: State = .restoring
+    let profileStore: ProfileStore
     private let configuration: AppConfiguration
     private let authentication: AuthenticationService
     private let apiClient: APIClient
     private let webAuthentication = WebAuthenticationSession()
 
     init(configuration: AppConfiguration = .live, authentication: AuthenticationService? = nil, apiClient: APIClient? = nil) {
+        let auth = authentication ?? AuthenticationService(configuration: configuration)
+        let client = apiClient ?? APIClient(baseURL: configuration.backendBaseURL)
+        profileStore = ProfileStore(service: ProfileService(client: client, authentication: auth))
         self.configuration = configuration
-        self.authentication = authentication ?? AuthenticationService(configuration: configuration)
-        self.apiClient = apiClient ?? APIClient(baseURL: configuration.backendBaseURL)
+        self.authentication = auth
+        self.apiClient = client
     }
 
     func restoreSession() async {
@@ -37,11 +41,14 @@ final class AuthenticationStore {
     }
 
     func signIn() async {
+        profileStore.reset()
         state = .signingIn
         do {
             let verifier = try PKCE.randomURLSafeString(byteCount: 64)
             let stateValue = try PKCE.randomURLSafeString()
             let url = try await authentication.authorizationURL(state: stateValue, challenge: PKCE.challenge(for: verifier))
+            // Managed Login forwards select_account to Google. Share browser cookies
+            // so Google can offer existing browser accounts rather than require email entry.
             let callback = try await webAuthentication.authenticate(url: url, callbackScheme: configuration.callbackURL.scheme ?? "pipgogo", prefersEphemeral: false)
             let code = try OAuthCallback.authorizationCode(from: callback, expectedCallback: configuration.callbackURL, expectedState: stateValue)
             try await authentication.completeSignIn(code: code, verifier: verifier)
@@ -56,21 +63,14 @@ final class AuthenticationStore {
     func loadAccount() async {
         state = .loadingAccount
         do {
-            let token = try await authentication.validAccessToken()
-            state = .signedIn(try await apiClient.account(accessToken: token))
-        } catch APIClientError.unauthorized {
-            do {
-                let refreshedToken = try await authentication.validAccessToken(forceRefresh: true)
-                state = .signedIn(try await apiClient.account(accessToken: refreshedToken))
-            } catch {
-                state = .accountError(error.localizedDescription)
-            }
+            state = .signedIn(try await apiClient.account(using: authentication))
         } catch {
             state = .accountError(error.localizedDescription)
         }
     }
 
     func signOut() async {
+        profileStore.reset()
         state = .signingOut
         var message: String?
         do { try await authentication.clearAndRevoke() }

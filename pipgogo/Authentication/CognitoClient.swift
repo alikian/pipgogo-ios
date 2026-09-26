@@ -8,7 +8,7 @@ struct CognitoClient: Sendable {
         try endpoint("/oauth2/authorize", queryItems: [
             .init(name: "client_id", value: configuration.clientID), .init(name: "response_type", value: "code"),
             .init(name: "scope", value: "openid email profile"), .init(name: "redirect_uri", value: configuration.callbackURL.absoluteString),
-            .init(name: "identity_provider", value: "Google"), .init(name: "state", value: state),
+            .init(name: "identity_provider", value: "Google"), .init(name: "prompt", value: "select_account"), .init(name: "state", value: state),
             .init(name: "code_challenge_method", value: "S256"), .init(name: "code_challenge", value: challenge)
         ])
     }
@@ -65,6 +65,6 @@ private extension URLComponents {
     static func formBody(_ values: [String: String]) -> Data? {
         var components = URLComponents()
         components.queryItems = values.sorted(by: { $0.key < $1.key }).map { URLQueryItem(name: $0.key, value: $0.value) }
-        return components.percentEncodedQuery?.data(using: .utf8)
+        return components.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B").data(using: .utf8)
     }
 }

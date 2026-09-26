@@ -1,6 +1,6 @@
 import Foundation
 
-actor AuthenticationService {
+actor AuthenticationService: AccessTokenProviding {
     private let cognito: CognitoClient
     private let keychain: any TokenStoring
     private var tokens: TokenSet?
