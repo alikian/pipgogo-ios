@@ -1,3581 +1,4186 @@
 {
-  "sourceLanguage": "en",
-  "strings": {
-    "%@ · %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ · %2$@"
+  "sourceLanguage" : "en",
+  "strings" : {
+    "%@ · %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ · %2$@"
           }
         }
       }
     },
-    "%@ %@ → %@ %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ %2$@ → %3$@ %4$@"
+    "%@ %@ → %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ %2$@ → %3$@ %4$@"
           }
         }
       }
     },
-    "%@ → %@ · %@ %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "%1$@ → %2$@ · %3$@ %4$@"
+    "%@ → %@ · %@ %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ → %2$@ · %3$@ %4$@"
           }
         }
       }
     },
-    "🦆": {},
-    "🦆 Hi, I'm Pip.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "🦆 Hi, I'm Pip."
+    "%@, let's plan %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@, let's plan %@"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "🦆 سلام، من پیپ هستم."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@، بیایید برای %@ برنامه بریزیم"
           }
         }
       }
     },
-    "A little less planning.\nA little more exploring.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A little less planning.\nA little more exploring."
+    "🦆" : {
+
+    },
+    "🦆 Hi, I'm Pip." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🦆 Hi, I'm Pip."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "🦆 سلام، من پیپ هستم."
+          }
+        }
+      }
+    },
+    "A little less planning.\nA little more exploring." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A little less planning.\nA little more exploring."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برنامه‌ریزی کمتر.\nکشف و تجربه بیشتر."
+          }
+        }
+      }
+    },
+    "A suggestion for you" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A suggestion for you"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "یک پیشنهاد برای تو"
+          }
+        }
+      }
+    },
+    "A thoughtful travel companion for the journey ahead." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A thoughtful travel companion for the journey ahead."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "همراهی بافکر برای سفر پیش رو."
+          }
+        }
+      }
+    },
+    "Accept changes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accept changes"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پذیرفتن تغییرات"
+          }
+        }
+      }
+    },
+    "Account unavailable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Account unavailable"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حساب در دسترس نیست"
+          }
+        }
+      }
+    },
+    "Add destination and timing" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add destination and timing"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن مقصد و زمان"
+          }
+        }
+      }
+    },
+    "Add details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add details"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن جزئیات"
+          }
+        }
+      }
+    },
+    "Add fixed commitment" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add fixed commitment"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن برنامهٔ قطعی"
+          }
+        }
+      }
+    },
+    "Add outbound connection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add outbound connection"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن پرواز رفت یا اتصال"
+          }
+        }
+      }
+    },
+    "Add return flight or connection" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add return flight or connection"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن پرواز برگشت یا اتصال"
+          }
+        }
+      }
+    },
+    "Add traveler" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add traveler"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن هم‌سفر"
+          }
+        }
+      }
+    },
+    "Address" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نشانی"
+          }
+        }
+      }
+    },
+    "Age or age range (optional)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Age or age range (optional)"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سن یا بازهٔ سنی (اختیاری)"
+          }
+        }
+      }
+    },
+    "Airline" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Airline"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شرکت هواپیمایی"
+          }
+        }
+      }
+    },
+    "airport_to_home" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival airport → home"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرودگاه ورود ← خانه"
+          }
+        }
+      }
+    },
+    "airport_to_hotel" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival airport → hotel"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرودگاه مقصد ← هتل"
+          }
+        }
+      }
+    },
+    "Allow microphone and speech recognition in Settings, or type your answer." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow microphone and speech recognition in Settings, or type your answer."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در تنظیمات دسترسی میکروفون و تشخیص گفتار را فعال کنید، یا پاسخ را بنویسید."
+          }
+        }
+      }
+    },
+    "Allow speech recognition in Settings, or type your answer." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allow speech recognition in Settings, or type your answer."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در تنظیمات تشخیص گفتار را فعال کنید، یا پاسخ را بنویسید."
+          }
+        }
+      }
+    },
+    "Already arranged" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already arranged"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از قبل هماهنگ شده"
+          }
+        }
+      }
+    },
+    "Already booked anything?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Already booked anything?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چیزی رزرو کرده‌ای؟"
+          }
+        }
+      }
+    },
+    "Anything already decided?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything already decided?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چیزی از قبل مشخص شده؟"
+          }
+        }
+      }
+    },
+    "Anything already planned?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything already planned?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از قبل برنامه‌ای داری؟"
+          }
+        }
+      }
+    },
+    "Anything booked that I should protect?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything booked that I should protect?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزروی داری که باید حفظ کنم؟"
+          }
+        }
+      }
+    },
+    "Anything else?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything else?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چیز دیگری هست؟"
+          }
+        }
+      }
+    },
+    "Anything to take into account?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anything to take into account?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چیزی هست که در نظر بگیرم؟"
+          }
+        }
+      }
+    },
+    "Application language" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Application language"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زبان برنامه"
+          }
+        }
+      }
+    },
+    "Approximate dates, e.g. October" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approximate dates, e.g. October"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زمان تقریبی، مثلاً مهرماه"
+          }
+        }
+      }
+    },
+    "Arrival airport, e.g. JFK, LGA, EWR" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival airport, e.g. JFK, LGA, EWR"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرودگاه مقصد، مثل JFK، LGA، EWR"
+          }
+        }
+      }
+    },
+    "Arrival instructions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival instructions"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برنامه‌ریزی کمتر.\nکشف و تجربه بیشتر."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "راهنمای ورود"
           }
         }
       }
     },
-    "A suggestion for you": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A suggestion for you"
+    "Arrival local: YYYY-MM-DDTHH:MM" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival local: YYYY-MM-DDTHH:MM"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "یک پیشنهاد برای تو"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زمان محلی ورود: YYYY-MM-DDTHH:MM"
           }
         }
       }
     },
-    "A thoughtful travel companion for the journey ahead.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "A thoughtful travel companion for the journey ahead."
+    "Arrival terminal (if known)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival terminal (if known)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "همراهی بافکر برای سفر پیش رو."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترمینال مقصد (اگر مشخص است)"
           }
         }
       }
     },
-    "Accept changes": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Accept changes"
+    "Arrival time zone, e.g. America/New_York" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Arrival time zone, e.g. America/New_York"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پذیرفتن تغییرات"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "منطقه زمانی مقصد، مثل America/New_York"
           }
         }
       }
     },
-    "Account unavailable": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Account unavailable"
+    "Attach existing plans" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Attach existing plans"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حساب در دسترس نیست"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پیوست برنامه‌های موجود"
           }
         }
       }
     },
-    "Add details": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add details"
+    "Back" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Back"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افزودن جزئیات"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بازگشت"
           }
         }
       }
     },
-    "Add fixed commitment": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add fixed commitment"
+    "bicycle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "bicycle"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افزودن برنامهٔ قطعی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دوچرخه"
           }
         }
       }
     },
-    "Add traveler": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add traveler"
+    "Booked" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Booked"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افزودن هم‌سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزرو شده"
           }
         }
       }
     },
-    "Address": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Address"
+    "Booking or commitment" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Booking or commitment"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نشانی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزرو یا برنامهٔ قطعی"
           }
         }
       }
     },
-    "Age or age range (optional)": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Age or age range (optional)"
+    "Booking reference" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Booking reference"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "سن یا بازهٔ سنی (اختیاری)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شماره رزرو"
           }
         }
       }
     },
-    "Already booked anything?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Already booked anything?"
+    "Bookings, ideas, or nothing yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bookings, ideas, or nothing yet"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چیزی رزرو کرده‌ای؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزروها، ایده‌ها، یا هنوز هیچ"
           }
         }
       }
     },
-    "Anything already planned?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anything already planned?"
+    "Buffers are editable planning estimates, not airline advice or live traffic. Allow more time where your airline, international check-in, baggage or accessibility needs require it." : {
+
+    },
+    "Build: %@" : {
+
+    },
+    "Cancelled" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelled"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لغو شده"
+          }
+        }
+      }
+    },
+    "Changed" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changed"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "از قبل برنامه‌ای داری؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغییر کرده"
           }
         }
       }
     },
-    "Anything booked that I should protect?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anything booked that I should protect?"
+    "Changing language keeps your trips and memories." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changing language keeps your trips and memories."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رزروی داری که باید حفظ کنم؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "با تغییر زبان، سفرها و خاطره‌هایت حفظ می‌شوند."
           }
         }
       }
     },
-    "Anything else?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anything else?"
+    "Check-in date and time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-in date and time"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چیز دیگری هست؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاریخ و ساعت ورود"
           }
         }
       }
     },
-    "Anything to take into account?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anything to take into account?"
+    "Check-out date and time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Check-out date and time"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چیزی هست که در نظر بگیرم؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاریخ و ساعت خروج"
           }
         }
       }
     },
-    "Application language": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Application language"
+    "Choose a destination and timing. We'll work out the rest together." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose a destination and timing. We'll work out the rest together."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زبان برنامه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مقصد و زمان سفر را انتخاب کن. بقیه را با هم پیش می‌بریم."
           }
         }
       }
     },
-    "Approximate dates, e.g. October": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Approximate dates, e.g. October"
+    "Choose PDF or DOCX" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose PDF or DOCX"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زمان تقریبی، مثلاً مهرماه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتخاب PDF یا DOCX"
           }
         }
       }
     },
-    "Arrival instructions": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival instructions"
+    "Choose photo" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose photo"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "راهنمای ورود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتخاب عکس"
           }
         }
       }
     },
-    "Attach existing plans": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Attach existing plans"
+    "Choose where and when" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose where and when"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پیوست برنامه‌های موجود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مقصد و زمان را مشخص کنید"
           }
         }
       }
     },
-    "Back": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Back"
+    "Close" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بازگشت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بستن"
           }
         }
       }
     },
-    "bicycle": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "bicycle"
+    "Confirm these details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm these details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "دوچرخه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تأیید این جزئیات"
           }
         }
       }
     },
-    "Booked": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Booked"
+    "Confirmation reference" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmation reference"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رزرو شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شمارهٔ تأیید"
           }
         }
       }
     },
-    "Booking or commitment": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Booking or commitment"
+    "confirmed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "confirmed"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رزرو یا برنامهٔ قطعی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تأییدشده"
           }
         }
       }
     },
-    "Buffers are editable planning estimates, not airline advice or live traffic. Allow more time where your airline, international check-in, baggage or accessibility needs require it.": {},
-    "Build: %@": {},
-    "Cancelled": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Cancelled"
+    "Connecting…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Connecting…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لغو شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال اتصال…"
           }
         }
       }
+    },
+    "Consider rideshare, a drop-off, parking, shuttle, transit, taxi or rental car. Pickup points and travel times need checking for your actual airport." : {
+
     },
-    "Changed": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changed"
+    "Continue" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تغییر کرده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادامه"
           }
         }
       }
     },
-    "Changing language keeps your trips and memories.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Changing language keeps your trips and memories."
+    "Continue with Google" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Google"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "با تغییر زبان، سفرها و خاطره‌هایت حفظ می‌شوند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادامه با گوگل"
           }
         }
       }
     },
-    "Check-in date and time": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check-in date and time"
+    "Correct this" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Correct this"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تاریخ و ساعت ورود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اصلاح این مورد"
           }
         }
       }
     },
-    "Check-out date and time": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Check-out date and time"
+    "Couldn't start the microphone. You can still type." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't start the microphone. You can still type."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تاریخ و ساعت خروج"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "میکروفون فعال نشد. می‌توانید پاسخ را بنویسید."
           }
         }
       }
     },
-    "Choose a destination and timing. We'll work out the rest together.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose a destination and timing. We'll work out the rest together."
+    "Create a lightweight plan" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Create a lightweight plan"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مقصد و زمان سفر را انتخاب کن. بقیه را با هم پیش می‌بریم."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ساختن یک برنامهٔ سبک"
           }
         }
       }
     },
-    "Choose PDF or DOCX": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose PDF or DOCX"
+    "cruise" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "cruise"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "انتخاب PDF یا DOCX"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "کشتی"
           }
         }
       }
     },
-    "Choose photo": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Choose photo"
+    "Date and time" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Date and time"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "انتخاب عکس"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاریخ و ساعت"
           }
         }
       }
     },
-    "Close": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Close"
+    "Departure airport or city" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure airport or city"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بستن"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شهر یا فرودگاه مبدأ"
           }
         }
       }
     },
-    "Confirm these details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Confirm these details"
+    "Departure airport, e.g. SAN" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure airport, e.g. SAN"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تأیید این جزئیات"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرودگاه مبدأ، مثل SAN"
           }
         }
       }
     },
-    "Confirmation reference": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Confirmation reference"
+    "Departure local: YYYY-MM-DDTHH:MM" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure local: YYYY-MM-DDTHH:MM"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شمارهٔ تأیید"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زمان محلی حرکت: YYYY-MM-DDTHH:MM"
           }
         }
       }
     },
-    "confirmed": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "confirmed"
+    "Departure terminal (if known)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure terminal (if known)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تأییدشده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترمینال مبدأ (اگر مشخص است)"
           }
         }
       }
     },
-    "Connecting…": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Connecting…"
+    "Departure time zone, e.g. America/Los_Angeles" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Departure time zone, e.g. America/Los_Angeles"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "در حال اتصال…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "منطقه زمانی مبدأ، مثل America/Los_Angeles"
           }
         }
       }
     },
-    "Consider rideshare, a drop-off, parking, shuttle, transit, taxi or rental car. Pickup points and travel times need checking for your actual airport.": {},
-    "Continue": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue"
+    "Destination" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destination"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ادامه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مقصد"
           }
         }
       }
     },
-    "Continue with Google": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Continue with Google"
+    "Details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ادامه با گوگل"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جزئیات"
           }
         }
       }
     },
-    "Correct this": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Correct this"
+    "Do you already have your flights?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do you already have your flights?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "اصلاح این مورد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پروازها را رزرو کرده‌اید؟"
           }
         }
       }
     },
-    "Create a lightweight plan": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Create a lightweight plan"
+    "Don't remember that" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Don't remember that"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ساختن یک برنامهٔ سبک"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این را به خاطر نسپار"
           }
         }
       }
     },
-    "cruise": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "cruise"
+    "Door to door" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Door to door"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "کشتی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از درِ خانه تا مقصد"
           }
         }
       }
     },
-    "Date and time": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Date and time"
+    "drive" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "drive"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تاریخ و ساعت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ماشین"
           }
         }
       }
     },
-    "Destination": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Destination"
+    "Drive" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drive"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مقصد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ماشین"
           }
         }
       }
     },
-    "Details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Details"
+    "drop_off" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drop-off"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جزئیات"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رساندن توسط آشنا"
           }
         }
       }
     },
-    "Don't remember that": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Don't remember that"
+    "Edit trip details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit trip details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "این را به خاطر نسپار"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ویرایش جزئیات سفر"
           }
         }
       }
     },
-    "Door to door": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Door to door"
+    "End" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "End"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "از درِ خانه تا مقصد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پایان"
           }
         }
       }
     },
-    "Drive": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drive"
+    "English" : {
+
+    },
+    "Enter flight details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter flight details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ماشین"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ورود جزئیات پرواز"
           }
         }
       }
     },
-    "Edit trip details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Edit trip details"
+    "Estimated travel minutes (unknown if blank)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estimated travel minutes (unknown if blank)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ویرایش جزئیات سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زمان تخمینی به دقیقه (خالی یعنی نامشخص)"
           }
         }
       }
     },
-    "English": {},
-    "Existing plans": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Existing plans"
+    "Existing plans" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Existing plans"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برنامه‌های موجود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برنامه‌های موجود"
           }
         }
       }
     },
-    "Extract for review": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Extract for review"
+    "Extract for review" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Extract for review"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "استخراج برای بررسی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استخراج برای بررسی"
           }
         }
       }
     },
-    "Fly": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fly"
+    "Find flights" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find flights"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هواپیما"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جست‌وجوی پرواز"
           }
         }
       }
     },
-    "Forget": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Forget"
+    "first_day_available_from" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "First day: free from"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فراموش کن"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "روز اول: وقت آزاد از"
           }
         }
       }
     },
-    "Forget this memory?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Forget this memory?"
+    "Flight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flight"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "این مورد فراموش شود؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پرواز"
           }
         }
       }
     },
-    "How are we getting around?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How are we getting around?"
+    "Flight number" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flight number"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چطور رفت‌وآمد می‌کنیم؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شماره پرواز"
           }
         }
       }
     },
-    "How much is already planned?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How much is already planned?"
+    "Flight status" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flight status"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چقدر از سفر را برنامه‌ریزی کرده‌ای؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وضعیت پرواز"
           }
         }
       }
     },
-    "I'll travel with you, help when you need me, and get to know what you like along the way.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I'll travel with you, help when you need me, and get to know what you like along the way."
+    "Flights" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flights"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "همراهت سفر می‌کنم، هر وقت نیاز داشته باشی کمک می‌کنم و در طول راه سلیقه‌ات را می‌شناسم."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پروازها"
           }
         }
       }
     },
-    "I'm Pip. Let's make this trip feel like you.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "I'm Pip. Let's make this trip feel like you."
+    "Flights and transfers" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flights and transfers"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "من پیپ هستم. بیا این سفر را به سلیقهٔ تو بسازیم."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پروازها و جابه‌جایی‌ها"
           }
         }
       }
     },
-    "Import existing plans": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Import existing plans"
+    "Fly" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fly"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "وارد کردن برنامه‌های موجود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هواپیما"
           }
         }
       }
     },
-    "In your own words": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "In your own words"
+    "Fly, drive, train, or something else?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fly, drive, train, or something else?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "با کلمات خودت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هواپیما، ماشین، قطار یا راه دیگر؟"
           }
         }
       }
     },
-    "Interests for this trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Interests for this trip"
+    "Forget" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forget"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "علاقه‌ها در این سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فراموش کن"
           }
         }
       }
     },
-    "Just me for now": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Just me for now"
+    "Forget this memory?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forget this memory?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فعلاً فقط خودم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این مورد فراموش شود؟"
           }
         }
       }
     },
-    "Keep current plan": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep current plan"
+    "Help me find flights" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help me find flights"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حفظ برنامهٔ فعلی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در پیدا کردن پرواز کمکم کن"
           }
         }
       }
     },
-    "Keep my draft for a new save": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Keep my draft for a new save"
+    "Hide transfers for now" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide transfers for now"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نگه داشتن پیش‌نویس برای ذخیرهٔ دوباره"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فعلاً جابه‌جایی‌ها را پنهان کن"
           }
         }
       }
     },
-    "Language": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Language"
+    "home_to_airport" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Home → departure airport"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زبان"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خانه ← فرودگاه مبدأ"
           }
         }
       }
     },
-    "Leave %@ · arrive %@": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "new",
-            "value": "Leave %1$@ · arrive %2$@"
+    "hotel_checkout_by" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotel check-out by"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تحویل اتاق تا"
           }
         }
       }
     },
-    "Loading your account…": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Loading your account…"
+    "hotel_to_airport" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hotel → return airport"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "در حال بارگیری حساب…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هتل ← فرودگاه برگشت"
           }
         }
       }
     },
-    "Location": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Location"
+    "How are we getting around?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How are we getting around?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مکان"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چطور رفت‌وآمد می‌کنیم؟"
           }
         }
       }
     },
-    "Make room for what matters": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Make room for what matters"
+    "How much is already planned?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How much is already planned?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جا برای چیزهای مهم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چقدر از سفر را برنامه‌ریزی کرده‌ای؟"
           }
         }
       }
     },
-    "Mostly planned": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostly planned"
+    "How will you get there—fly, drive, train, or something else?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How will you get there—fly, drive, train, or something else?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بیشترش برنامه‌ریزی شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چطور می‌روید—هواپیما، ماشین، قطار یا راه دیگری؟"
           }
         }
       }
     },
-    "mostly_planned": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Mostly planned"
+    "How will you get there?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How will you get there?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بیشترش برنامه‌ریزی شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چطور به مقصد می‌روید؟"
           }
         }
       }
     },
-    "Name or nickname (optional)": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Name or nickname (optional)"
+    "I have flights" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I have flights"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نام یا نام مستعار (اختیاری)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پرواز دارم"
           }
         }
       }
     },
-    "None": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "None"
+    "I'll travel with you, help when you need me, and get to know what you like along the way." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'll travel with you, help when you need me, and get to know what you like along the way."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هیچ‌کدام"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "همراهت سفر می‌کنم، هر وقت نیاز داشته باشی کمک می‌کنم و در طول راه سلیقه‌ات را می‌شناسم."
           }
         }
       }
     },
-    "Not now": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not now"
+    "I'm Pip. Let's make this trip feel like you." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm Pip. Let's make this trip feel like you."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فعلاً نه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "من پیپ هستم. بیا این سفر را به سلیقهٔ تو بسازیم."
           }
         }
       }
     },
-    "Not sure": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not sure"
+    "Import existing plans" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Import existing plans"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مطمئن نیستم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وارد کردن برنامه‌های موجود"
           }
         }
       }
     },
-    "Not sure yet": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not sure yet"
+    "In your own words" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In your own words"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هنوز مشخص نیست"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "با کلمات خودت"
           }
         }
       }
     },
-    "Not yet": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not yet"
+    "Interests for this trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Interests for this trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هنوز نه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "علاقه‌ها در این سفر"
           }
         }
       }
     },
-    "not_sure": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Not sure yet"
+    "Journey" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journey"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هنوز مطمئن نیستم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مسیر"
           }
         }
       }
     },
-    "Notes": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Notes"
+    "Journey details or anything already arranged" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Journey details or anything already arranged"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "یادداشت‌ها"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جزئیات مسیر یا هماهنگی‌های انجام‌شده"
           }
         }
       }
     },
-    "Only for this trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only for this trip"
+    "Just me for now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Just me for now"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فقط برای این سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فعلاً فقط خودم"
           }
         }
       }
     },
-    "Only what matters for this trip. You can add more later.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only what matters for this trip. You can add more later."
+    "Keep current plan" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep current plan"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فقط آنچه برای این سفر مهم است. بعداً هم می‌توانی جزئیات اضافه کنی."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حفظ برنامهٔ فعلی"
           }
         }
       }
     },
-    "Opens an external flight search with known trip details. Searching does not book a flight; add your booking whenever you're ready.": {},
-    "Optional needs, budget, must-dos or things to avoid": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Optional needs, budget, must-dos or things to avoid"
+    "Keep my draft for a new save" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep my draft for a new save"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نیازها، بودجه، کارهای ضروری یا مواردی که نمی‌خواهی (اختیاری)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نگه داشتن پیش‌نویس برای ذخیرهٔ دوباره"
           }
         }
       }
     },
-    "Our plan": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Our plan"
+    "Language" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Language"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برنامهٔ ما"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زبان"
           }
         }
       }
     },
-    "Outbound": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Outbound"
+    "last_day_leave_hotel_by" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last day: leave hotel by"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رفت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "روز آخر: خروج از هتل تا"
           }
         }
       }
     },
-    "own_car": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Own car"
+    "Leave %@ · arrive %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Leave %1$@ · arrive %2$@"
           }
+        }
+      }
+    },
+    "Let's plan %@" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's plan %@"
+          }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "خودروی شخصی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بیایید برای %@ برنامه بریزیم"
           }
         }
       }
     },
-    "Partly planned": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Partly planned"
+    "Loading your account…" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loading your account…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بخشی برنامه‌ریزی شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال بارگیری حساب…"
           }
         }
       }
     },
-    "partly_planned": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Partly planned"
+    "Location" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Location"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بخشی برنامه‌ریزی شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مکان"
           }
         }
       }
     },
-    "Paste booking details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Paste booking details"
+    "Luggage needs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Luggage needs"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چسباندن جزئیات رزرو"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نیازهای مربوط به چمدان"
           }
         }
       }
     },
-    "persistent": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Across trips"
+    "Make room for what matters" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Make room for what matters"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برای سفرهای آینده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جا برای چیزهای مهم"
           }
         }
       }
     },
-    "Pip is thinking…": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pip is thinking…"
+    "Mostly planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostly planned"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پیپ در حال فکر کردن است…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بیشترش برنامه‌ریزی شده"
           }
         }
       }
     },
-    "PipPipGo": {},
-    "Please use a file smaller than 5 MB.": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Please use a file smaller than 5 MB."
+    "mostly_planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostly planned"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "لطفاً فایلی کوچک‌تر از ۵ مگابایت انتخاب کن."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بیشترش برنامه‌ریزی شده"
           }
         }
       }
     },
-    "Practical needs": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Practical needs"
+    "Name or nickname (optional)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name or nickname (optional)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نیازهای سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نام یا نام مستعار (اختیاری)"
           }
         }
       }
     },
-    "Prefer not to answer": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Prefer not to answer"
+    "Next: airport transfers" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Next: airport transfers"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ترجیح می‌دهم پاسخ ندهم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بعدی: جابه‌جایی فرودگاه"
           }
         }
       }
     },
-    "Preferred language (optional)": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Preferred language (optional)"
+    "None" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زبان ترجیحی (اختیاری)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هیچ‌کدام"
           }
         }
       }
     },
-    "Property (leave blank if not booked)": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Property (leave blank if not booked)"
+    "Not now" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not now"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "محل اقامت (اگر رزرو نکرده‌ای خالی بگذار)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فعلاً نه"
           }
         }
       }
     },
-    "proposed": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "proposed"
+    "Not sure" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not sure"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "در انتظار بررسی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مطمئن نیستم"
           }
         }
       }
     },
-    "Provisional—some details or arrangements need confirmation.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Provisional—some details or arrangements need confirmation."
+    "Not sure yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not sure yet"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "موقت—بعضی جزئیات یا هماهنگی‌ها نیاز به تأیید دارند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز مشخص نیست"
           }
         }
       }
     },
-    "public_transit": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Public transit"
+    "Not yet" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not yet"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حمل‌ونقل عمومی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز نه"
           }
         }
       }
     },
-    "Reject import": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reject import"
+    "not_sure" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Not sure yet"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رد کردن موارد واردشده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز مطمئن نیستم"
           }
         }
       }
     },
-    "rejected": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "rejected"
+    "Notes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ردشده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "یادداشت‌ها"
           }
         }
       }
     },
-    "Relationship (optional)": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Relationship (optional)"
+    "Nothing booked or decided yet." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing booked or decided yet."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نسبت (اختیاری)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز چیزی رزرو یا مشخص نشده."
           }
         }
       }
     },
-    "Reload": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reload"
+    "Nothing yet" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing yet"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بارگیری دوباره"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز هیچ"
           }
         }
       }
     },
-    "Remember this": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remember this"
+    "Only for this trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only for this trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "این را به خاطر بسپار"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فقط برای این سفر"
           }
         }
       }
     },
-    "Remove commitment": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove commitment"
+    "Only what matters for this trip. You can add more later." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only what matters for this trip. You can add more later."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حذف برنامهٔ قطعی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فقط آنچه برای این سفر مهم است. بعداً هم می‌توانی جزئیات اضافه کنی."
           }
         }
       }
     },
-    "Remove this detail": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove this detail"
+    "Opens an external flight search with known trip details. Searching does not book a flight; add your booking whenever you're ready." : {
+
+    },
+    "Optional needs, budget, must-dos or things to avoid" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Optional needs, budget, must-dos or things to avoid"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حذف این مورد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نیازها، بودجه، کارهای ضروری یا مواردی که نمی‌خواهی (اختیاری)"
           }
         }
       }
     },
-    "Remove traveler": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove traveler"
+    "other" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "other"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حذف هم‌سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "راه دیگر"
           }
         }
       }
     },
-    "rental_car": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Rental car"
+    "Other ways" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Other ways"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "خودروی اجاره‌ای"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "راه‌های دیگر"
           }
         }
       }
     },
-    "Restoring your session…": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Restoring your session…"
+    "Our plan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Our plan"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "در حال بازیابی نشست…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برنامهٔ ما"
           }
         }
       }
     },
-    "Retry same request": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Retry same request"
+    "Outbound" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Outbound"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تلاش دوباره با همان درخواست"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رفت"
           }
         }
       }
     },
-    "Return": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Return"
+    "own_car" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Own car"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برگشت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خودروی شخصی"
           }
         }
       }
     },
-    "Review before adding": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review before adding"
+    "parking" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Drive and park"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بررسی پیش از افزودن"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رانندگی و پارک"
           }
         }
       }
     },
-    "Review every flight. Direction and segment order replace any saved flight with the same direction/order. Other bookings remain unchanged.": {},
-    "Review extracted details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review extracted details"
+    "Partly planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partly planned"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بررسی جزئیات استخراج‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بخشی برنامه‌ریزی شده"
           }
         }
       }
     },
-    "Review local dates, times and time zones before saving. Leave unknown fields blank; your plan will stay provisional.": {},
-    "Review saved trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Review saved trip"
+    "partly_planned" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partly planned"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بررسی سفر ذخیره‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بخشی برنامه‌ریزی شده"
           }
         }
       }
     },
-    "Room to explore": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Room to explore"
+    "Paste booking details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paste booking details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرصت برای کشف"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چسباندن جزئیات رزرو"
           }
         }
       }
     },
-    "Save as a recurring traveler": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save as a recurring traveler"
+    "persistent" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Across trips"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ذخیره به عنوان هم‌سفر همیشگی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برای سفرهای آینده"
           }
         }
       }
     },
-    "Save trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save trip"
+    "Pickup point" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pickup point"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ذخیرهٔ سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "محل سوارشدن"
           }
         }
       }
     },
-    "Save trip; add details later": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save trip; add details later"
+    "Pip is thinking…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pip is thinking…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ذخیرهٔ سفر؛ جزئیات بعداً"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پیپ در حال فکر کردن است…"
           }
         }
       }
+    },
+    "PipPipGo" : {
+
     },
-    "Saved destination: %@": {},
-    "Saved notes: %@": {},
-    "Saved traveler": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Saved traveler"
+    "Please use a file smaller than 5 MB." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please use a file smaller than 5 MB."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هم‌سفر ذخیره‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لطفاً فایلی کوچک‌تر از ۵ مگابایت انتخاب کن."
           }
         }
       }
     },
-    "Send": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Send"
+    "Practical needs" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Practical needs"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ارسال"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نیازهای سفر"
           }
         }
       }
     },
-    "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan."
+    "Prefer not to answer" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prefer not to answer"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رزرو، برنامهٔ سفر یا تصویر بفرست. پیپ جزئیات را برای بررسی پیشنهاد می‌دهد و بدون تأیید تو از آن‌ها استفاده نمی‌کند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترجیح می‌دهم پاسخ ندهم"
           }
         }
       }
     },
-    "Send it to Pip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Send it to Pip"
+    "Preferred language (optional)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preferred language (optional)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "برای پیپ بفرست"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "زبان ترجیحی (اختیاری)"
           }
         }
       }
     },
-    "Settings": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings"
+    "Property (leave blank if not booked)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Property (leave blank if not booked)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تنظیمات"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "محل اقامت (اگر رزرو نکرده‌ای خالی بگذار)"
           }
         }
       }
     },
-    "Sign out": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sign out"
+    "proposed" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "proposed"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "خروج"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در انتظار بررسی"
           }
         }
       }
     },
-    "Sign-in is securely handled by Google and Amazon Cognito.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Sign-in is securely handled by Google and Amazon Cognito."
+    "Provisional—some details or arrangements need confirmation." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Provisional—some details or arrangements need confirmation."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ورود امن با گوگل و Amazon Cognito انجام می‌شود."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موقت—بعضی جزئیات یا هماهنگی‌ها نیاز به تأیید دارند."
           }
         }
       }
     },
-    "Signing out…": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Signing out…"
+    "public_transit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Public transit"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "در حال خروج…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حمل‌ونقل عمومی"
           }
         }
       }
     },
-    "Skip; continue with my trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip; continue with my trip"
+    "Reject import" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reject import"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رد کردن؛ ادامهٔ سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رد کردن موارد واردشده"
           }
         }
       }
     },
-    "Something else": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Something else"
+    "rejected" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "rejected"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "راه دیگر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ردشده"
           }
         }
       }
     },
-    "Something you'd like Pip to remember?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Something you'd like Pip to remember?"
+    "Relationship (optional)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Relationship (optional)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چیزی هست که بخواهی پیپ به خاطر بسپارد؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسبت (اختیاری)"
           }
         }
       }
     },
-    "Starting from scratch": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Starting from scratch"
+    "Reload" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reload"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "از صفر شروع می‌کنم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بارگیری دوباره"
           }
         }
       }
     },
-    "starting_from_scratch": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Starting from scratch"
+    "Remember this" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remember this"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شروع از صفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این را به خاطر بسپار"
           }
         }
       }
     },
-    "Suggestions are not bookings. Live hours, weather and availability have not been verified.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Suggestions are not bookings. Live hours, weather and availability have not been verified."
+    "Remove commitment" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove commitment"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پیشنهادها رزرو نیستند. ساعت کاری، آب‌وهوا و ظرفیت فعلی بررسی نشده‌اند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف برنامهٔ قطعی"
           }
         }
       }
     },
-    "Talk to Pip": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Talk to Pip"
+    "Remove flight" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove flight"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "گفت‌وگو با پیپ"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف پرواز"
           }
         }
       }
     },
-    "taxi": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "taxi"
+    "Remove this detail" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove this detail"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تاکسی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف این مورد"
           }
         }
       }
     },
-    "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?"
+    "Remove traveler" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remove traveler"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "از سفر، تعطیلات یا حتی روزی بیرون از خانه بگو که خیلی به تو خوش گذشته. چه چیزی آن را خوب کرد؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف هم‌سفر"
           }
         }
       }
     },
-    "Tell Pip…": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Tell Pip…"
+    "rental_car" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rental car"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "به پیپ بگو…"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خودروی اجاره‌ای"
           }
         }
       }
     },
-    "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip."
+    "Restoring your session…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restoring your session…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "محتوای انتخاب‌شده برای استخراج به سرور پیپ و OpenAI فرستاده می‌شود. پیپ فایل اصلی را ذخیره نمی‌کند. جزئیات استخراج‌شده با این سفر می‌مانند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال بازیابی نشست…"
           }
         }
       }
     },
-    "These details apply to this trip. They do not become permanent preferences.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "These details apply to this trip. They do not become permanent preferences."
+    "Retry same request" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retry same request"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "این جزئیات فقط برای همین سفرند و به ترجیح دائمی تبدیل نمی‌شوند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تلاش دوباره با همان درخواست"
           }
         }
       }
     },
-    "This trip changed elsewhere. Your draft is still here.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "This trip changed elsewhere. Your draft is still here."
+    "Return" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Return"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "این سفر در جای دیگری تغییر کرده است. پیش‌نویس تو حفظ شده است."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برگشت"
           }
         }
       }
     },
-    "Title": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Title"
+    "Review before adding" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review before adding"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "عنوان"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بررسی پیش از افزودن"
           }
         }
       }
     },
-    "train": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "train"
+    "Review every flight. Direction and segment order replace any saved flight with the same direction/order. Other bookings remain unchanged." : {
+
+    },
+    "Review extracted details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review extracted details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "قطار"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بررسی جزئیات استخراج‌شده"
           }
         }
       }
     },
-    "Train": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Train"
+    "Review local dates, times and time zones before saving. Leave unknown fields blank; your plan will stay provisional." : {
+
+    },
+    "Review saved trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review saved trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "قطار"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بررسی سفر ذخیره‌شده"
           }
         }
       }
     },
-    "Transportation details": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transportation details"
+    "rideshare" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uber / other rideshare"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جزئیات رفت‌وآمد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اوبر / تاکسی اینترنتی"
           }
         }
       }
     },
-    "Travel details changed. Review the new transfer times and update your activity suggestions. Confirmed reservations are protected.": {},
-    "Traveling together": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Traveling together"
+    "Room to explore" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Room to explore"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "سفر با هم"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فرصت برای کشف"
           }
         }
       }
     },
-    "Trip details": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trip details"
+    "Save and update activity suggestions" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save and update activity suggestions"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جزئیات سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیره و به‌روزرسانی پیشنهادها"
           }
         }
       }
     },
-    "Trip unavailable": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Trip unavailable"
+    "Save as a recurring traveler" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save as a recurring traveler"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "سفر در دسترس نیست"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیره به عنوان هم‌سفر همیشگی"
           }
         }
       }
     },
-    "trip_specific": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Only this trip"
+    "Save reviewed travel details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save reviewed travel details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فقط همین سفر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیره جزئیات بررسی‌شده"
           }
         }
       }
     },
-    "Try again": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Try again"
+    "Save trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تلاش دوباره"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیرهٔ سفر"
           }
         }
       }
     },
-    "Unknown": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unknown"
+    "Save trip; add details later" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Save trip; add details later"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نامشخص"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ذخیرهٔ سفر؛ جزئیات بعداً"
           }
         }
       }
+    },
+    "Saved destination: %@" : {
+
     },
-    "Updated transfer windows are recalculated on save. Existing activities stay unchanged until you accept new suggestions; confirmed reservations are protected.": {},
-    "Use the saved trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Use the saved trip"
+    "Saved notes: %@" : {
+
+    },
+    "Saved traveler" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saved traveler"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "استفاده از سفر ذخیره‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هم‌سفر ذخیره‌شده"
           }
         }
       }
     },
-    "View": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "View"
+    "Send" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نمایش"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ارسال"
           }
         }
       }
     },
-    "walking": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "walking"
+    "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پیاده‌روی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزرو، برنامهٔ سفر یا تصویر بفرست. پیپ جزئیات را برای بررسی پیشنهاد می‌دهد و بدون تأیید تو از آن‌ها استفاده نمی‌کند."
           }
         }
       }
     },
-    "What Pip remembers": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What Pip remembers"
+    "Send it to Pip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send it to Pip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "آنچه پیپ به یاد دارد"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برای پیپ بفرست"
           }
         }
       }
     },
-    "What would make this trip feel right for you?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What would make this trip feel right for you?"
+    "Settings" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Settings"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چه چیزی این سفر را برای تو دل‌نشین می‌کند؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تنظیمات"
           }
         }
       }
     },
-    "Where are we going?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Where are we going?"
+    "shuttle" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shuttle"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "کجا می‌رویم؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شاتل"
           }
         }
       }
     },
-    "Where are we staying?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Where are we staying?"
+    "Sign out" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign out"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "کجا اقامت داریم؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خروج"
           }
         }
       }
     },
-    "Who's coming?": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Who's coming?"
+    "Sign-in is securely handled by Google and Amazon Cognito." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign-in is securely handled by Google and Amazon Cognito."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چه کسانی می‌آیند؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ورود امن با گوگل و Amazon Cognito انجام می‌شود."
           }
         }
       }
     },
-    "You": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You"
+    "Signing out…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signing out…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تو"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "در حال خروج…"
           }
         }
       }
     },
-    "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered."
+    "Skip; continue with my trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip; continue with my trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هر وقت بخواهی می‌توانی پیپ را اصلاح کنی. نیازهای موقت سفر از چیزهایی که می‌خواهی به یاد بمانند جدا هستند."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رد کردن؛ ادامهٔ سفر"
           }
         }
       }
     },
-    "Your next chapter starts here": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your next chapter starts here"
+    "Something else" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something else"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ماجرای بعدی تو از اینجا شروع می‌شود"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "راه دیگر"
           }
         }
       }
     },
-    "Your request is kept unchanged for a safe retry.": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your request is kept unchanged for a safe retry."
+    "Something you'd like Pip to remember?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Something you'd like Pip to remember?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "درخواست تو بدون تغییر برای تلاش دوباره نگه داشته شده است."
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چیزی هست که بخواهی پیپ به خاطر بسپارد؟"
           }
         }
       }
     },
-    "Your trip": {
-      "extractionState": "stale",
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Your trip"
+    "Speak" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "سفر تو"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "صحبت کنید"
           }
         }
       }
     },
-    "فارسی": {},
-    "home_to_airport": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Home → departure airport"
+    "Speech isn't available right now. You can still type." : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speech isn't available right now. You can still type."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "خانه ← فرودگاه مبدأ"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گفتار فعلاً در دسترس نیست. می‌توانید پاسخ را بنویسید."
           }
         }
       }
     },
-    "airport_to_hotel": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival airport → hotel"
+    "Start" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرودگاه مقصد ← هتل"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شروع"
           }
         }
       }
     },
-    "hotel_to_airport": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hotel → return airport"
+    "Starting from (city or pickup point)" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting from (city or pickup point)"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هتل ← فرودگاه برگشت"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مبدأ (شهر یا محل سوارشدن)"
           }
         }
       }
     },
-    "airport_to_home": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival airport → home"
+    "Starting from scratch" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting from scratch"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرودگاه ورود ← خانه"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از صفر شروع می‌کنم"
           }
         }
       }
     },
-    "first_day_available_from": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "First day: free from"
+    "starting_from_scratch" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Starting from scratch"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "روز اول: وقت آزاد از"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شروع از صفر"
           }
         }
       }
     },
-    "last_day_leave_hotel_by": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Last day: leave hotel by"
+    "Stop" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stop"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "روز آخر: خروج از هتل تا"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "توقف"
           }
         }
       }
     },
-    "hotel_checkout_by": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Hotel check-out by"
+    "Suggested dates are a starting point, not a holiday assumption. Adjust them before confirming." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggested dates are a starting point, not a holiday assumption. Adjust them before confirming."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "تحویل اتاق تا"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این تاریخ‌ها فقط پیشنهاد اولیه‌اند، نه فرض تعطیلی. پیش از تأیید آن‌ها را تنظیم کنید."
           }
         }
       }
     },
-    "rideshare": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Uber / other rideshare"
+    "Suggestions are not bookings. Live hours, weather and availability have not been verified." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suggestions are not bookings. Live hours, weather and availability have not been verified."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "اوبر / تاکسی اینترنتی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پیشنهادها رزرو نیستند. ساعت کاری، آب‌وهوا و ظرفیت فعلی بررسی نشده‌اند."
           }
         }
       }
     },
-    "drop_off": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drop-off"
+    "Talk to Pip" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Talk to Pip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رساندن توسط آشنا"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گفت‌وگو با پیپ"
           }
         }
       }
     },
-    "parking": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Drive and park"
+    "taxi" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "taxi"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رانندگی و پارک"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تاکسی"
           }
         }
       }
     },
-    "shuttle": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Shuttle"
+    "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شاتل"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از سفر، تعطیلات یا حتی روزی بیرون از خانه بگو که خیلی به تو خوش گذشته. چه چیزی آن را خوب کرد؟"
           }
         }
       }
     },
-    "Flights and transfers": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flights and transfers"
+    "Tell me in your own words, or add a booking." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell me in your own words, or add a booking."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پروازها و جابه‌جایی‌ها"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "با زبان خودتان بگویید، یا یک رزرو اضافه کنید."
           }
         }
       }
     },
-    "Anything already decided?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Anything already decided?"
+    "Tell Pip…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell Pip…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چیزی از قبل مشخص شده؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "به پیپ بگو…"
           }
         }
       }
     },
-    "Bookings, ideas, or nothing yet": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Bookings, ideas, or nothing yet"
+    "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "رزروها، ایده‌ها، یا هنوز هیچ"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "محتوای انتخاب‌شده برای استخراج به سرور پیپ و OpenAI فرستاده می‌شود. پیپ فایل اصلی را ذخیره نمی‌کند. جزئیات استخراج‌شده با این سفر می‌مانند."
           }
         }
       }
     },
-    "How will you get there?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How will you get there?"
+    "These details apply to this trip. They do not become permanent preferences." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "These details apply to this trip. They do not become permanent preferences."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چطور به مقصد می‌روید؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این جزئیات فقط برای همین سفرند و به ترجیح دائمی تبدیل نمی‌شوند."
           }
         }
       }
     },
-    "How will you get there—fly, drive, train, or something else?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "How will you get there—fly, drive, train, or something else?"
+    "This trip changed elsewhere. Your draft is still here." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This trip changed elsewhere. Your draft is still here."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "چطور می‌روید—هواپیما، ماشین، قطار یا راه دیگری؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این سفر در جای دیگری تغییر کرده است. پیش‌نویس تو حفظ شده است."
           }
         }
       }
     },
-    "Fly, drive, train, or something else?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Fly, drive, train, or something else?"
+    "Title" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Title"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "هواپیما، ماشین، قطار یا راه دیگر؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عنوان"
           }
         }
       }
     },
-    "Starting from (city or pickup point)": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Starting from (city or pickup point)"
+    "train" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "train"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مبدأ (شهر یا محل سوارشدن)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قطار"
           }
         }
       }
     },
-    "Do you already have your flights?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Do you already have your flights?"
+    "Train" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Train"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پروازها را رزرو کرده‌اید؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قطار"
           }
         }
       }
     },
-    "Flights": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flights"
+    "Transfer notes" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transfer notes"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پروازها"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "یادداشت جابه‌جایی"
           }
         }
       }
     },
-    "Departure airport or city": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Departure airport or city"
+    "transit" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transit"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شهر یا فرودگاه مبدأ"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حمل‌ونقل عمومی"
           }
         }
       }
     },
-    "Upload flight confirmation": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Upload flight confirmation"
+    "Transport" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transport"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "بارگذاری تأییدیه پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "وسیله جابه‌جایی"
           }
         }
       }
     },
-    "Enter flight details": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Enter flight details"
+    "Transportation details" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Transportation details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ورود جزئیات پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جزئیات رفت‌وآمد"
           }
         }
       }
+    },
+    "Travel details changed. Review the new transfer times and update your activity suggestions. Confirmed reservations are protected." : {
+
     },
-    "Find flights": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Find flights"
+    "Traveling together" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traveling together"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جست‌وجوی پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سفر با هم"
           }
         }
       }
     },
-    "Flight": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flight"
+    "Trip details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trip details"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "جزئیات سفر"
           }
         }
       }
     },
-    "Journey": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Journey"
+    "Trip summary" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trip summary"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "مسیر"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خلاصه سفر"
           }
         }
       }
     },
-    "Airline": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Airline"
+    "Trip unavailable" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trip unavailable"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شرکت هواپیمایی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سفر در دسترس نیست"
           }
         }
       }
     },
-    "Flight number": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flight number"
+    "trip_specific" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Only this trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شماره پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فقط همین سفر"
           }
         }
       }
     },
-    "Departure airport, e.g. SAN": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Departure airport, e.g. SAN"
+    "Try again" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Try again"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرودگاه مبدأ، مثل SAN"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تلاش دوباره"
           }
         }
       }
     },
-    "Arrival airport, e.g. JFK, LGA, EWR": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival airport, e.g. JFK, LGA, EWR"
+    "Type or speak…" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Type or speak…"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "فرودگاه مقصد، مثل JFK، LGA، EWR"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بنویسید یا صحبت کنید…"
           }
         }
       }
     },
-    "Departure local: YYYY-MM-DDTHH:MM": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Departure local: YYYY-MM-DDTHH:MM"
+    "Unknown" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unknown"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زمان محلی حرکت: YYYY-MM-DDTHH:MM"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نامشخص"
           }
         }
       }
     },
-    "Arrival local: YYYY-MM-DDTHH:MM": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival local: YYYY-MM-DDTHH:MM"
+    "Update affected plans" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update affected plans"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زمان محلی ورود: YYYY-MM-DDTHH:MM"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "به‌روزرسانی برنامه‌های مرتبط"
           }
         }
       }
     },
-    "Departure time zone, e.g. America/Los_Angeles": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Departure time zone, e.g. America/Los_Angeles"
+    "Updated transfer windows are recalculated on save. Existing activities stay unchanged until you accept new suggestions; confirmed reservations are protected." : {
+
+    },
+    "Upload" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "منطقه زمانی مبدأ، مثل America/Los_Angeles"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بارگذاری"
           }
         }
       }
     },
-    "Arrival time zone, e.g. America/New_York": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival time zone, e.g. America/New_York"
+    "Upload flight confirmation" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upload flight confirmation"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "منطقه زمانی مقصد، مثل America/New_York"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بارگذاری تأییدیه پرواز"
           }
         }
       }
     },
-    "Departure terminal (if known)": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Departure terminal (if known)"
+    "Use exact dates" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use exact dates"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ترمینال مبدأ (اگر مشخص است)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استفاده از تاریخ دقیق"
           }
         }
       }
     },
-    "Arrival terminal (if known)": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Arrival terminal (if known)"
+    "Use the saved trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the saved trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ترمینال مقصد (اگر مشخص است)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استفاده از سفر ذخیره‌شده"
           }
         }
       }
     },
-    "Booking reference": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Booking reference"
+    "View" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "شماره رزرو"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نمایش"
           }
         }
       }
     },
-    "Flight status": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Flight status"
+    "walking" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "walking"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "وضعیت پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "پیاده‌روی"
           }
         }
       }
     },
-    "Remove flight": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Remove flight"
+    "What ground transportation is already arranged?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What ground transportation is already arranged?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حذف پرواز"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "کدام جابه‌جایی زمینی از قبل هماهنگ شده؟"
           }
         }
       }
     },
-    "Add outbound connection": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add outbound connection"
+    "What Pip remembers" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What Pip remembers"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افزودن پرواز رفت یا اتصال"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آنچه پیپ به یاد دارد"
           }
         }
       }
     },
-    "Add return flight or connection": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Add return flight or connection"
+    "What would make this trip feel right for you?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What would make this trip feel right for you?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "افزودن پرواز برگشت یا اتصال"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چه چیزی این سفر را برای تو دل‌نشین می‌کند؟"
           }
         }
       }
     },
-    "What ground transportation is already arranged?": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "What ground transportation is already arranged?"
+    "What's already decided?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's already decided?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "کدام جابه‌جایی زمینی از قبل هماهنگ شده؟"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چه چیزی از قبل مشخص شده؟"
           }
         }
       }
     },
-    "Transport": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transport"
+    "When?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "وسیله جابه‌جایی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چه زمانی؟"
           }
         }
       }
     },
-    "Already arranged": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Already arranged"
+    "Where are we going?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where are we going?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "از قبل هماهنگ شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "کجا می‌رویم؟"
           }
         }
       }
     },
-    "Pickup point": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Pickup point"
+    "Where are we staying?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Where are we staying?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "محل سوارشدن"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "کجا اقامت داریم؟"
           }
         }
       }
     },
-    "Luggage needs": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Luggage needs"
+    "Which dates do you mean by next long weekend? Holidays and travel dates vary, so please confirm." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Which dates do you mean by next long weekend? Holidays and travel dates vary, so please confirm."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "نیازهای مربوط به چمدان"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "منظورتان از آخر هفته طولانی بعدی کدام تاریخ‌هاست؟ لطفاً تاریخ را تأیید کنید؛ تعطیلات و روزهای سفر متفاوت‌اند."
           }
         }
       }
     },
-    "Estimated travel minutes (unknown if blank)": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Estimated travel minutes (unknown if blank)"
+    "Who's coming?" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Who's coming?"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "زمان تخمینی به دقیقه (خالی یعنی نامشخص)"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "چه کسانی می‌آیند؟"
           }
         }
       }
     },
-    "Transfer notes": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transfer notes"
+    "You" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "یادداشت جابه‌جایی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تو"
           }
         }
       }
     },
-    "Save reviewed travel details": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save reviewed travel details"
+    "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ذخیره جزئیات بررسی‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هر وقت بخواهی می‌توانی پیپ را اصلاح کنی. نیازهای موقت سفر از چیزهایی که می‌خواهی به یاد بمانند جدا هستند."
           }
         }
       }
     },
-    "Save and update activity suggestions": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Save and update activity suggestions"
+    "Your next chapter starts here" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your next chapter starts here"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "ذخیره و به‌روزرسانی پیشنهادها"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ماجرای بعدی تو از اینجا شروع می‌شود"
           }
         }
       }
     },
-    "Update affected plans": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Update affected plans"
+    "your next trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "your next trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "به‌روزرسانی برنامه‌های مرتبط"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سفر بعدی شما"
           }
         }
       }
     },
-    "Journey details or anything already arranged": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Journey details or anything already arranged"
+    "Your request is kept unchanged for a safe retry." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your request is kept unchanged for a safe retry."
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "جزئیات مسیر یا هماهنگی‌های انجام‌شده"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "درخواست تو بدون تغییر برای تلاش دوباره نگه داشته شده است."
           }
         }
       }
     },
-    "transit": {
-      "localizations": {
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Transit"
+    "Your trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your trip"
           }
         },
-        "fa": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "حمل‌ونقل عمومی"
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سفر تو"
           }
         }
       }
+    },
+    "فارسی" : {
+
     }
   },
-  "version": "1.0"
+  "version" : "1.0"
 }

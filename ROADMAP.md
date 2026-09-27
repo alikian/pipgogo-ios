@@ -6,7 +6,7 @@ The prior questionnaire/check-in/package roadmap is superseded and retained in
 
 | Milestone | Local implementation | Acceptance / remaining scope |
 | --- | --- | --- |
-| 1 · Trip and traveler intake | Light initial intake; reviewed outbound/connection/return flights, external search, four transfer legs, party/lodging/commitments and import review | Door-to-door device acceptance (section 29), real booking/media review, saved-traveler management and lifecycle validation |
+| 1 · Trip and traveler intake | Personal one-question intake with compact summary, speech/upload and inferred readiness; reviewed outbound/connection/return flights, external search, four transfer legs, party/lodging/commitments and import review | Door-to-door device acceptance (section 29), real booking/media review, saved-traveler management and lifecycle validation |
 | 2 · Getting to know you and memory | Conversation, skip/three-exchange completion, atomic scoped learning and natural-language/explicit correction controls | Live learning/correction quality and returning-user acceptance |
 | 3 · Personalized initial plan | Typed OpenAI proposals; airport/time-zone-aware transfer and first/last-day windows; fixed commitments protected | Device/live-quality acceptance of airport-specific timing, geographical/density checks, individual plan-item manipulation |
 | 4 · Learning during a trip | Current-trip feedback, temporary context and explicit revision acceptance/rejection | Flight-change device acceptance, live adaptive journey, repeated-choice learning and memory corrections |
@@ -50,8 +50,14 @@ airport buffers, hotel timing and rest. Unknown details remain provisional. Flig
 produce reviewable updates while preserving confirmed reservations. Extend acceptance with
 San Diego → New York cases for JFK, LGA and EWR, plus return and connecting/overnight flights.
 
-Door-to-door verification: 73 backend tests passed (1 skipped), 41 iOS tests passed, signed Dev
+Door-to-door verification: 75 backend tests passed (1 skipped), 42 iOS tests passed, signed Dev
 build passed. Live synthetic GPT-6 extraction returned separate outbound/return segments.
 Unknown details remain provisional; route times are user estimates, with no live flight/traffic
 feed. Cross-airport connections are flagged for explicit transfer planning. Device visual,
 real-confirmation media, flight search handoff and complete journey acceptance remain pending.
+
+Conversational intake (section 30): implemented with explicit/confirmed preferred-name memory,
+editable trip summary, ambiguous-date confirmation, speech/type/upload input, quiet Nothing yet,
+and context-aware acknowledgement/next question. No planning-state questionnaire remains.
+Device speech/permission and visual acceptance remain pending. Existing travelers/reservations
+can still be edited separately from the light intake screen.

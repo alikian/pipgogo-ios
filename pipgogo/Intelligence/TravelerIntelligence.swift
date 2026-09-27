@@ -215,6 +215,12 @@ final class IntelligenceStore {
         self.client = client; self.authentication = authentication
     }
     var selected: APIRecord<Journey>? { journeys.first { $0.id == selectedID?.uuidString.lowercased() } }
+    var preferredName: String? {
+        memories.sorted { $0.revision > $1.revision }.first { !$0.deleted && ["preferred_name", "nickname"].contains($0.data.key) &&
+            ["explicit", "confirmed"].contains($0.data.status) && $0.data.scope == "persistent" &&
+            !$0.data.value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }?.data.value
+    }
     func reset() {
         epoch = UUID(); journeys = []; memories = []; travelers = []; selectedID = nil
         draft = TripIntake(); draftID = UUID(); draftVersion = 0; composer = ""
@@ -234,6 +240,7 @@ final class IntelligenceStore {
     }
     func newTrip(language: String) {
         guard !hasPending else { return }
+        selectedID = nil
         draft = TripIntake(); draft.language = language; draftID = UUID(); draftVersion = 0; conflict = nil
     }
     func edit(_ record: APIRecord<Journey>) {

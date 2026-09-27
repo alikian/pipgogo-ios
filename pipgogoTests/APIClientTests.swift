@@ -29,6 +29,18 @@ struct APIClientTests {
         #expect(decoded.destination == "San Diego")
     }
 
+    @MainActor @Test func preferredNameRequiresExplicitPersistentMemory() {
+        let store = IntelligenceStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!), authentication: TestTokens())
+        var memory = TravelerMemory(); memory.key = "preferred_name"; memory.value = "Sara"; memory.status = "inferred"
+        func record(_ value: TravelerMemory) -> APIRecord<TravelerMemory> {
+            APIRecord(id: UUID().uuidString.lowercased(), kind: "memory", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: value)
+        }
+        store.memories = [record(memory)]; #expect(store.preferredName == nil)
+        memory.status = "confirmed"; store.memories = [record(memory)]; #expect(store.preferredName == "Sara")
+        memory.scope = "trip_specific"; store.memories = [record(memory)]; #expect(store.preferredName == nil)
+        store.selectedID = UUID(); store.newTrip(language: "en"); #expect(store.selectedID == nil)
+    }
+
     @Test func mapsUnauthorizedResponse() async {
         let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: makeSession(status: 401, body: Data()))
         await #expect(throws: APIClientError.unauthorized) { try await client.account(accessToken: "not-a-real-token") }

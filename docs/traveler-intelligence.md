@@ -106,3 +106,18 @@ must follow the previous arrival; cross-airport connections are explicitly flagg
 Verification: 73 backend tests passed, 1 skipped; 41 iOS tests and signed Dev build passed.
 A synthetic live GPT-6 confirmation extracted outbound/return EWR flights. Physical-device,
 real-media and external search acceptance remain pending.
+
+## Conversational intake
+
+The `intake` action reuses current trip context and reviewed imports, returns a short acknowledgement
+and one next question, and can set inferred planning_state without a questionnaire. It creates no
+activity proposal and does not complete personality onboarding. iOS displays the latest confirmed
+persistent preferred_name/nickname only; a name is never inferred from an email or companion.
+The first screen is a compact summary plus one answer area. Reviewed uploads can advance without
+retyping their contents. Ambiguous long-weekend dates require explicit confirmation; a suggested
+Friday-based range is editable and is not asserted to be an actual holiday. Microphone/speech
+permissions are requested only on Speak; audio stops on close/background and text is reviewable.
+
+75 backend tests (1 skipped), 42 iOS tests and signed Dev build passed. A live synthetic intake
+reply acknowledged a known Manhattan hotel and asked only how the traveler is getting to New York.
+Device voice/privacy permissions and visual acceptance remain pending.

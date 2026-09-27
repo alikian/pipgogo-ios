@@ -1,6 +1,8 @@
 import SwiftUI
 import PhotosUI
 import UniformTypeIdentifiers
+import Speech
+import AVFoundation
 
 struct PipHomeView: View {
     @Bindable var store: IntelligenceStore
@@ -110,108 +112,255 @@ struct PipErrorView: View {
 struct TripIntakeView: View {
     @Bindable var store: IntelligenceStore
     @Environment(\.dismiss) private var dismiss
-    @State private var step = 0
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var inputNotice: String?
+    @State private var waitingForReply = false
+    @State private var answeringFollowup = false
+    @State private var answer = ""
+    @State private var acknowledgement = ""
+    @State private var editSummary = false
+    @State private var showUpload = false
+    @State private var showTravel = false
+    @State private var review: TripImport?
+    @State private var speech = IntakeSpeech()
     private var locked: Bool { store.busy || store.hasPending }
+    private var destination: String { store.draft.destination.trimmingCharacters(in: .whitespacesAndNewlines) }
+    private var heading: String {
+        let place = destination.isEmpty ? String(localized: "your next trip") : destination
+        if let name = store.preferredName { return String(localized: "\(name), let's plan \(place)") }
+        return String(localized: "Let's plan \(place)")
+    }
+    private var activeAnswer: Binding<String> {
+        Binding(get: { answeringFollowup ? answer : store.draft.existing_plans }, set: { text in
+            if answeringFollowup { answer = text } else { store.draft.existing_plans = text }
+        })
+    }
+    private var proposedImports: [TripImport] { store.selected?.data.imports.filter { $0.status == "proposed" } ?? [] }
+    private var hasReviewedBooking: Bool { store.selected?.data.imports.contains { $0.status == "confirmed" } == true }
+    private var needsTravelMode: Bool { (store.draft.door_to_door?.mode ?? "unknown") == "unknown" }
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 24) {
+                    Text(heading).font(.title.bold()).accessibilityAddTraits(.isHeader)
+                    HStack(alignment: .top) {
+                        VStack(alignment: .leading, spacing: 4) {
+                            if destination.isEmpty { Text("Choose where and when").foregroundStyle(.secondary) }
+                            else { Text(destination).font(.headline) }
+                            Text(tripTiming).font(.subheadline).foregroundStyle(.secondary)
+                        }
+                        Spacer()
+                        Button("Edit") { speech.stop(); editSummary = true }
+                    }.padding(14).background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+                    if destination.isEmpty {
+                        Button("Add destination and timing") { editSummary = true }.buttonStyle(.borderedProminent)
+                    } else {
+                        VStack(alignment: .leading, spacing: 12) {
+                            if answeringFollowup {
+                                Text(acknowledgement).font(.title3).accessibilityIdentifier("intake.nextQuestion")
+                            } else {
+                                Text("What's already decided?").font(.title2.bold())
+                                Text("Tell me in your own words, or add a booking.").foregroundStyle(.secondary)
+                            }
+                            TextField("Type or speak…", text: activeAnswer, axis: .vertical)
+                                .lineLimit(3...7).padding(14)
+                                .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                                .accessibilityIdentifier("intake.answer")
+                            HStack(spacing: 18) {
+                                Button(speech.recording ? "Stop" : "Speak", systemImage: speech.recording ? "stop.circle" : "mic") {
+                                    if speech.recording { speech.stop() }
+                                    else { let prefix = activeAnswer.wrappedValue; Task { await speech.start(language: store.draft.language) { activeAnswer.wrappedValue = prefix.isEmpty ? $0 : prefix + " " + $0 } } }
+                                }
+                                Button("Upload", systemImage: "paperclip") { Task { await upload() } }
+                                if !answeringFollowup {
+                                    Button("Nothing yet") { store.draft.existing_plans = String(localized: "Nothing booked or decided yet.") }.foregroundStyle(.secondary)
+                                }
+                            }.font(.subheadline)
+                            if let message = speech.error { Text(message).font(.caption).foregroundStyle(.secondary) }
+                            if answeringFollowup && needsTravelMode {
+                                ViewThatFits(in: .horizontal) {
+                                    HStack { travelChoices }
+                                    VStack(alignment: .leading, spacing: 10) { travelChoices }
+                                }
+                            }
+                            ForEach(proposedImports) { item in
+                                Button("Review \(item.filename)", systemImage: "doc.text.magnifyingglass") { speech.stop(); review = item }
+                            }
+                        }.disabled(locked)
+                    }
+                    if let inputNotice { Text(inputNotice).font(.caption).foregroundStyle(.secondary) }
+                    PipErrorView(store: store)
+                    if store.busy { ProgressView("Pip is thinking…") }
+                }.padding(22)
+            }
+            .background(Color(.systemGroupedBackground))
+            .tint(.teal)
+            .safeAreaInset(edge: .bottom) {
+                Button {
+                    Task { await continueConversation() }
+                } label: {
+                    Text("Continue").font(.headline).frame(maxWidth: .infinity).padding(12)
+                }.buttonStyle(.borderedProminent)
+                    .disabled(locked || destination.isEmpty || !proposedImports.isEmpty)
+                    .padding(.horizontal, 22).padding(.vertical, 10).background(.regularMaterial)
+            }
+            .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { speech.stop(); dismiss() } } }
+            .navigationBarTitleDisplayMode(.inline)
+            .sheet(isPresented: $editSummary) { TripSummaryEditor(intake: $store.draft) }
+            .sheet(isPresented: $showUpload) { ImportView(store: store) }
+            .sheet(item: $review, onDismiss: refreshDraft) { item in ImportReviewView(store: store, item: item) }
+            .sheet(isPresented: $showTravel, onDismiss: {
+                refreshDraft()
+                if !answer.isEmpty && !store.hasPending && store.error == nil { Task { await continueConversation() } }
+            }) { DoorToDoorView(store: store) }
+            .onDisappear { speech.stop() }
+            .onChange(of: scenePhase) { _, phase in if phase == .background { speech.stop() } }
+            .onChange(of: store.selected?.version) { _, _ in
+                if waitingForReply && !store.hasPending && store.error == nil { finishReply() }
+            }
+            .interactiveDismissDisabled(locked || speech.recording)
+        }
+    }
+    private var tripTiming: String {
+        let timing = [store.draft.start_date, store.draft.end_date].compactMap { $0 }.joined(separator: " – ")
+        let when = timing.isEmpty ? store.draft.approximate_dates : timing
+        let days = store.draft.duration_days.map { String(localized: "\($0) days") } ?? ""
+        return [when, days].filter { !$0.isEmpty }.joined(separator: " · ")
+    }
+    @ViewBuilder private var travelChoices: some View {
+        Button("I have flights") { Task { await chooseFlying(booked: true) } }.buttonStyle(.bordered)
+        Button("Help me find flights") { Task { await chooseFlying(booked: false) } }.buttonStyle(.bordered)
+        Menu("Other ways") {
+            ForEach(["drive", "train", "other"], id: \.self) { mode in
+                Button(LocalizedStringKey(mode)) {
+                    var travel = store.draft.door_to_door ?? DoorToDoorTravel(); travel.mode = mode; store.draft.door_to_door = travel
+                    answer = "I will travel by " + mode
+                }
+            }
+        }
+    }
+    private func refreshDraft() { if let current = store.selected, !store.hasPending { store.edit(current) } }
+    private func chooseFlying(booked: Bool) async {
+        speech.stop()
+        var travel = store.draft.door_to_door ?? DoorToDoorTravel(); travel.mode = "fly"; travel.booking_status = booked ? "booked" : "not_booked"
+        store.draft.door_to_door = travel
+        answer = booked ? "I have booked flights; use the reviewed details I added." : "I want help finding flights; nothing is booked yet."
+        await store.saveIntake()
+        if store.error == nil && !store.hasPending { showTravel = true }
+    }
+    private func upload() async {
+        speech.stop(); await store.saveIntake()
+        if store.error == nil && !store.hasPending { showUpload = true }
+    }
+    private func continueConversation() async {
+        speech.stop()
+        let response = activeAnswer.wrappedValue.isEmpty && !answeringFollowup && hasReviewedBooking ? "Use the booking details I reviewed and confirmed." : activeAnswer.wrappedValue
+        guard !response.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            inputNotice = String(localized: "Tell Pip a little, add a booking, or choose Nothing yet."); return
+        }
+        inputNotice = nil
+        if store.draft.start_date == nil && store.draft.approximate_dates.localizedCaseInsensitiveContains("long weekend") {
+            editSummary = true; return
+        }
+        await store.saveIntake()
+        guard store.error == nil && !store.hasPending else { return }
+        waitingForReply = true
+        await store.act(PipAction(action: "intake", text: response))
+        guard store.error == nil && !store.hasPending else { return }
+        finishReply()
+    }
+    private func finishReply() {
+        guard waitingForReply else { return }
+        acknowledgement = store.selected?.data.messages.last(where: { $0.role == "pip" })?.text ?? ""
+        waitingForReply = false; answeringFollowup = true; answer = ""
+        refreshDraft()
+    }
+}
+
+struct TripSummaryEditor: View {
+    @Binding var intake: TripIntake
+    @Environment(\.dismiss) private var dismiss
+    @State private var useDates = false
+    @State private var start = Date()
+    @State private var end = Date()
+    private var ambiguous: Bool { intake.start_date == nil && intake.approximate_dates.localizedCaseInsensitiveContains("long weekend") }
     var body: some View {
         NavigationStack {
             Form {
-                Section { Text("Only what matters for this trip. You can add more later.").foregroundStyle(.secondary) }
-                if step == 0 {
-                    Section("Where are we going?") {
-                        TextField("Destination", text: $store.draft.destination).accessibilityIdentifier("intake.destination")
-                        TextField("Approximate dates, e.g. October", text: $store.draft.approximate_dates)
-                        Stepper("\(store.draft.duration_days ?? 4) days", value: Binding(get: { store.draft.duration_days ?? 4 }, set: { store.draft.duration_days = $0 }), in: 1...365)
-                    }
-                    Section("Anything already decided?") {
-                        TextField("Bookings, ideas, or nothing yet", text: $store.draft.existing_plans, axis: .vertical)
-                    }
-                } else if step == 1 {
-                    Section("How much is already planned?") {
-                        Picker("Existing plans", selection: $store.draft.planning_state) {
-                            Text("Mostly planned").tag("mostly_planned")
-                            Text("Partly planned").tag("partly_planned")
-                            Text("Starting from scratch").tag("starting_from_scratch")
-                        }
-                    }
-                    Section("Who's coming?") {
-                        if store.draft.travelers.isEmpty { Text("Just me for now").foregroundStyle(.secondary) }
-                        ForEach($store.draft.travelers) { $traveler in
-                            VStack(alignment: .leading) {
-                                TextField("Name or nickname (optional)", text: $traveler.name)
-                                TextField("Relationship (optional)", text: $traveler.relationship)
-                                TextField("Age or age range (optional)", text: $traveler.age_or_range)
-                                TextField("Preferred language (optional)", text: $traveler.language)
-                                TextField("Interests for this trip", text: $traveler.preferences, axis: .vertical)
-                                Picker("Anything to take into account?", selection: $traveler.needs_response) {
-                                    Text("Not now").tag("not_asked"); Text("None").tag("none")
-                                    Text("Add details").tag("provided"); Text("Prefer not to answer").tag("prefer_not_to_answer")
-                                }
-                                if traveler.needs_response == "provided" { TextField("Practical needs", text: $traveler.needs, axis: .vertical) }
-                                Button("Save as a recurring traveler") { Task { await store.saveTraveler(traveler) } }.disabled(store.hasPending || store.busy)
-                                Button("Remove traveler", role: .destructive) { store.draft.travelers.removeAll { $0.id == traveler.id } }
-                            }
-                        }
-                        Button("Add traveler", systemImage: "person.badge.plus") { store.draft.travelers.append(TripTraveler()) }
-                        ForEach(store.travelers) { saved in
-                            Button(saved.data.name.isEmpty ? String(localized: "Saved traveler") : saved.data.name) {
-                                var person = saved.data; person.id = UUID(); person.saved_traveler_id = UUID(uuidString: saved.id)
-                                store.draft.travelers.append(person)
-                            }
-                        }
-                    }
-                    Section("How are we getting around?") {
-                        ForEach(["own_car", "rental_car", "public_transit", "train", "taxi", "walking", "bicycle", "cruise", "not_sure"], id: \.self) { mode in
-                            Toggle(LocalizedStringKey(mode), isOn: Binding(get: { store.draft.transportation.contains(mode) }, set: { selected in
-                                store.draft.transportation.removeAll { $0 == mode }; if selected { store.draft.transportation.append(mode) }
-                            }))
-                        }
-                        TextField("Transportation details", text: $store.draft.transportation_notes, axis: .vertical)
-                    }
-                } else {
-                    Section("Where are we staying?") {
-                        TextField("Property (leave blank if not booked)", text: $store.draft.lodging.property_name)
-                        TextField("Address", text: $store.draft.lodging.address)
-                        TextField("Check-in date and time", text: $store.draft.lodging.check_in)
-                        TextField("Check-out date and time", text: $store.draft.lodging.check_out)
-                        TextField("Confirmation reference", text: $store.draft.lodging.reference)
-                        TextField("Arrival instructions", text: $store.draft.lodging.instructions, axis: .vertical)
-                    }
-                    Section("Anything booked that I should protect?") {
-                        ForEach($store.draft.commitments) { $item in
-                            VStack {
-                                TextField("Booking or commitment", text: $item.title)
-                                TextField("Date and time", text: $item.timing)
-                                TextField("Location", text: $item.location)
-                                Button("Remove commitment", role: .destructive) { store.draft.commitments.removeAll { $0.id == item.id } }
-                            }
-                        }
-                        Button("Add fixed commitment") { store.draft.commitments.append(FixedCommitment()) }
-                    }
-                    Section("Anything else?") {
-                        TextField("Optional needs, budget, must-dos or things to avoid", text: $store.draft.constraints, axis: .vertical)
-                        TextField("Notes", text: $store.draft.notes, axis: .vertical)
-                        Text("These details apply to this trip. They do not become permanent preferences.").font(.caption)
+                TextField("Destination", text: $intake.destination).accessibilityIdentifier("intake.destination")
+                TextField("When?", text: $intake.approximate_dates)
+                Stepper("\(intake.duration_days ?? 3) days", value: Binding(get: { intake.duration_days ?? 3 }, set: { intake.duration_days = $0 }), in: 1...365)
+                if ambiguous { Text("Which dates do you mean by next long weekend? Holidays and travel dates vary, so please confirm.") }
+                if ambiguous { Text("Suggested dates are a starting point, not a holiday assumption. Adjust them before confirming.").font(.caption) }
+                Toggle("Use exact dates", isOn: $useDates)
+                if useDates {
+                    DatePicker("Start", selection: $start, displayedComponents: .date)
+                    DatePicker("End", selection: $end, in: start..., displayedComponents: .date)
+                }
+            }.navigationTitle("Trip summary")
+                .toolbar { Button("Done") {
+                    if useDates {
+                        let format = DateFormatter(); format.calendar = Calendar(identifier: .gregorian); format.locale = Locale(identifier: "en_US_POSIX"); format.dateFormat = "yyyy-MM-dd"
+                        intake.start_date = format.string(from: start); intake.end_date = format.string(from: max(start, end))
+                        intake.duration_days = (Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: start), to: Calendar.current.startOfDay(for: max(start, end))).day ?? 0) + 1
+                    } else { intake.start_date = nil; intake.end_date = nil }
+                    dismiss()
+                }.disabled(ambiguous && !useDates) }
+                .onAppear {
+                    let format = DateFormatter(); format.dateFormat = "yyyy-MM-dd"; format.locale = Locale(identifier: "en_US_POSIX")
+                    if let value = intake.start_date.flatMap({ format.date(from: $0) }) { start = value; useDates = true }
+                    if let value = intake.end_date.flatMap({ format.date(from: $0) }) { end = value }
+                    else { end = Calendar.current.date(byAdding: .day, value: max(0, (intake.duration_days ?? 3) - 1), to: start) ?? start }
+                    if ambiguous {
+                        useDates = true
+                        start = Calendar.current.nextDate(after: Date(), matching: DateComponents(hour: 12, weekday: 6), matchingPolicy: .nextTime) ?? Date()
+                        end = Calendar.current.date(byAdding: .day, value: max(0, (intake.duration_days ?? 3) - 1), to: start) ?? start
                     }
                 }
-                Section {
-                    if step < 2 {
-                        Button("Continue") { step += 1 }.disabled(store.draft.destination.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
-                    }
-                    Button(step < 2 ? "Save trip; add details later" : "Save trip") {
-                        Task { await store.saveIntake(); if store.pending == nil && store.error == nil { dismiss() } }
-                    }.disabled(store.draft.destination.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+        }
+    }
+}
+
+@MainActor @Observable
+final class IntakeSpeech {
+    var recording = false
+    var error: String?
+    private var engine: AVAudioEngine?
+    private var request: SFSpeechAudioBufferRecognitionRequest?
+    private var task: SFSpeechRecognitionTask?
+    private var generation = UUID()
+    func start(language: String, update: @escaping @MainActor (String) -> Void) async {
+        stop(); error = nil
+        let ticket = generation
+        let speechPermission = await withCheckedContinuation { continuation in SFSpeechRecognizer.requestAuthorization { continuation.resume(returning: $0) } }
+        guard ticket == generation else { return }
+        guard speechPermission == .authorized else { error = String(localized: "Allow speech recognition in Settings, or type your answer."); return }
+        let microphone = await withCheckedContinuation { continuation in AVAudioApplication.requestRecordPermission { continuation.resume(returning: $0) } }
+        guard ticket == generation else { return }
+        guard speechPermission == .authorized && microphone else { error = String(localized: "Allow microphone and speech recognition in Settings, or type your answer."); return }
+        guard let recognizer = SFSpeechRecognizer(locale: Locale(identifier: language)), recognizer.isAvailable else { error = String(localized: "Speech isn't available right now. You can still type."); return }
+        do {
+            let session = AVAudioSession.sharedInstance(); try session.setCategory(.record, mode: .measurement); try session.setActive(true)
+            let engine = AVAudioEngine(); let request = SFSpeechAudioBufferRecognitionRequest(); request.shouldReportPartialResults = true
+            let input = engine.inputNode; let format = input.outputFormat(forBus: 0)
+            input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in request.append(buffer) }
+            self.engine = engine; self.request = request
+            task = recognizer.recognitionTask(with: request) { result, failure in
+                let text = result?.bestTranscription.formattedString; let finished = result?.isFinal == true || failure != nil
+                Task { @MainActor in
+                    guard ticket == self.generation else { return }
+                    if let text { update(text) }
+                    if finished { self.stop() }
                 }
-                .disabled(locked)
-                PipErrorView(store: store)
             }
-            .disabled(locked)
-            .safeAreaInset(edge: .bottom) { if store.error != nil { PipErrorView(store: store).padding() } }
-            .navigationTitle(step == 0 ? "Your trip" : step == 1 ? "Traveling together" : "Make room for what matters")
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
-                if step > 0 { ToolbarItem(placement: .topBarLeading) { Button("Back") { step -= 1 } } }
-            }
-        }.interactiveDismissDisabled(store.busy)
+            engine.prepare(); try engine.start(); recording = true
+        } catch { self.error = String(localized: "Couldn't start the microphone. You can still type."); stop() }
+    }
+    func stop() {
+        generation = UUID(); recording = false
+        engine?.stop(); engine?.inputNode.removeTap(onBus: 0); engine = nil
+        request?.endAudio(); request = nil; task?.cancel(); task = nil
+        try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
     }
 }
 
@@ -219,6 +368,7 @@ struct PipTripView: View {
     @Bindable var store: IntelligenceStore
     let tripID: UUID
     @State private var showIntake = false
+    @State private var showContext = false
     @State private var showImport = false
     @State private var showTravel = false
     @State private var review: TripImport?
@@ -298,6 +448,7 @@ struct PipTripView: View {
                                 Text(trip.data.intake.existing_plans)
                                 TravelSummaryView(trip: trip.data)
                                 Button("Flights and transfers") { store.edit(trip); showTravel = true }
+                                Button("Travelers and reservations") { store.edit(trip); showContext = true }
                                 Button("Edit trip details") { store.edit(trip); showIntake = true }
                                 Button("Import existing plans", systemImage: "paperclip") { showImport = true }
                                 ForEach(trip.data.imports) { item in
@@ -327,6 +478,7 @@ struct PipTripView: View {
                 .navigationTitle(trip.data.intake.destination).navigationBarTitleDisplayMode(.inline)
                 .sheet(isPresented: $showMemory) { MemoryView(store: store, initialValue: memorySuggestion ?? "") }
                 .sheet(isPresented: $showIntake) { TripIntakeView(store: store) }
+                .sheet(isPresented: $showContext) { DetailedTripContextView(store: store) }
                 .sheet(isPresented: $showImport) { ImportView(store: store) }
                 .sheet(isPresented: $showTravel) { DoorToDoorView(store: store) }
                 .sheet(item: $review) { item in ImportReviewView(store: store, item: item) }
@@ -511,6 +663,7 @@ struct DoorToDoorView: View {
     @Bindable var store: IntelligenceStore
     @Environment(\.dismiss) private var dismiss
     @State private var showUpload = false
+    @State private var showTransfers = false
     @State private var review: TripImport?
     private var travel: Binding<DoorToDoorTravel> {
         Binding(get: { store.draft.door_to_door ?? DoorToDoorTravel() }, set: { store.draft.door_to_door = $0 })
@@ -552,6 +705,10 @@ struct DoorToDoorView: View {
                         Button("Add return flight or connection") { addFlight("return") }
                         Text("Review local dates, times and time zones before saving. Leave unknown fields blank; your plan will stay provisional.").font(.caption)
                     }
+                    Section {
+                        Button(showTransfers ? "Hide transfers for now" : "Next: airport transfers") { showTransfers.toggle() }
+                    }
+                    if showTransfers {
                     Section("What ground transportation is already arranged?") {
                         Text("Consider rideshare, a drop-off, parking, shuttle, transit, taxi or rental car. Pickup points and travel times need checking for your actual airport.")
                     }
@@ -574,6 +731,7 @@ struct DoorToDoorView: View {
                         }
                     }
                     Section { Text("Buffers are editable planning estimates, not airline advice or live traffic. Allow more time where your airline, international check-in, baggage or accessibility needs require it.").font(.caption) }
+                    }
                 } else {
                     Section { TextField("Journey details or anything already arranged", text: $store.draft.transportation_notes, axis: .vertical) }
                 }
@@ -648,5 +806,89 @@ struct TravelSummaryView: View {
                 }
             }.padding().background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
         }
+    }
+}
+
+struct DetailedTripContextView: View {
+    @Bindable var store: IntelligenceStore
+    @Environment(\.dismiss) private var dismiss
+    @State private var step = 1
+    private var locked: Bool { store.busy || store.hasPending }
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section { Text("Only what matters for this trip. You can add more later.").foregroundStyle(.secondary) }
+                if step == 1 {
+                    Section("Who's coming?") {
+                        if store.draft.travelers.isEmpty { Text("Just me for now").foregroundStyle(.secondary) }
+                        ForEach($store.draft.travelers) { $traveler in
+                            VStack(alignment: .leading) {
+                                TextField("Name or nickname (optional)", text: $traveler.name)
+                                TextField("Relationship (optional)", text: $traveler.relationship)
+                                TextField("Age or age range (optional)", text: $traveler.age_or_range)
+                                TextField("Preferred language (optional)", text: $traveler.language)
+                                TextField("Interests for this trip", text: $traveler.preferences, axis: .vertical)
+                                Picker("Anything to take into account?", selection: $traveler.needs_response) {
+                                    Text("Not now").tag("not_asked"); Text("None").tag("none")
+                                    Text("Add details").tag("provided"); Text("Prefer not to answer").tag("prefer_not_to_answer")
+                                }
+                                if traveler.needs_response == "provided" { TextField("Practical needs", text: $traveler.needs, axis: .vertical) }
+                                Button("Save as a recurring traveler") { Task { await store.saveTraveler(traveler) } }.disabled(store.hasPending || store.busy)
+                                Button("Remove traveler", role: .destructive) { store.draft.travelers.removeAll { $0.id == traveler.id } }
+                            }
+                        }
+                        Button("Add traveler", systemImage: "person.badge.plus") { store.draft.travelers.append(TripTraveler()) }
+                        ForEach(store.travelers) { saved in
+                            Button(saved.data.name.isEmpty ? String(localized: "Saved traveler") : saved.data.name) {
+                                var person = saved.data; person.id = UUID(); person.saved_traveler_id = UUID(uuidString: saved.id)
+                                store.draft.travelers.append(person)
+                            }
+                        }
+                    }
+                } else {
+                    Section("Where are we staying?") {
+                        TextField("Property (leave blank if not booked)", text: $store.draft.lodging.property_name)
+                        TextField("Address", text: $store.draft.lodging.address)
+                        TextField("Check-in date and time", text: $store.draft.lodging.check_in)
+                        TextField("Check-out date and time", text: $store.draft.lodging.check_out)
+                        TextField("Confirmation reference", text: $store.draft.lodging.reference)
+                        TextField("Arrival instructions", text: $store.draft.lodging.instructions, axis: .vertical)
+                    }
+                    Section("Anything booked that I should protect?") {
+                        ForEach($store.draft.commitments) { $item in
+                            VStack {
+                                TextField("Booking or commitment", text: $item.title)
+                                TextField("Date and time", text: $item.timing)
+                                TextField("Location", text: $item.location)
+                                Button("Remove commitment", role: .destructive) { store.draft.commitments.removeAll { $0.id == item.id } }
+                            }
+                        }
+                        Button("Add fixed commitment") { store.draft.commitments.append(FixedCommitment()) }
+                    }
+                    Section("Anything else?") {
+                        TextField("Optional needs, budget, must-dos or things to avoid", text: $store.draft.constraints, axis: .vertical)
+                        TextField("Notes", text: $store.draft.notes, axis: .vertical)
+                        Text("These details apply to this trip. They do not become permanent preferences.").font(.caption)
+                    }
+                }
+                Section {
+                    if step < 2 {
+                        Button("Continue") { step += 1 }.disabled(store.draft.destination.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    }
+                    Button(step < 2 ? "Save trip; add details later" : "Save trip") {
+                        Task { await store.saveIntake(); if store.pending == nil && store.error == nil { dismiss() } }
+                    }.disabled(store.draft.destination.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                }
+                .disabled(locked)
+                PipErrorView(store: store)
+            }
+            .disabled(locked)
+            .safeAreaInset(edge: .bottom) { if store.error != nil { PipErrorView(store: store).padding() } }
+            .navigationTitle(step == 0 ? "Your trip" : step == 1 ? "Traveling together" : "Make room for what matters")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } }
+                if step > 1 { ToolbarItem(placement: .topBarLeading) { Button("Back") { step -= 1 } } }
+            }
+        }.interactiveDismissDisabled(store.busy)
     }
 }

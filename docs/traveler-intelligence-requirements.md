@@ -2194,3 +2194,21 @@ about flights and transfers progressively. If details are unknown, show a clearl
   reservations remain intact; conflicts are surfaced for the traveler’s decision.
 - Estimated transfer durations and buffers are labeled; unavailable live flight/transport data
   is not presented as verified. Existing ownership, versioning and retry guarantees still apply.
+
+## 30. Short, personal trip-intake conversation
+
+User-supplied September 27, 2026. The “Your trip” screen uses a single heading, compact editable
+summary, one active question and a visible Continue button. Greet by confirmed preferred name
+when available (sparingly); never guess one. Reuse destination, timing, duration and reviewed
+bookings. Ask for confirmation of ambiguous “next long weekend” dates rather than assuming a
+holiday or asking for the same trip information again.
+
+Remove the large introductory card and “How much is already planned?” list. Ask “What's already
+decided?” and accept typed/speech input or uploads, with a quiet “Nothing yet” choice. Acknowledge
+the answer and ask only the next useful question. Missing travel mode can offer “I have flights,”
+“Help me find flights” and other modes. Reveal transfer details later; do not present lodging,
+preferences and transport questionnaires together. Infer planning readiness from the conversation.
+
+Implementation: short intake screen, explicit name-memory gate, date confirmation, speech
+permission/cancellation flow, upload review and server `intake` action are implemented in source.
+Physical-device speech, keyboard/layout, date and complete conversation acceptance remain pending.
