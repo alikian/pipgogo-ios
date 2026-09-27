@@ -1,10 +1,16 @@
-# PipGoGo iOS
+# PipPipGo iOS
 
-**[View the roadmap and current progress](ROADMAP.md)** — Next: **2.6 · Pre-trip check-in**.
+GitHub: [alikian/pippipgo-ios](https://github.com/alikian/pippipgo-ios).
+
+Public domain: **pippipgo.com** (GoDaddy registration, AWS DNS). Sign-in uses **https://auth.pippipgo.com**; the root domain does not host a website yet.
+
+**[View the roadmap and current progress](ROADMAP.md)** — Next: **2.7 · Partial companion package**.
 
 **[Project time log](TIME_LOG.md)** — Work sessions, recorded time, and historical estimates.
 
-SwiftUI client for PipGoGo's Google/Cognito sign-in, authenticated account, traveler profile, recurring companions, and trip creation, editing, and deletion flows. Open `pipgogo.xcodeproj` directly in Xcode.
+Documentation uses **PipPipGo** for the app and **pippipgo** for repository and public-domain names. Existing runtime identifiers in commands and configuration retain their exact spelling so the instructions match the code and deployed resources.
+
+SwiftUI client for PipPipGo's Google/Cognito sign-in, authenticated account, traveler profile, recurring companions, and trip creation, editing, deletion, and pre-trip check-in flows. Open `pipgogo.xcodeproj` directly in Xcode.
 
 ## Backend address
 
@@ -12,7 +18,7 @@ Debug Simulator builds use `http://localhost:8765`; Debug device builds currentl
 
 ## Local backend
 
-From `pipgogo-backend`, follow its README to install dependencies and start DynamoDB Local, then run the server on port 8765, for example:
+From `pippipgo-backend`, follow its README to install dependencies and start DynamoDB Local, then run the server on port 8765, for example:
 
 ```sh
 uv run python -m scripts.login_test --profile alikianus --region us-west-2
@@ -30,7 +36,7 @@ Debug device builds use `http://192.168.0.156:8765`; Simulator builds keep
 `http://localhost:8765`. Debug includes a local-network permission message and an HTTP
 exception for this specific LAN IP. Release settings are unchanged.
 
-Start the backend from pipgogo-backend with:
+Start the backend from pippipgo-backend with:
 
 ```sh
 uv run python -m scripts.login_test --profile alikianus --region us-west-2 --lan-ip 192.168.0.156
@@ -43,7 +49,7 @@ a localhost-only OAuth flow; the phone uses its native sign-in and calls the LAN
 
 ## Cognito custom domain
 
-The app uses `https://auth.pipgogo.com` for sign-in, token exchange, and logout.
+The app uses `https://auth.pippipgo.com` for sign-in, token exchange, and logout.
 The native callback remains `pipgogo://auth/callback`. Domain and certificate resources
 are managed in the backend CloudFormation templates; see its `infra/custom-domain.md`.
 Rebuild/reinstall to pick up domain configuration changes.
@@ -63,3 +69,5 @@ Sign-in uses a shared browser session and `prompt=select_account`. Cognito Essen
 Companion implementation and device acceptance: [docs/companions.md](docs/companions.md).
 
 Trip implementation and device acceptance: [docs/trips.md](docs/trips.md).
+
+Pre-trip check-in implementation and device acceptance: [docs/check-ins.md](docs/check-ins.md).

@@ -3,6 +3,7 @@ import SwiftUI
 struct TripListView: View {
     @Bindable var store: TripStore
     let companions: CompanionStore
+    let checkIns: CheckInCollection
     @State private var creating = false
 
     var body: some View {
@@ -20,7 +21,7 @@ struct TripListView: View {
                 }
                 ForEach(store.items.sorted { $0.updatedAt > $1.updatedAt }) { trip in
                     NavigationLink {
-                        TripDetailView(store: store, companions: companions, id: trip.id)
+                        TripDetailView(store: store, companions: companions, checkIns: checkIns, id: trip.id)
                     } label: {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(trip.data.title).font(.headline)
@@ -211,6 +212,7 @@ struct TripEditorView: View {
 struct TripDetailView: View {
     @Bindable var store: TripStore
     @Bindable var companions: CompanionStore
+    let checkIns: CheckInCollection
     let id: String
     @State private var editing = false
     @Environment(\.scenePhase) private var scenePhase
@@ -235,10 +237,16 @@ struct TripDetailView: View {
             }
         }
         .safeAreaInset(edge: .bottom) {
-            if store.hasDraft && store.draftID.uuidString.lowercased() != id {
-                Text("Finish or discard your other trip draft from the Trips list before editing this trip.")
-                    .font(.caption).padding().background(.regularMaterial)
-            }
+            VStack {
+                if let uuid = UUID(uuidString: id), store.items.contains(where: { $0.id == id }) {
+                    NavigationLink("Pre-trip check-in") { CheckInView(store: checkIns.store(for: uuid), companions: companions.items) }
+                        .buttonStyle(.borderedProminent).accessibilityIdentifier("trip.checkin")
+                }
+                if store.hasDraft && store.draftID.uuidString.lowercased() != id {
+                    Text("Finish or discard your other trip draft from the Trips list before editing this trip.")
+                        .font(.caption).padding().background(.regularMaterial)
+                }
+            }.padding(.vertical, 8).frame(maxWidth: .infinity).background(.regularMaterial)
         }
         .toolbar {
             Button("Edit") { if store.beginEditing(id) { editing = true } }

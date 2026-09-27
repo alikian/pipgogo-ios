@@ -7,6 +7,7 @@ struct AccountView: View {
     var profileStore: ProfileStore? = nil
     var companionStore: CompanionStore? = nil
     var tripStore: TripStore? = nil
+    var checkIns: CheckInCollection? = nil
 
     var body: some View {
         NavigationStack {
@@ -21,12 +22,12 @@ struct AccountView: View {
                 } header: {
                     Text("Your account")
                 } footer: {
-                    Text("PipGoGo uses your Cognito access token only for authenticated backend requests.")
+                    Text("PipPipGo uses your Cognito access token only for authenticated backend requests.")
                 }
 
-                if let tripStore, let companionStore {
+                if let tripStore, let companionStore, let checkIns {
                     Section {
-                        NavigationLink { TripListView(store: tripStore, companions: companionStore) } label: {
+                        NavigationLink { TripListView(store: tripStore, companions: companionStore, checkIns: checkIns) } label: {
                             Label("Trips", systemImage: "suitcase.rolling")
                         }.disabled(isSigningOut)
                     }
@@ -55,7 +56,7 @@ struct AccountView: View {
                     .disabled(isSigningOut)
                 }
             }
-            .navigationTitle("PipGoGo")
+            .navigationTitle("PipPipGo")
         }
     }
 }
@@ -68,7 +69,7 @@ struct AccountLoadingView: View {
                 Text("Loading your account…")
                     .foregroundStyle(.secondary)
             }
-            .navigationTitle("PipGoGo")
+            .navigationTitle("PipPipGo")
         }
     }
 }
@@ -88,7 +89,7 @@ struct AccountErrorView: View {
                 Button("Try again", action: retry).buttonStyle(.borderedProminent)
                 Button("Sign out", role: .destructive, action: signOut)
             }
-            .navigationTitle("PipGoGo")
+            .navigationTitle("PipPipGo")
         }
     }
 }

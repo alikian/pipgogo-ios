@@ -17,7 +17,7 @@ struct RootView: View {
             case .loadingAccount:
                 AccountLoadingView()
             case .signedIn(let account):
-                AccountView(account: account, isSigningOut: false, signOut: { Task { await store.signOut() } }, profileStore: store.profileStore, companionStore: store.companionStore, tripStore: store.tripStore)
+                AccountView(account: account, isSigningOut: false, signOut: { Task { await store.signOut() } }, profileStore: store.profileStore, companionStore: store.companionStore, tripStore: store.tripStore, checkIns: store.checkIns)
             case .accountError(let message):
                 AccountErrorView(message: message, retry: { Task { await store.loadAccount() } }, signOut: { Task { await store.signOut() } })
             case .signingOut:

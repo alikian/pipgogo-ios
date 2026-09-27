@@ -39,6 +39,9 @@
 		0BF6F59AE46544CE8E1BE65D /* pipgogo/Trips/TripStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDBAE284E0EC4A4B938DA02C; };
 		68028031F06E4034A62ADAC0 /* pipgogo/Trips/TripView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B5528119A244C9FBAD8B21A; };
 		8F737D2E57F4449B9A6AA637 /* pipgogoTests/TripTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7B091B850AE0423FB8D070C7; };
+		7A9968344EE4424A8DC51971 /* pipgogo/CheckIn/CheckIn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B059602E88F4601BAEB7D42; };
+		B0B5BCB3668F4FE781164ADD /* pipgogo/CheckIn/CheckInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23DDDA81BEF04E7B89A5082B; };
+		5E1FC078780B4F65A742400E /* pipgogoTests/CheckInTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076C335C5DFB4B9CA13E0FBE; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -88,6 +91,9 @@
 		BDBAE284E0EC4A4B938DA02C /* pipgogo/Trips/TripStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Trips/TripStore.swift; sourceTree = SOURCE_ROOT; };
 		7B5528119A244C9FBAD8B21A /* pipgogo/Trips/TripView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Trips/TripView.swift; sourceTree = SOURCE_ROOT; };
 		7B091B850AE0423FB8D070C7 /* pipgogoTests/TripTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogoTests/TripTests.swift; sourceTree = SOURCE_ROOT; };
+		0B059602E88F4601BAEB7D42 /* pipgogo/CheckIn/CheckIn.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/CheckIn/CheckIn.swift; sourceTree = SOURCE_ROOT; };
+		23DDDA81BEF04E7B89A5082B /* pipgogo/CheckIn/CheckInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/CheckIn/CheckInView.swift; sourceTree = SOURCE_ROOT; };
+		076C335C5DFB4B9CA13E0FBE /* pipgogoTests/CheckInTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogoTests/CheckInTests.swift; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +117,8 @@
 		097A6B6AEB4290CFBF4047CC /* pipgogo */ = {
 			isa = PBXGroup;
 			children = (
+				23DDDA81BEF04E7B89A5082B /* pipgogo/CheckIn/CheckInView.swift */,
+				0B059602E88F4601BAEB7D42 /* pipgogo/CheckIn/CheckIn.swift */,
 				B2DBA2B2C50A444DAECE43EF /* pipgogo/Views/LanguageSelectionView.swift */,
 				FD15BE068E224DD3AB46E48B /* pipgogo/Trips/Trip.swift */,
 				BDBAE284E0EC4A4B938DA02C /* pipgogo/Trips/TripStore.swift */,
@@ -163,6 +171,7 @@
 		FB153DB8334F7635C113C040 /* pipgogoTests */ = {
 			isa = PBXGroup;
 			children = (
+				076C335C5DFB4B9CA13E0FBE /* pipgogoTests/CheckInTests.swift */,
 				B5960DD0051341EFA561628B /* pipgogoTests/CompanionTests.swift */,
 				7B091B850AE0423FB8D070C7 /* pipgogoTests/TripTests.swift */,
 				74C5A03AF6DFBAA32C35EF33 /* pipgogoTests/ProfileTests.swift */,
@@ -280,6 +289,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0B5BCB3668F4FE781164ADD /* pipgogo/CheckIn/CheckInView.swift in Sources */,
+				7A9968344EE4424A8DC51971 /* pipgogo/CheckIn/CheckIn.swift in Sources */,
 				DF32D7E06E664774A5DB7709 /* pipgogo/Views/LanguageSelectionView.swift in Sources */,
 				7FD977E6ABFC45F19DC6CAC5 /* pipgogo/Trips/Trip.swift in Sources */,
 				0BF6F59AE46544CE8E1BE65D /* pipgogo/Trips/TripStore.swift in Sources */,
@@ -312,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E1FC078780B4F65A742400E /* pipgogoTests/CheckInTests.swift in Sources */,
 				1FB1783E41944B168F23EBC7 /* pipgogoTests/CompanionTests.swift in Sources */,
 				8F737D2E57F4449B9A6AA637 /* pipgogoTests/TripTests.swift in Sources */,
 				7614A2BF87D996D90EF885F1 /* pipgogoTests/ProfileTests.swift */,

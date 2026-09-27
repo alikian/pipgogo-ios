@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDisplayName</key>
-	<string>PipGoGo</string>
+	<string>PipPipGo</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -36,6 +36,6 @@
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Connect to the PipGoGo development backend on your Mac.</string>
+	<string>Connect to the PipPipGo development backend on your Mac.</string>
 </dict>
 </plist>

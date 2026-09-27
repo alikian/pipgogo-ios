@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-<key>CFBundleDisplayName</key><string>PipGoGo</string>
+<key>CFBundleDisplayName</key><string>PipPipGo</string>
 <key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>com.pipgogo.ios.oauth</string><key>CFBundleURLSchemes</key><array><string>pipgogo</string></array></dict></array>
 <key>BackendBaseURL</key><string>$(PIPGOGO_BACKEND_BASE_URL)</string>
 <key>UILaunchScreen</key><dict/>

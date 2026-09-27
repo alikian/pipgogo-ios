@@ -9,7 +9,7 @@ struct AppConfiguration: Sendable {
 
     static let live: AppConfiguration = {
         guard
-            let domain = URL(string: "https://auth.pipgogo.com"),
+            let domain = URL(string: "https://auth.pippipgo.com"),
             let callback = URL(string: "pipgogo://auth/callback"),
             let logout = URL(string: "pipgogo://auth/logout"),
             let backendString = Bundle.main.object(forInfoDictionaryKey: "BackendBaseURL") as? String,

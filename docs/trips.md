@@ -1,6 +1,6 @@
 # Trips — milestones 2.4 and 2.5
 
-Open **PipGoGo → Trips → Create trip**. Enter one or more destinations in travel order,
+Open **PipPipGo → Trips → Create trip**. Enter one or more destinations in travel order,
 optionally choose start/end dates and accommodation, and select saved companions. Save returns
 to the updated trip list. Open a trip to see its saved details. Details and companion names refresh automatically on
 opening, returning to the foreground, and closing the editor. There is no manual refresh

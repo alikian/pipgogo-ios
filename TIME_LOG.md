@@ -1,6 +1,6 @@
-# PipGoGo project time log
+# PipPipGo project time log
 
-**Total logged time: 6 hours 1 minute 35 seconds** — 6 hours estimated + 1 minute 35 seconds recorded.
+**Total logged time: 6 hours 53 minutes 0 seconds** — 6 hours estimated + 53 minutes 0 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 1 minute 35 seconds (Codex) |
+| Recorded session time | 53 minutes 0 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **6 hours 1 minute 35 seconds (includes 6 hours estimated)** |
+| Total time spent | **6 hours 53 minutes 0 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -29,6 +29,23 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-26-02 | September 26, 2026 | Codex | 2.8 · Appium planning | Added setup, regression and integrated device-testing milestones to both roadmaps and agent instructions; checked consistency and whitespace | 00:59:17–00:59:56, UTC−07:00; no excluded pauses | 0.65 minutes (39 seconds) | Recorded |
 | 2026-09-26-03 | September 26, 2026 | Codex | 5.1 · Release versioning planning | Added version policy, release PR automation, build identity and recovery milestones to both projects; validated mirrored roadmaps and whitespace | 01:11:52–01:12:14, UTC−07:00; no excluded pauses | 0.37 minutes (22 seconds) | Recorded |
 | 2026-09-26-04 | September 26, 2026 | Codex | Documentation release preparation | Fetched both remotes, checked synchronization and mirrored documents, repaired time-log table formatting and validated whitespace | 01:13:13–01:13:18, UTC−07:00; no excluded pauses | 0.08 minutes (5 seconds) | Recorded |
+| 2026-09-26-05 | September 26, 2026 | Codex | PipPipGo branding/domain | Updated app/backend branding and migration documentation; diagnosed failed AWS registration; validated 85 iOS tests, 42 backend tests and lint | 17:15:26–17:17:16, UTC−07:00; no excluded pauses | 1.83 minutes (110 seconds) | Recorded |
+| 2026-09-26-06 | September 26, 2026 | Codex | PipPipGo domain prerequisites | Verified GoDaddy/AWS delegation; deployed certificate and parent DNS; saved Google redirect/branding; prepared signed build and passed 85 iOS tests; cutover blocked by approval review | 17:27:42–17:31:32, UTC−07:00; no excluded pauses | 3.83 minutes (230 seconds) | Recorded |
+| 2026-09-26-07 | September 26, 2026 | Codex | 5.2 · Backend deployment planning | Added hosting, pipeline, iOS integration and operations milestones to both roadmaps and agent instructions; linked deployment guide and validated mirrored roadmaps/whitespace | 17:47:55–17:48:17, UTC−07:00; no excluded pauses | 0.37 minutes (22 seconds) | Recorded |
+| 2026-09-26-08 | September 26, 2026 | Codex | PipPipGo domain cutover | Completed approved CloudFormation domain replacement; validated live Google login/backend/refresh/revocation/logout; installed and launched signed iPhone build; updated deployment/evidence docs | 17:33:06–18:04:25, UTC−07:00; no excluded pauses (includes AWS provisioning waits) | 31.32 minutes (1879 seconds) | Recorded |
+| 2026-09-26-09 | September 26, 2026 | Codex | Domain device acceptance | Recorded user-confirmed iPhone sign-in; updated mirrored roadmap and evidence boundaries | 18:06:19–18:06:39, UTC−07:00; no excluded pauses | 0.33 minutes (20 seconds) | Recorded |
+| 2026-09-26-10 | September 26, 2026 | Codex | GitHub repository rename | Renamed both repositories, updated origin URLs/docs, verified unchanged repository IDs and remote HEADs | 18:08:04–18:08:51, UTC−07:00; no excluded pauses | 0.78 minutes (47 seconds) | Recorded |
+| 2026-09-26-11 | September 26, 2026 | Codex | Local folder rename | Renamed both checkouts with compatibility links, updated paths, verified preserved Git state and backend readiness | 18:10:11–18:10:47, UTC−07:00; no excluded pauses | 0.60 minutes (36 seconds) | Recorded |
+| 2026-09-26-12 | September 26, 2026 | Codex | 5.3 · Public website planning | Added content, design, hosting/DNS and launch milestones to both roadmaps/instructions; validated mirrored content and whitespace | 18:11:43–18:12:18, UTC−07:00; no excluded pauses | 0.58 minutes (35 seconds) | Recorded |
+| 2026-09-26-13 | September 26, 2026 | Codex | 2.6 · Pre-trip check-in | Implemented session-owned check-in UI/service with version confirmation, safe retries/conflicts and account reset; passed 103 iOS tests, 48 backend tests (1 skipped), lint/format; installed/launched signed iPhone build; updated milestone docs | 18:16:18–18:25:00, UTC−07:00; no excluded pauses | 8.70 minutes (522 seconds) | Recorded |
+| 2026-09-26-14 | September 26, 2026 | Codex | 2.9 · Screenshot/camera trip input planning | Added capture, extraction, review/save and device acceptance scope to both roadmaps/instructions; validated mirrored roadmap and whitespace | 18:31:20–18:32:16, UTC−07:00; no excluded pauses | 0.93 minutes (56 seconds) | Recorded |
+| 2026-09-26-15 | September 26, 2026 | Codex | Sara iPhone installation | Built and installed PipPipGo on Sara’s iPhone 16 Pro Max; verified signature and device provisioning; launch blocked by iOS signing/trust security denial; backend ready | 18:54:34–18:55:40, UTC−07:00; no excluded pauses | 1.10 minutes (66 seconds) | Recorded |
+| 2026-09-26-16 | September 26, 2026 | Codex | Documentation naming | Standardized PipPipGo/pippipgo naming guidance and container example in both repositories; clarified historical domains, refreshed README milestone/check-in links; verified whitespace and mirrored logs/roadmaps | 23:09:33–23:10:16, UTC−07:00; no excluded pauses | 0.72 minutes (43 seconds) | Recorded |
+| 2026-09-26-17 | September 26, 2026 | Codex | Commit/push preparation | Reviewed both repositories, fetched remotes, scanned pending files for credential patterns and verified whitespace and mirrored documentation; prior implementation test results retained | 23:10:54–23:11:35, UTC−07:00; no excluded pauses | 0.68 minutes (41 seconds) | Recorded |
+
+The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
+
+This rename segment excludes initial repository inspection and subsequent time-log bookkeeping.
 
 The documentation release-preparation segment excludes initial diff review, time-log bookkeeping and commit/push operations.
 
@@ -55,7 +72,7 @@ provisional estimates, not measured session durations. Contributor breakdown was
 | September 25, 2026 | 2.1–2.2 | Shared iOS API client and traveler profile | 60 minutes | User estimate |
 | September 26, 2026 | 2.3 | Companions, language selection and save navigation | 60 minutes | User estimate |
 | September 26, 2026 | 2.4–2.5 | Trip creation, editing/deletion, conflict handling and automatic refresh | 60 minutes | User estimate |
-| September 26, 2026 | App polish & planning | PipGoGo display name, app icon, AI requirements and roadmap | 60 minutes | User estimate |
+| September 26, 2026 | App polish & planning | PipPipGo display name, app icon, AI requirements and roadmap | 60 minutes | User estimate |
 
 ## Recording rules
 

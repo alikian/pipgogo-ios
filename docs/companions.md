@@ -1,6 +1,6 @@
 # Travel companions — milestone 2.3
 
-Open **PipGoGo → Companions** to list, add, edit, or delete recurring travel companions.
+Open **PipPipGo → Companions** to list, add, edit, or delete recurring travel companions.
 After a successful save, the editor returns to the updated companion list. Failed saves and
 conflicts keep the editor open with the draft intact.
 Nickname, relationship, age range, and all preference fields are optional. An empty nickname

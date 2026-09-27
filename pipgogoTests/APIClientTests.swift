@@ -205,6 +205,31 @@ struct APIClientTests {
         await #expect(throws: APIClientError.decoding) { try await client.account(accessToken: "token") }
     }
 
+    @Test func checkInServiceDistinguishesEmptyCheckInFromMissingTrip() async throws {
+        let id = UUID()
+        let missing = Data(#"{"error":{"code":"not_found","message":"Missing"}}"#.utf8)
+        let trip = APIRecord(id: id.uuidString.lowercased(), kind: "trip", version: 2, revision: 3, updatedAt: Date(), deleted: false, data: Trip(destinations: ["Japan"]))
+        let service = CheckInService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(status: 404, body: missing), .init(status: 200, body: try APIJSON.encoder().encode(trip))])), authentication: TestTokens())
+        let context = try await service.load(id)
+        #expect(context.checkIn == nil); #expect(context.trip.version == 2)
+        #expect(StubURLProtocol.requests.map { $0.url!.path } == ["/v1/trips/\(id.uuidString.lowercased())/check-in", "/v1/trips/\(id.uuidString.lowercased())"])
+        let deleted = CheckInService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(status: 404, body: missing), .init(status: 404, body: missing)])), authentication: TestTokens())
+        await #expect(throws: APIClientError.self) { try await deleted.load(id) }
+    }
+
+    @Test func checkInServiceSendsVersionedBodyAndDecodesUnavailableRefresh() async throws {
+        let id = UUID(uuidString: "11111111-1111-4111-8111-111111111111")!
+        let response = Data(#"{"id":"11111111-1111-4111-8111-111111111111","kind":"checkin","version":2,"revision":5,"updated_at":"2026-09-26T12:00:00Z","deleted":false,"data":{"trip_id":"11111111-1111-4111-8111-111111111111","confirmed_trip_version":3,"requests":null,"concerns":"Walking","needs_reconfirmed":false,"refresh":{"status":"unavailable","attempted_at":"2026-09-26T12:00:00+00:00","observations":[],"missing_categories":["weather"],"warnings":["Not verified"]}}}"#.utf8)
+        let service = CheckInService(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(status: 200, body: response)])), authentication: TestTokens())
+        let request = try APIRequest<APIRecord<TripCheckIn>>.put(.checkIn(id), body: CheckInInput(confirmedTripVersion: 3, requests: nil, concerns: "Walking"), expectedVersion: 1)
+        let result = try await service.save(request)
+        #expect(result.data.refresh.status == "unavailable"); #expect(result.data.refresh.missingCategories == ["weather"])
+        let sent = try APIJSON.decoder().decode(JSONValue.self, from: StubURLProtocol.requestBody)
+        #expect(sent["confirmed_trip_version"] == .integer(3)); #expect(sent["needs_reconfirmed"] == .bool(false))
+        #expect(StubURLProtocol.requests.first?.value(forHTTPHeaderField: "X-Expected-Version") == "1")
+        #expect(StubURLProtocol.requests.first?.value(forHTTPHeaderField: "Authorization") == "Bearer original-token")
+    }
+
     private func queuedSession(_ responses: [StubReply]) -> URLSession {
         let session = makeSession(status: 200, body: Data())
         StubURLProtocol.replies = responses
@@ -234,7 +259,7 @@ struct APIClientTests {
     }
 
     private var configuration: AppConfiguration {
-        AppConfiguration(cognitoDomain: URL(string: "https://auth.pipgogo.com")!, clientID: "test-client", callbackURL: URL(string: "pipgogo://auth/callback")!, logoutURL: URL(string: "pipgogo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
+        AppConfiguration(cognitoDomain: URL(string: "https://auth.pippipgo.com")!, clientID: "test-client", callbackURL: URL(string: "pipgogo://auth/callback")!, logoutURL: URL(string: "pipgogo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
     }
 
     @Test func authorizationUsesPKCEAndState() throws {
@@ -242,7 +267,7 @@ struct APIClientTests {
         let url = try client.authorizationURL(state: "random-state", challenge: "challenge")
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!
         let values = Dictionary(uniqueKeysWithValues: items.map { ($0.name, $0.value ?? "") })
-        #expect(url.host == "auth.pipgogo.com")
+        #expect(url.host == "auth.pippipgo.com")
         #expect(values["code_challenge_method"] == "S256")
         #expect(values["state"] == "random-state")
         #expect(values["redirect_uri"] == "pipgogo://auth/callback")
