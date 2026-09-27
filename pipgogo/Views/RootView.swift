@@ -17,12 +17,12 @@ struct RootView: View {
                 WelcomeView(isBusy: false, errorMessage: message) { Task { await store.signIn() } }
             case .loadingAccount:
                 AccountLoadingView()
-            case .signedIn(let account):
-                AccountView(account: account, isSigningOut: false, signOut: { Task { await store.signOut() } }, profileStore: store.profileStore, companionStore: store.companionStore, tripStore: store.tripStore, checkIns: store.checkIns)
+            case .signedIn:
+                PipHomeView(store: store.intelligence, signOut: { Task { await store.signOut() } })
             case .accountError(let message):
                 AccountErrorView(message: message, retry: { Task { await store.loadAccount() } }, signOut: { Task { await store.signOut() } })
             case .signingOut:
-                AccountView(account: nil, isSigningOut: true) {}
+                ProgressView("Signing out…")
             }
         }
         .safeAreaInset(edge: .bottom, spacing: 0) {

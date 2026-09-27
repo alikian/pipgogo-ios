@@ -6,39 +6,33 @@ protocol AccessTokenProviding: Sendable {
 
 /// Fixed routes prevent accidentally sending a bearer token to a caller-supplied host.
 enum APIEndpoint: Sendable, Equatable {
-    case account, accountExport, profile, companions, companion(UUID), trips, trip(UUID)
-    case checkIn(UUID), packages(UUID), packageDownload(trip: UUID, package: UUID)
-    case questions(UUID), feedback(UUID), sync(after: Int)
-
+    case account, accountExport, journeys, journey(UUID), journeyAction(UUID), journeyImport(UUID)
+    case memory, memoryItem(UUID), travelers, traveler(UUID), preferences, sync(after: Int)
     var path: String {
         switch self {
         case .account: "/v1/me"
         case .accountExport: "/v1/me/export"
-        case .profile: "/v1/traveler-profile"
-        case .companions: "/v1/companions"
-        case .companion(let id): "/v1/companions/\(id.uuidString.lowercased())"
-        case .trips: "/v1/trips"
-        case .trip(let id): "/v1/trips/\(id.uuidString.lowercased())"
-        case .checkIn(let id): "/v1/trips/\(id.uuidString.lowercased())/check-in"
-        case .packages(let id): "/v1/trips/\(id.uuidString.lowercased())/companion-package"
-        case .packageDownload(let trip, let package): "/v1/trips/\(trip.uuidString.lowercased())/companion-package/\(package.uuidString.lowercased())/download"
-        case .questions(let id): "/v1/trips/\(id.uuidString.lowercased())/questions"
-        case .feedback(let id): "/v1/answers/\(id.uuidString.lowercased())/feedback"
+        case .journeys: "/v1/journeys"
+        case .journey(let id): "/v1/journeys/\(id.uuidString.lowercased())"
+        case .journeyAction(let id): "/v1/journeys/\(id.uuidString.lowercased())/actions"
+        case .journeyImport(let id): "/v1/journeys/\(id.uuidString.lowercased())/imports"
+        case .memory: "/v1/memory"
+        case .memoryItem(let id): "/v1/memory/\(id.uuidString.lowercased())"
+        case .travelers: "/v1/travelers"
+        case .traveler(let id): "/v1/travelers/\(id.uuidString.lowercased())"
+        case .preferences: "/v1/preferences"
         case .sync: "/v1/sync"
         }
     }
-
     var canRead: Bool {
-        switch self { case .questions, .feedback: false; default: true }
+        switch self { case .journeyAction, .journeyImport: false; default: true }
     }
     var canPut: Bool {
-        switch self { case .profile, .companion, .trip, .checkIn, .feedback: true; default: false }
+        switch self { case .journey, .journeyAction, .journeyImport, .memoryItem, .traveler, .preferences: true; default: false }
     }
-    var canPost: Bool {
-        switch self { case .packages, .questions: true; default: false }
-    }
+    var canPost: Bool { false }
     var canDelete: Bool {
-        switch self { case .companion, .trip: true; default: false }
+        switch self { case .journey, .memoryItem, .traveler: true; default: false }
     }
 }
 
@@ -107,11 +101,6 @@ struct APIClient: Sendable {
         return try decode(Response.self, from: data)
     }
 
-    func downloadPackage(tripID: UUID, packageID: UUID, using authentication: any AccessTokenProviding) async throws -> Data {
-        let operation = try APIRequest<JSONValue>.get(.packageDownload(trip: tripID, package: packageID))
-        return try await authenticatedData(operation, using: authentication)
-    }
-
     private func authenticatedData<Response>(_ operation: APIRequest<Response>, using authentication: any AccessTokenProviding) async throws -> Data {
         try Task.checkCancellation()
         let token = try await authentication.validAccessToken(forceRefresh: false)
@@ -134,7 +123,7 @@ struct APIClient: Sendable {
         components.fragment = nil
         if case .sync(let cursor) = operation.endpoint { components.queryItems = [.init(name: "after", value: String(cursor))] }
         guard let url = components.url else { throw APIClientError.invalidRequest("Invalid backend URL.") }
-        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 30)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 65)
         request.httpMethod = operation.method
         request.httpBody = operation.body
         request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")

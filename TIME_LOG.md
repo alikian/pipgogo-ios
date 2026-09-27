@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 7 hours 29 minutes 28 seconds** — 6 hours estimated + 1 hour 29 minutes 28 seconds recorded.
+**Total logged time: 8 hours 7 minutes 38 seconds** — 6 hours estimated + 2 hours 7 minutes 38 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 1 hour 29 minutes 28 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 2 hours 7 minutes 38 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **7 hours 29 minutes 28 seconds (includes 6 hours estimated)** |
+| Total time spent | **8 hours 7 minutes 38 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -47,6 +47,13 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-26-20 | September 26, 2026 | Codex | Dev setup milestone and build indicator | Prioritized hosted Dev setup 5.2a; added accessible Local/Dev/Prod footer; passed 110 tests and three signed builds; verified Simulator appearance; Local installed on Ali iPhone 12, launch blocked by locked device | 23:37:24–23:39:51, UTC−07:00; no excluded pauses | 2.45 minutes (147 seconds) | Recorded |
 | 2026-09-27-01 | September 26–27, 2026 | Codex | 5.2 · Standard ECS Fargate Dev | Separated persistence/hosting/delivery templates; deployed Dev through GitHub OIDC; made develop default in both repositories; passed 56 backend tests, container and HTTPS checks, live auth/isolation/cleanup and rolling redeployment; installed Dev on iPhone, cellular acceptance pending | Sep 26 23:53:16–Sep 27 00:21:12, UTC−07:00; no excluded pauses (includes AWS/CI waits; continued work during device question) | 27.93 minutes (1676 seconds) | Recorded |
 | 2026-09-27-02 | September 27, 2026 | Codex | Roadmap deployment checkpoint | Updated mirrored roadmap with delivered Fargate/CI controls, branch strategy, partial release identity and outstanding device/rollback/Prod checks; removed stale LAN-only status; validated identical roadmaps and whitespace | 00:23:15–00:24:14, UTC−07:00; no excluded pauses | 0.98 minutes (59 seconds) | Recorded |
+| 2026-09-27-03 | September 27, 2026 | Codex | Traveler intelligence rebuild | Replaced legacy product UI/API, retained authentication, implemented intake/import review/conversation/scoped learning/plans; rebaselined docs; passed backend/iOS/harness/build checks; accepted approved Astra agreement, runtime access still HTTP 403 | 12:25:33–12:50:46, UTC−07:00; no excluded pauses | 25.22 minutes (1513 seconds) | Recorded |
+| 2026-09-27-04 | September 27, 2026 | Codex | Model selection | Switched source/IAM/docs to GPT-5.6 Luna, activated previously approved agreement; backend tests/lint/template passed; live call still HTTP 403 | 12:51:27–12:53:17, UTC−07:00; no excluded pauses (includes activation wait) | 1.83 minutes (110 seconds) | Recorded |
+| 2026-09-27-05 | September 27, 2026 | Codex | Direct OpenAI integration | Replaced Bedrock signing with direct Responses API and server-side secret lookup; updated IAM/ECS/docs/import disclosure; 64 backend tests passed, 1 skipped, lint/format/template/signed build passed; key setup pending | 12:55:26–12:58:01, UTC−07:00; no excluded pauses | 2.58 minutes (155 seconds) | Recorded |
+| 2026-09-27-06 | September 27, 2026 | Codex | Live OpenAI verification | Read user-created server secret without displaying credentials and validated one live structured GPT-5.6 Luna response; updated delivery evidence | 13:02:48–13:03:20, UTC−07:00; no excluded pauses | 0.53 minutes (32 seconds) | Recorded |
+| 2026-09-27-07 | September 27, 2026 | Codex | GPT-6 direct API | Switched defaults/ECS/docs to GPT-6 Astra; validated live structured response with existing secret; 64 tests passed, 1 skipped, lint/format/template passed | 13:03:50–13:04:34, UTC−07:00; no excluded pauses | 0.73 minutes (44 seconds) | Recorded |
+| 2026-09-27-08 | September 27, 2026 | Codex | Dev rollout preparation | Verified branch, infrastructure lint, 9 harness tests, credential-pattern scan, rollback image and signed app; prepared non-replacing IAM change set; execution/push blocked pending specific user approval | 13:05:06–13:06:29, UTC−07:00; no excluded pauses | 1.38 minutes (83 seconds) | Recorded |
+| 2026-09-27-09 | September 27, 2026 | Codex | Dev rollout | Applied approved IAM change, pushed backend 66c505e, completed Actions/ECS deployment; verified public health/auth rejection and live Astra from one-off runtime task; iOS publication remains separately approval-blocked | 13:08:43–13:14:36, UTC−07:00; no excluded pauses (includes AWS rollout waits) | 5.88 minutes (353 seconds) | Recorded |
 
 The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
 

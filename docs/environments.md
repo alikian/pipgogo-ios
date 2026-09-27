@@ -1,3 +1,5 @@
+> Product-version note (September 27): this document retains operational or historical evidence. Legacy trip/check-in examples describe the previous release. See [traveler-intelligence delivery notes](traveler-intelligence.md) for the rebuilt product.
+
 # Local, Dev and Prod builds
 
 Choose **Local**, **Dev** or **Prod** in Xcode's scheme picker, choose a device,

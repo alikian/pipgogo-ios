@@ -1,0 +1,2326 @@
+{
+  "sourceLanguage": "en",
+  "strings": {
+    "A little less planning.\nA little more exploring.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A little less planning.\nA little more exploring."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برنامه‌ریزی کمتر.\nکشف و تجربه بیشتر."
+          }
+        }
+      }
+    },
+    "I'm Pip. Let's make this trip feel like you.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'm Pip. Let's make this trip feel like you."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "من پیپ هستم. بیا این سفر را به سلیقهٔ تو بسازیم."
+          }
+        }
+      }
+    },
+    "Where are we going?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where are we going?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "کجا می‌رویم؟"
+          }
+        }
+      }
+    },
+    "Your next chapter starts here": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your next chapter starts here"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ماجرای بعدی تو از اینجا شروع می‌شود"
+          }
+        }
+      }
+    },
+    "Choose a destination and timing. We'll work out the rest together.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose a destination and timing. We'll work out the rest together."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مقصد و زمان سفر را انتخاب کن. بقیه را با هم پیش می‌بریم."
+          }
+        }
+      }
+    },
+    "What Pip remembers": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What Pip remembers"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "آنچه پیپ به یاد دارد"
+          }
+        }
+      }
+    },
+    "Language": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Language"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زبان"
+          }
+        }
+      }
+    },
+    "Settings": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تنظیمات"
+          }
+        }
+      }
+    },
+    "Sign out": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign out"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خروج"
+          }
+        }
+      }
+    },
+    "Application language": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Application language"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زبان برنامه"
+          }
+        }
+      }
+    },
+    "Changing language keeps your trips and memories.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Changing language keeps your trips and memories."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "با تغییر زبان، سفرها و خاطره‌هایت حفظ می‌شوند."
+          }
+        }
+      }
+    },
+    "This trip changed elsewhere. Your draft is still here.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This trip changed elsewhere. Your draft is still here."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "این سفر در جای دیگری تغییر کرده است. پیش‌نویس تو حفظ شده است."
+          }
+        }
+      }
+    },
+    "Review saved trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review saved trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بررسی سفر ذخیره‌شده"
+          }
+        }
+      }
+    },
+    "Keep my draft for a new save": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep my draft for a new save"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نگه داشتن پیش‌نویس برای ذخیرهٔ دوباره"
+          }
+        }
+      }
+    },
+    "Use the saved trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Use the saved trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استفاده از سفر ذخیره‌شده"
+          }
+        }
+      }
+    },
+    "Your request is kept unchanged for a safe retry.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your request is kept unchanged for a safe retry."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "درخواست تو بدون تغییر برای تلاش دوباره نگه داشته شده است."
+          }
+        }
+      }
+    },
+    "Retry same request": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Retry same request"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تلاش دوباره با همان درخواست"
+          }
+        }
+      }
+    },
+    "Reload": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reload"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بارگیری دوباره"
+          }
+        }
+      }
+    },
+    "Only what matters for this trip. You can add more later.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only what matters for this trip. You can add more later."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فقط آنچه برای این سفر مهم است. بعداً هم می‌توانی جزئیات اضافه کنی."
+          }
+        }
+      }
+    },
+    "Destination": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Destination"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مقصد"
+          }
+        }
+      }
+    },
+    "Approximate dates, e.g. October": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Approximate dates, e.g. October"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زمان تقریبی، مثلاً مهرماه"
+          }
+        }
+      }
+    },
+    "How much is already planned?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How much is already planned?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چقدر از سفر را برنامه‌ریزی کرده‌ای؟"
+          }
+        }
+      }
+    },
+    "Existing plans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Existing plans"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برنامه‌های موجود"
+          }
+        }
+      }
+    },
+    "Mostly planned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostly planned"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بیشترش برنامه‌ریزی شده"
+          }
+        }
+      }
+    },
+    "Partly planned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partly planned"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بخشی برنامه‌ریزی شده"
+          }
+        }
+      }
+    },
+    "Starting from scratch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting from scratch"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "از صفر شروع می‌کنم"
+          }
+        }
+      }
+    },
+    "Anything already planned?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anything already planned?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "از قبل برنامه‌ای داری؟"
+          }
+        }
+      }
+    },
+    "Who's coming?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Who's coming?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چه کسانی می‌آیند؟"
+          }
+        }
+      }
+    },
+    "Just me for now": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Just me for now"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فعلاً فقط خودم"
+          }
+        }
+      }
+    },
+    "Name or nickname (optional)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Name or nickname (optional)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نام یا نام مستعار (اختیاری)"
+          }
+        }
+      }
+    },
+    "Relationship (optional)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Relationship (optional)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نسبت (اختیاری)"
+          }
+        }
+      }
+    },
+    "Age or age range (optional)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Age or age range (optional)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سن یا بازهٔ سنی (اختیاری)"
+          }
+        }
+      }
+    },
+    "Preferred language (optional)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Preferred language (optional)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "زبان ترجیحی (اختیاری)"
+          }
+        }
+      }
+    },
+    "Interests for this trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Interests for this trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "علاقه‌ها در این سفر"
+          }
+        }
+      }
+    },
+    "Anything to take into account?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anything to take into account?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چیزی هست که در نظر بگیرم؟"
+          }
+        }
+      }
+    },
+    "Not now": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not now"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فعلاً نه"
+          }
+        }
+      }
+    },
+    "None": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "None"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هیچ‌کدام"
+          }
+        }
+      }
+    },
+    "Add details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افزودن جزئیات"
+          }
+        }
+      }
+    },
+    "Prefer not to answer": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Prefer not to answer"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ترجیح می‌دهم پاسخ ندهم"
+          }
+        }
+      }
+    },
+    "Practical needs": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Practical needs"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نیازهای سفر"
+          }
+        }
+      }
+    },
+    "Save as a recurring traveler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save as a recurring traveler"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ذخیره به عنوان هم‌سفر همیشگی"
+          }
+        }
+      }
+    },
+    "Remove traveler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove traveler"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف هم‌سفر"
+          }
+        }
+      }
+    },
+    "Add traveler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add traveler"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افزودن هم‌سفر"
+          }
+        }
+      }
+    },
+    "Saved traveler": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saved traveler"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هم‌سفر ذخیره‌شده"
+          }
+        }
+      }
+    },
+    "How are we getting around?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "How are we getting around?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چطور رفت‌وآمد می‌کنیم؟"
+          }
+        }
+      }
+    },
+    "Transportation details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Transportation details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جزئیات رفت‌وآمد"
+          }
+        }
+      }
+    },
+    "Where are we staying?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Where are we staying?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "کجا اقامت داریم؟"
+          }
+        }
+      }
+    },
+    "Property (leave blank if not booked)": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Property (leave blank if not booked)"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محل اقامت (اگر رزرو نکرده‌ای خالی بگذار)"
+          }
+        }
+      }
+    },
+    "Address": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Address"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نشانی"
+          }
+        }
+      }
+    },
+    "Check-in date and time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check-in date and time"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاریخ و ساعت ورود"
+          }
+        }
+      }
+    },
+    "Check-out date and time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check-out date and time"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاریخ و ساعت خروج"
+          }
+        }
+      }
+    },
+    "Confirmation reference": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirmation reference"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شمارهٔ تأیید"
+          }
+        }
+      }
+    },
+    "Arrival instructions": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Arrival instructions"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "راهنمای ورود"
+          }
+        }
+      }
+    },
+    "Anything booked that I should protect?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anything booked that I should protect?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رزروی داری که باید حفظ کنم؟"
+          }
+        }
+      }
+    },
+    "Booking or commitment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Booking or commitment"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رزرو یا برنامهٔ قطعی"
+          }
+        }
+      }
+    },
+    "Date and time": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Date and time"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاریخ و ساعت"
+          }
+        }
+      }
+    },
+    "Location": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "مکان"
+          }
+        }
+      }
+    },
+    "Remove commitment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove commitment"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف برنامهٔ قطعی"
+          }
+        }
+      }
+    },
+    "Add fixed commitment": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add fixed commitment"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "افزودن برنامهٔ قطعی"
+          }
+        }
+      }
+    },
+    "Anything else?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Anything else?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چیز دیگری هست؟"
+          }
+        }
+      }
+    },
+    "Optional needs, budget, must-dos or things to avoid": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Optional needs, budget, must-dos or things to avoid"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نیازها، بودجه، کارهای ضروری یا مواردی که نمی‌خواهی (اختیاری)"
+          }
+        }
+      }
+    },
+    "Notes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Notes"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یادداشت‌ها"
+          }
+        }
+      }
+    },
+    "These details apply to this trip. They do not become permanent preferences.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "These details apply to this trip. They do not become permanent preferences."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "این جزئیات فقط برای همین سفرند و به ترجیح دائمی تبدیل نمی‌شوند."
+          }
+        }
+      }
+    },
+    "Continue": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ادامه"
+          }
+        }
+      }
+    },
+    "Save trip; add details later": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save trip; add details later"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ذخیرهٔ سفر؛ جزئیات بعداً"
+          }
+        }
+      }
+    },
+    "Save trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Save trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ذخیرهٔ سفر"
+          }
+        }
+      }
+    },
+    "Close": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Close"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بستن"
+          }
+        }
+      }
+    },
+    "Back": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Back"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بازگشت"
+          }
+        }
+      }
+    },
+    "Your trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سفر تو"
+          }
+        }
+      }
+    },
+    "Traveling together": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Traveling together"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سفر با هم"
+          }
+        }
+      }
+    },
+    "Make room for what matters": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Make room for what matters"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جا برای چیزهای مهم"
+          }
+        }
+      }
+    },
+    "View": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "View"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "نمایش"
+          }
+        }
+      }
+    },
+    "Talk to Pip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Talk to Pip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "گفت‌وگو با پیپ"
+          }
+        }
+      }
+    },
+    "Our plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Our plan"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برنامهٔ ما"
+          }
+        }
+      }
+    },
+    "Trip details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trip details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جزئیات سفر"
+          }
+        }
+      }
+    },
+    "🦆 Hi, I'm Pip.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🦆 Hi, I'm Pip."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "🦆 سلام، من پیپ هستم."
+          }
+        }
+      }
+    },
+    "I'll travel with you, help when you need me, and get to know what you like along the way.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "I'll travel with you, help when you need me, and get to know what you like along the way."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "همراهت سفر می‌کنم، هر وقت نیاز داشته باشی کمک می‌کنم و در طول راه سلیقه‌ات را می‌شناسم."
+          }
+        }
+      }
+    },
+    "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tell me about a trip, vacation, or even a day out that you really enjoyed. What made it good?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "از سفر، تعطیلات یا حتی روزی بیرون از خانه بگو که خیلی به تو خوش گذشته. چه چیزی آن را خوب کرد؟"
+          }
+        }
+      }
+    },
+    "What would make this trip feel right for you?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "What would make this trip feel right for you?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چه چیزی این سفر را برای تو دل‌نشین می‌کند؟"
+          }
+        }
+      }
+    },
+    "You": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تو"
+          }
+        }
+      }
+    },
+    "Create a lightweight plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Create a lightweight plan"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ساختن یک برنامهٔ سبک"
+          }
+        }
+      }
+    },
+    "Skip; continue with my trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skip; continue with my trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رد کردن؛ ادامهٔ سفر"
+          }
+        }
+      }
+    },
+    "Room to explore": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Room to explore"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فرصت برای کشف"
+          }
+        }
+      }
+    },
+    "Suggestions are not bookings. Live hours, weather and availability have not been verified.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Suggestions are not bookings. Live hours, weather and availability have not been verified."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "پیشنهادها رزرو نیستند. ساعت کاری، آب‌وهوا و ظرفیت فعلی بررسی نشده‌اند."
+          }
+        }
+      }
+    },
+    "A suggestion for you": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A suggestion for you"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "یک پیشنهاد برای تو"
+          }
+        }
+      }
+    },
+    "Accept changes": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Accept changes"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "پذیرفتن تغییرات"
+          }
+        }
+      }
+    },
+    "Keep current plan": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep current plan"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حفظ برنامهٔ فعلی"
+          }
+        }
+      }
+    },
+    "Edit trip details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Edit trip details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ویرایش جزئیات سفر"
+          }
+        }
+      }
+    },
+    "Import existing plans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Import existing plans"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "وارد کردن برنامه‌های موجود"
+          }
+        }
+      }
+    },
+    "Review extracted details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review extracted details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بررسی جزئیات استخراج‌شده"
+          }
+        }
+      }
+    },
+    "Pip is thinking…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pip is thinking…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "پیپ در حال فکر کردن است…"
+          }
+        }
+      }
+    },
+    "Attach existing plans": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Attach existing plans"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "پیوست برنامه‌های موجود"
+          }
+        }
+      }
+    },
+    "Tell Pip…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tell Pip…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "به پیپ بگو…"
+          }
+        }
+      }
+    },
+    "Send": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ارسال"
+          }
+        }
+      }
+    },
+    "Trip unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trip unavailable"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "سفر در دسترس نیست"
+          }
+        }
+      }
+    },
+    "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send a booking, itinerary, or screenshot. Pip proposes details for you to review before anything is used in your plan."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رزرو، برنامهٔ سفر یا تصویر بفرست. پیپ جزئیات را برای بررسی پیشنهاد می‌دهد و بدون تأیید تو از آن‌ها استفاده نمی‌کند."
+          }
+        }
+      }
+    },
+    "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The selected content is sent to Pip's server and OpenAI for extraction. Raw files are not saved by Pip. Extracted details stay with this trip."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "محتوای انتخاب‌شده برای استخراج به سرور پیپ و OpenAI فرستاده می‌شود. پیپ فایل اصلی را ذخیره نمی‌کند. جزئیات استخراج‌شده با این سفر می‌مانند."
+          }
+        }
+      }
+    },
+    "Already booked anything?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Already booked anything?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چیزی رزرو کرده‌ای؟"
+          }
+        }
+      }
+    },
+    "Paste booking details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paste booking details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چسباندن جزئیات رزرو"
+          }
+        }
+      }
+    },
+    "Choose photo": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose photo"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انتخاب عکس"
+          }
+        }
+      }
+    },
+    "Choose PDF or DOCX": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose PDF or DOCX"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "انتخاب PDF یا DOCX"
+          }
+        }
+      }
+    },
+    "Extract for review": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Extract for review"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "استخراج برای بررسی"
+          }
+        }
+      }
+    },
+    "Send it to Pip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send it to Pip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برای پیپ بفرست"
+          }
+        }
+      }
+    },
+    "Please use a file smaller than 5 MB.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Please use a file smaller than 5 MB."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "لطفاً فایلی کوچک‌تر از ۵ مگابایت انتخاب کن."
+          }
+        }
+      }
+    },
+    "Title": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Title"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "عنوان"
+          }
+        }
+      }
+    },
+    "Details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "جزئیات"
+          }
+        }
+      }
+    },
+    "Remove this detail": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove this detail"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حذف این مورد"
+          }
+        }
+      }
+    },
+    "Confirm these details": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Confirm these details"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تأیید این جزئیات"
+          }
+        }
+      }
+    },
+    "Reject import": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Reject import"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "رد کردن موارد واردشده"
+          }
+        }
+      }
+    },
+    "Review before adding": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Review before adding"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بررسی پیش از افزودن"
+          }
+        }
+      }
+    },
+    "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هر وقت بخواهی می‌توانی پیپ را اصلاح کنی. نیازهای موقت سفر از چیزهایی که می‌خواهی به یاد بمانند جدا هستند."
+          }
+        }
+      }
+    },
+    "Don't remember that": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Don't remember that"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "این را به خاطر نسپار"
+          }
+        }
+      }
+    },
+    "Something you'd like Pip to remember?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Something you'd like Pip to remember?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "چیزی هست که بخواهی پیپ به خاطر بسپارد؟"
+          }
+        }
+      }
+    },
+    "In your own words": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "In your own words"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "با کلمات خودت"
+          }
+        }
+      }
+    },
+    "Only for this trip": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only for this trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فقط برای این سفر"
+          }
+        }
+      }
+    },
+    "Remember this": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remember this"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "این را به خاطر بسپار"
+          }
+        }
+      }
+    },
+    "Correct this": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Correct this"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اصلاح این مورد"
+          }
+        }
+      }
+    },
+    "Forget this memory?": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forget this memory?"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "این مورد فراموش شود؟"
+          }
+        }
+      }
+    },
+    "Forget": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Forget"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فراموش کن"
+          }
+        }
+      }
+    },
+    "mostly_planned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Mostly planned"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بیشترش برنامه‌ریزی شده"
+          }
+        }
+      }
+    },
+    "partly_planned": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Partly planned"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "بخشی برنامه‌ریزی شده"
+          }
+        }
+      }
+    },
+    "starting_from_scratch": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Starting from scratch"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "شروع از صفر"
+          }
+        }
+      }
+    },
+    "own_car": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Own car"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خودروی شخصی"
+          }
+        }
+      }
+    },
+    "rental_car": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rental car"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "خودروی اجاره‌ای"
+          }
+        }
+      }
+    },
+    "public_transit": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Public transit"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حمل‌ونقل عمومی"
+          }
+        }
+      }
+    },
+    "train": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "train"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "قطار"
+          }
+        }
+      }
+    },
+    "taxi": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "taxi"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تاکسی"
+          }
+        }
+      }
+    },
+    "walking": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "walking"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "پیاده‌روی"
+          }
+        }
+      }
+    },
+    "bicycle": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "bicycle"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "دوچرخه"
+          }
+        }
+      }
+    },
+    "cruise": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "cruise"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "کشتی"
+          }
+        }
+      }
+    },
+    "not_sure": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not sure yet"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "هنوز مطمئن نیستم"
+          }
+        }
+      }
+    },
+    "proposed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "proposed"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "در انتظار بررسی"
+          }
+        }
+      }
+    },
+    "confirmed": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "confirmed"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تأییدشده"
+          }
+        }
+      }
+    },
+    "rejected": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "rejected"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ردشده"
+          }
+        }
+      }
+    },
+    "persistent": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Across trips"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "برای سفرهای آینده"
+          }
+        }
+      }
+    },
+    "trip_specific": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Only this trip"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "فقط همین سفر"
+          }
+        }
+      }
+    },
+    "Restoring your session…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restoring your session…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "در حال بازیابی نشست…"
+          }
+        }
+      }
+    },
+    "Signing out…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Signing out…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "در حال خروج…"
+          }
+        }
+      }
+    },
+    "Loading your account…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Loading your account…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "در حال بارگیری حساب…"
+          }
+        }
+      }
+    },
+    "Account unavailable": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Account unavailable"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "حساب در دسترس نیست"
+          }
+        }
+      }
+    },
+    "Try again": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Try again"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تلاش دوباره"
+          }
+        }
+      }
+    },
+    "A thoughtful travel companion for the journey ahead.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "A thoughtful travel companion for the journey ahead."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "همراهی بافکر برای سفر پیش رو."
+          }
+        }
+      }
+    },
+    "Connecting…": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Connecting…"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "در حال اتصال…"
+          }
+        }
+      }
+    },
+    "Continue with Google": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Continue with Google"
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ادامه با گوگل"
+          }
+        }
+      }
+    },
+    "Sign-in is securely handled by Google and Amazon Cognito.": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sign-in is securely handled by Google and Amazon Cognito."
+          }
+        },
+        "fa": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ورود امن با گوگل و Amazon Cognito انجام می‌شود."
+          }
+        }
+      }
+    }
+  },
+  "version": "1.0"
+}
