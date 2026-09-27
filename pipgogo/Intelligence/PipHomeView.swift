@@ -125,6 +125,7 @@ struct TripIntakeView: View {
     @State private var answer = ""
     @State private var acknowledgement = ""
     @State private var editSummary = false
+    @State private var openedInitialSummary = false
     @State private var showUpload = false
     @State private var showTravel = false
     @State private var review: TripImport?
@@ -149,15 +150,16 @@ struct TripIntakeView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 24) {
                     Text(heading).font(.title.bold()).accessibilityAddTraits(.isHeader)
-                    HStack(alignment: .top) {
-                        VStack(alignment: .leading, spacing: 4) {
-                            if destination.isEmpty { Text("Choose where and when").foregroundStyle(.secondary) }
-                            else { Text(destination).font(.headline) }
-                            Text(tripTiming).font(.subheadline).foregroundStyle(.secondary)
-                        }
-                        Spacer()
-                        Button("Edit") { speech.stop(); editSummary = true }
-                    }.padding(14).background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+                    if !destination.isEmpty {
+                        HStack(alignment: .top) {
+                            VStack(alignment: .leading, spacing: 4) {
+                                Text(destination).font(.headline)
+                                Text(tripTiming).font(.subheadline).foregroundStyle(.secondary)
+                            }
+                            Spacer()
+                            Button("Edit") { speech.stop(); editSummary = true }
+                        }.padding(14).background(Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 14))
+                    }
                     if destination.isEmpty {
                         Button("Add destination and timing") { editSummary = true }.buttonStyle(.borderedProminent)
                     } else {
@@ -212,6 +214,11 @@ struct TripIntakeView: View {
             }
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { speech.stop(); dismiss() } } }
             .navigationBarTitleDisplayMode(.inline)
+            .onAppear {
+                guard !openedInitialSummary else { return }
+                openedInitialSummary = true
+                if destination.isEmpty { editSummary = true }
+            }
             .sheet(isPresented: $editSummary) { TripSummaryEditor(intake: $store.draft) }
             .sheet(isPresented: $showUpload) { ImportView(store: store) }
             .sheet(item: $review, onDismiss: refreshDraft) { item in ImportReviewView(store: store, item: item) }
@@ -303,7 +310,7 @@ struct TripSummaryEditor: View {
                     DatePicker("Start", selection: $start, displayedComponents: .date)
                     DatePicker("End", selection: $end, in: start..., displayedComponents: .date)
                 }
-            }.navigationTitle("Trip summary")
+            }.navigationTitle("Destination and timing")
                 .toolbar { Button("Done") {
                     if useDates {
                         let format = DateFormatter(); format.calendar = Calendar(identifier: .gregorian); format.locale = Locale(identifier: "en_US_POSIX"); format.dateFormat = "yyyy-MM-dd"
@@ -311,7 +318,7 @@ struct TripSummaryEditor: View {
                         intake.duration_days = (Calendar.current.dateComponents([.day], from: Calendar.current.startOfDay(for: start), to: Calendar.current.startOfDay(for: max(start, end))).day ?? 0) + 1
                     } else { intake.start_date = nil; intake.end_date = nil }
                     dismiss()
-                }.disabled(ambiguous && !useDates) }
+                }.disabled(intake.destination.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || (ambiguous && !useDates)) }
                 .onAppear {
                     let format = DateFormatter(); format.dateFormat = "yyyy-MM-dd"; format.locale = Locale(identifier: "en_US_POSIX")
                     if let value = intake.start_date.flatMap({ format.date(from: $0) }) { start = value; useDates = true }

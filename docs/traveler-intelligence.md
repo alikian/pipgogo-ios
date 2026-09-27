@@ -132,3 +132,6 @@ authenticated device journey.
 Home greeting: uses the saved explicit/confirmed preferred name, with a neutral fallback.
 “What Pip remembers” now offers a dedicated preferred-name field; saving updates both home
 and trip-intake greetings. Signed Dev build passed; physical-device acceptance remains pending.
+
+Empty trips now open Destination and timing immediately. The compact summary and Edit appear
+only after a destination exists. Signed Dev build passed; device acceptance remains pending.
