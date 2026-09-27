@@ -2,17 +2,17 @@
 
 **Brand/domain update:** PipPipGo branding and `auth.pippipgo.com` are deployed. Google sign-in, backend access, refresh, revocation and logout passed in Chrome; the signed iPhone build is installed. The user confirmed new-domain iPhone sign-in works on September 26, 2026; repeat device restoration/expiry-refresh/logout checks remain pending.
 
-**Current stage: Dev environment setup · Next: 5.2a — Hosted Dev environment**
-Updated September 26, 2026 · [Project time log](TIME_LOG.md)
+**Current stage: Dev hosted on ECS Fargate · Next: 5.2a — Device acceptance**
+Updated September 27, 2026 · [Project time log](TIME_LOG.md)
 
-**Total logged time: 7 hours 0 minutes 33 seconds** · 6 hours estimated + 1 hour 0 minutes 33 seconds recorded; see the time log for scope.
+**Total logged time: 7 hours 28 minutes 29 seconds** · 6 hours estimated + 1 hour 28 minutes 29 seconds recorded; see the time log for scope.
 
 | Available on the iPhone | Still to build |
 | --- | --- |
 | Google sign-in, traveler profile, companions, trip creation/editing/deletion, pre-trip check-in | Trip packages, photo/camera/PDF/DOCX import, AI planning, durable offline mode |
 
 **Progress:** 6 of 9 Step 2 milestones implemented. AI planning: 0 of 6 Step 3 milestones implemented.
-**Latest verification:** 110 Local iOS tests plus 7 configuration checks each for Dev/Prod passed; all three signed builds passed. Previous backend validation: 48 passed, 1 skipped; lint/format passed. Hosted API/device acceptance remains pending.
+**Latest verification:** 110 Local iOS tests plus 7 configuration checks each for Dev/Prod passed; all three signed builds passed. Backend: 56 passed, 1 skipped; lint/format passed. Dev GitHub deployment and HTTPS smoke checks passed; physical-device acceptance remains pending.
 
 > Built features still need the device checks listed below. Automated test results are not the same as completed device acceptance. Counts track milestones, not percentage of total effort.
 
@@ -33,7 +33,7 @@ Updated September 26, 2026 · [Project time log](TIME_LOG.md)
 | 2 · Basic trip flow | 🟡 In progress | 2.1–2.6 implemented; packages, integrated acceptance and photo/camera/PDF/DOCX import remain |
 | 3 · AI planning & guidance | ○ Planned | Provider, Plan with AI, refinement, saving, device acceptance and verified arrival guidance |
 | 4 · Offline use | ○ Planned | Durable local storage, pending-write queue, synchronization and offline packages |
-| 5 · Production readiness | 🟡 Foundation ready | AWS auth/data infrastructure deployed; release versioning (5.1) and backend deployment (5.2), including monitoring, hardening and operational checks, and the public website (5.3) remain |
+| 5 · Production readiness | 🟡 Dev deployed | Standard ECS Fargate and GitHub Dev deployment delivered; device acceptance, semantic releases, Prod, operations and website remain |
 | 6 · Traveler pilot | ○ Planned | Validate San Diego airport → accommodation, then test with 5–10 travelers |
 
 ## 2 · Basic trip flow
@@ -121,29 +121,32 @@ are separate prerequisites for delivery; adding this milestone does not enable p
 
 ## 5.2 · Backend deployment
 
-**Status: ○ Planned.** Deploy a hosted HTTPS API so PipPipGo works without the Mac's LAN
-backend. Start with hosted Dev setup (5.2a); build on release versioning (5.1)
-for automated delivery before TestFlight distribution and traveler testing.
+**Status: 🟡 Dev deployed; device acceptance pending.** Standard ECS Fargate serves
+`https://dev.pippipgo.com`. GitHub Actions deploys `develop` to Dev; `main` is reserved
+for Prod and blocked until separate persistence and apex DNS are ready. Semantic
+release versioning (5.1), production delivery and operations acceptance remain.
 The next product feature is 2.7, partial companion package.
 
-**App build configuration implemented:** Local (simulator/LAN), Dev (`https://dev.pippipgo.com`) and Prod (`https://pippipgo.com`) schemes select their backend at build time and keep saved tokens separate. Hosted APIs and server-side identity/data isolation remain planned; the current Cognito foundation is shared. The variants replace one another on a device. See iOS `docs/environments.md`.
+**App build configuration implemented:** Local (simulator/LAN), Dev (`https://dev.pippipgo.com`) and Prod (`https://pippipgo.com`) schemes select their backend at build time and keep saved tokens separate. Dev is deployed and intentionally shares existing development Cognito/data with Local; Prod identity/data isolation remains a prerequisite. The variants replace one another on a device. See iOS `docs/environments.md`.
 
 | Part | Scope | Completion check |
 | --- | --- | --- |
-| **5.2a — Hosted Dev environment · ➜ Next** | Deploy the API at `https://dev.pippipgo.com` through CloudFormation with TLS/DNS, container registry, runtime IAM and defined data/authentication boundaries. Preserve existing Cognito and retained data. | Dev build on a physical iPhone completes authentication and the trip/check-in flow with the Mac backend stopped; record hosting, readiness, isolation and rollback evidence. |
-| 5.2b — Deployment pipeline | Add GitHub Actions tests, Ruff lint/format and container validation. Use short-lived AWS credentials; publish versioned images and deploy by immutable digest from 5.1. Validate in staging before approved production promotion. | A release deploys the tested image; failed checks block promotion, secrets stay outside Git/images, and reruns do not deploy a different artifact under the same version. |
+| **5.2a — Dev deployed · device verification next** | Deploy the API at `https://dev.pippipgo.com` through CloudFormation with TLS/DNS, container registry, runtime IAM and defined data/authentication boundaries. Preserve existing Cognito and retained data. | Dev build on a physical iPhone completes authentication and the trip/check-in flow with the Mac backend stopped; record hosting, readiness, isolation and rollback evidence. |
+| 5.2b — Dev pipeline implemented; release/Prod pending | Add GitHub Actions tests, Ruff lint/format and container validation. Use short-lived AWS credentials; publish versioned images and deploy by immutable digest from 5.1. Validate in staging before approved production promotion. | A release deploys the tested image; failed checks block promotion, secrets stay outside Git/images, and reruns do not deploy a different artifact under the same version. |
 | 5.2c — Hosted API and iOS integration | Configure production Cognito/DynamoDB access and a dedicated HTTPS API URL; update iOS release configuration and restrict development-only settings/callbacks appropriately. Keep the sign-in domain migration separate. | A physical iPhone on cellular or another network completes sign-in, refresh, logout and the implemented trip flow with the Mac backend stopped; record app/backend versions and account-isolation results. |
 | 5.2d — Operations and recovery | Add monitoring, actionable alerts, traffic/cost limits and log retention without exposing tokens or travel data. Validate real DynamoDB concurrency, interrupted account deletion, retention/per-trip erasure requirements and backup recovery; document rollback. | Exercise alerts and recovery in staging, roll back to a tested image without losing retained data, and record operational evidence before traveler testing. |
 
-Application hosting is not deployed yet. Record infrastructure deployment and end-to-end
-acceptance separately. Backend `docs/deployment.md` will hold the selected service, API URL,
-run commands and deployment evidence as this milestone is implemented.
+Dev hosting and delivery stacks are deployed. Backend `infra/hosting.md` documents
+standard Fargate, persistence separation, branch strategy, cost assumptions and rollback.
+Deployment success remains separate from physical-device and production acceptance.
 
-### 5.2a — Next: hosted Dev environment
+### 5.2a — Dev deployed; acceptance remains
 
-**Status: ○ Planned, not deployed.** This is the next work milestone, before returning
-to product milestone 2.7. Deliver a usable HTTPS API at `https://dev.pippipgo.com`
-for the Dev app build, so testing no longer requires the Mac backend.
+**Status: 🟡 Deployed September 27, 2026; physical-device acceptance pending.**
+The Dev build is installed on Ali’s iPhone 12. GitHub Actions deployment, immutable
+ECR image, TLS, readiness, authenticated access, two-account isolation and browser
+refresh/revocation/logout checks passed. See backend `docs/hosting-verification.md`. Complete the
+remaining acceptance checks below before marking this milestone complete.
 
 1. Select AWS hosting and define region, cost limits and the Dev data/authentication
    boundary. Document whether Local shares Dev data; keep future production data
@@ -161,7 +164,8 @@ for the Dev app build, so testing no longer requires the Mac backend.
 
 Completion requires recorded deployment and physical-device evidence, not merely
 DNS resolution or a successful app build. Initial Dev deployment may use documented
-manual commands; automated release/version/promotion work remains 5.1 and 5.2b.
+manual commands; GitHub Dev deployment is now implemented. Semantic release/version
+and production promotion work remains 5.1 and 5.2b.
 Production hosting at `https://pippipgo.com` remains a later deployment step.
 
 ## 5.3 · Public website — pippipgo.com

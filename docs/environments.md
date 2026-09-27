@@ -68,13 +68,14 @@ uv run python -m scripts.login_test --profile alikianus --region us-west-2 --lan
 
 ## Hosted API prerequisites
 
-Deploy HTTPS APIs at the two selected origins before testing them end to end.
+Dev HTTPS hosting is deployed on standard ECS Fargate (September 27, 2026);
+Prod hosting remains pending. Complete device acceptance against Dev.
 The client appends existing `/v1/...` API paths, for example
 `https://dev.pippipgo.com/v1/me` and `https://pippipgo.com/v1/me`.
 The production apex will also host the planned public website (5.3): configure
 routing so `/v1/*` reaches the API and website paths reach the website. Preserve
 `auth.pippipgo.com` and coordinate replacement of the root placeholder DNS record
-with the certificate stack. No hosted endpoint is claimed working by these builds.
+with the certificate stack. The build configuration alone does not prove device acceptance.
 
 Before release, verify the chosen identity/data environment and Google sign-in,
 refresh, logout, account isolation and trip flows on a physical phone without
@@ -91,5 +92,10 @@ Cognito configuration and Local-only HTTP exceptions. Every scheme action,
 including Archive, selects its matching environment. These variants were not
 installed on a physical phone in this session; hosted API acceptance remains open.
 
-The next work milestone is **5.2a — hosted Dev environment**. See the roadmap for
+The next check is **5.2a — hosted Dev physical-device acceptance**. See the roadmap for
 deployment and physical-device acceptance requirements.
+
+The Dev build was installed on Ali’s iPhone 12 on September 27. Remote launch
+reported the device locked; do not count installation as sign-in or trip acceptance.
+Local and Dev share development accounts/data. Prod requires its own persistence
+and matching Cognito settings before release. Both repositories default to `develop`.

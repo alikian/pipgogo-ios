@@ -8,14 +8,14 @@
 
 ## Progress at a glance
 
-**[Readable roadmap](ROADMAP.md)** · **Next: 5.2a — Hosted Dev environment**
+**[Readable roadmap](ROADMAP.md)** · **Next: 5.2a — Hosted Dev device acceptance**
 
 | Area | Current state |
 | --- | --- |
 | Authentication | Initial acceptance complete; upgraded iPhone account-chooser check pending |
 | Basic trip flow | 2.1–2.6 implemented; 2.2–2.6 still need device acceptance |
 | AI planning | 3.1–3.6 planned; no AI-generated trips in the app yet |
-| Offline / production hosting | Not delivered; app uses the Mac's LAN backend |
+| Offline / hosting | Dev API deployed on standard ECS Fargate; device acceptance, Prod and offline remain |
 | Latest checks | 110 Local iOS tests; 7 configuration checks each for Dev/Prod; three signed builds passed. Prior backend: 48 passed, 1 skipped |
 
 Update `ROADMAP.md` in both repositories with each milestone change. Keep implementation and
@@ -308,3 +308,13 @@ Use `develop` as the default branch, deploy backend develop to Dev and main to P
 Local and Dev share current development data/authentication. Production requires
 separate persistence/auth and coordinated apex DNS ownership before enabling delivery.
 See backend `infra/hosting.md`; live deployment/device evidence must be recorded separately.
+
+Dev deployment succeeded September 27, 2026 via GitHub Actions run `36302023179`,
+commit `41edf53`. ECS service `pippipgo-dev/backend` uses an immutable image digest.
+HTTPS readiness/auth rejection passed; physical-device acceptance remains separate.
+Both repositories now default to `develop`; `main` remains the production promotion branch.
+
+Hosted Dev browser verification passed: real Cognito account access, trip creation,
+two-account read/list/overwrite isolation, original-record verification/soft cleanup,
+and refresh/revocation/logout. See backend `docs/hosting-verification.md` for DNS
+workaround and physical-device evidence boundaries. The Mac LAN backend is stopped.
