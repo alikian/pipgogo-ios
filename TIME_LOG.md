@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 8 hours 9 minutes 3 seconds** — 6 hours estimated + 2 hours 9 minutes 3 seconds recorded.
+**Total logged time: 8 hours 31 minutes 2 seconds** — 6 hours estimated + 2 hours 31 minutes 2 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 2 hours 9 minutes 3 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 2 hours 31 minutes 2 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **8 hours 9 minutes 3 seconds (includes 6 hours estimated)** |
+| Total time spent | **8 hours 31 minutes 2 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -65,6 +65,7 @@ This rename segment excludes initial repository inspection and subsequent time-l
 The documentation release-preparation segment excludes initial diff review, time-log bookkeeping and commit/push operations.
 
 The release-versioning planning segment excludes subsequent time-log bookkeeping.
+| 2026-09-27-13 | September 27, 2026 | Codex | Door-to-door and conversational intake | Implemented reviewed flights, transfer timing, progressive personal intake and speech input; passed 75 backend/42 iOS tests, signed build, synthetic live model checks and simulator visual review; deployed Dev revision 5 and published iOS | 22:51:03–23:13:02, UTC+00:00; no excluded pauses | 21.98 minutes (1319 seconds) | Recorded |
 
 The Appium planning segment excludes initial document inspection and subsequent time-log bookkeeping.
 
@@ -110,3 +111,5 @@ Project progress is tracked separately in [ROADMAP.md](ROADMAP.md).
 The Fargate session excludes subsequent time-log bookkeeping and documentation commit/push operations.
 
 The roadmap checkpoint segment excludes subsequent time-log bookkeeping and commit/push operations.
+
+The door-to-door/conversational session excludes subsequent time-log bookkeeping and documentation commit/push operations.

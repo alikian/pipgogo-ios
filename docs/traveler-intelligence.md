@@ -55,18 +55,18 @@ No live weather, opening-hours, places or transport-data provider is connected.
 
 ## Deployment and acceptance boundary
 
-The rebuilt backend is deployed to `https://dev.pippipgo.com` from commit `66c505e`,
-using ECS task definition `pippipgo-dev-backend:3`. The new app requires `/v1/journeys`.
+The rebuilt backend is deployed to `https://dev.pippipgo.com` from commit `7b4d7bb`,
+using ECS task definition `pippipgo-dev-backend:5`. The new app requires `/v1/journeys`.
 Old app product endpoints are retired; authentication remains compatible. No data purge occurred.
 Public health/readiness returned 200 and unauthenticated journey access returned 401.
 A synthetic runtime AI task exited 0 and logged its success marker without credentials or
 traveler records. This verifies provider/runtime access, not an authenticated phone journey.
-The matching iOS source is published on `develop` as `a237028`; the signed Dev build is ready.
+The matching iOS source is published on `develop` as `d20cb8e`; the signed Dev build is ready.
 Device installation and acceptance remain pending.
 
-Deployment run: https://github.com/alikian/pippipgo-backend/actions/runs/36346947300
-Image digest: `sha256:c881f73fd70106066289e7f2188753df5abdf664fb8ee7b171ee276eb5f4e402`.
-Rollback image: `sha256:70420e259fc435ead60004180ccb67452b4acb9b2fdc4eb0e6c3957d372460c7`.
+Deployment run: https://github.com/alikian/pippipgo-backend/actions/runs/36357597703
+Image digest: `sha256:31b557ebd5cb44efa2415fe8b14fad3363b6e611fac22a0452709979ff209e5d`.
+Legacy-product rollback image: `sha256:70420e259fc435ead60004180ccb67452b4acb9b2fdc4eb0e6c3957d372460c7`.
 Rollback restores the prior product API and requires its matching older client.
 
 The first acceptance journey is source section 28: four-day San Diego, partly planned; hotel and
@@ -120,4 +120,11 @@ permissions are requested only on Speak; audio stops on close/background and tex
 
 75 backend tests (1 skipped), 42 iOS tests and signed Dev build passed. A live synthetic intake
 reply acknowledged a known Manhattan hotel and asked only how the traveler is getting to New York.
-Device voice/privacy permissions and visual acceptance remain pending.
+The isolated synthetic Sara/New York simulator preview was visually checked: compact summary, one
+question, Speak/Upload/Nothing yet and visible Continue. No real account or credentials were used.
+Device voice/privacy permissions and full conversational acceptance remain pending.
+
+Dev rollout 36357597703 succeeded; CloudFormation UPDATE_COMPLETE, ECS revision 5 steady,
+health/readiness 200 and unauthenticated journey access 401 were verified. Synthetic live
+extraction, EWR first/last-day planning and intake checks passed; these do not prove a real
+authenticated device journey.

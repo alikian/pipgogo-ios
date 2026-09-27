@@ -24,10 +24,10 @@ product records are retained. The old product screens and APIs have been replace
 
 ## Delivery boundary
 
-The rebuilt backend is deployed at `https://dev.pippipgo.com` from commit `66c505e`.
+The rebuilt backend is deployed at `https://dev.pippipgo.com` from commit `7b4d7bb`.
 New product endpoints begin at `/v1/journeys`; the previous product endpoints are retired.
 Authentication remains compatible and legacy data is retained. The matching signed Dev iOS
-build is ready but has not been installed during this rebuild. Its source is published on `develop` as `a237028`. See [implementation notes](docs/traveler-intelligence.md).
+build is ready but has not been installed during this rebuild. Its source is published on `develop` as `d20cb8e`. See [implementation notes](docs/traveler-intelligence.md).
 
 Provider: **GPT-6 Astra via the direct OpenAI API**, `gpt-6-astra`.
 The server secret and direct structured inference were verified using the deployed ECS image
@@ -42,7 +42,7 @@ offline storage remain separate delivery work. Historical deployment/authenticat
 ## Added scope — door-to-door journeys
 
 [Requirement section 29](docs/traveler-intelligence-requirements.md#29-door-to-door-journey-outbound-and-return)
-is implemented in source; rollout and device acceptance remain separate. Keep initial intake to destination, when,
+is implemented and deployed to Dev; device acceptance remains separate. Keep initial intake to destination, when,
 and “Anything already decided?” Then progressively collect transport mode, booking status,
 reviewed outbound/connection/return flights and arranged or proposed ground transfers.
 Plan from home to hotel and back using actual airports, local times/time zones, baggage,
@@ -53,11 +53,11 @@ San Diego → New York cases for JFK, LGA and EWR, plus return and connecting/ov
 Door-to-door verification: 75 backend tests passed (1 skipped), 42 iOS tests passed, signed Dev
 build passed. Live synthetic GPT-6 extraction returned separate outbound/return segments.
 Unknown details remain provisional; route times are user estimates, with no live flight/traffic
-feed. Cross-airport connections are flagged for explicit transfer planning. Device visual,
+feed. Cross-airport connections are flagged for explicit transfer planning. Real-device visual,
 real-confirmation media, flight search handoff and complete journey acceptance remain pending.
 
 Conversational intake (section 30): implemented with explicit/confirmed preferred-name memory,
 editable trip summary, ambiguous-date confirmation, speech/type/upload input, quiet Nothing yet,
 and context-aware acknowledgement/next question. No planning-state questionnaire remains.
-Device speech/permission and visual acceptance remain pending. Existing travelers/reservations
+The synthetic simulator layout was visually checked; device speech/permission and full-flow acceptance remain pending. Existing travelers/reservations
 can still be edited separately from the light intake screen.
