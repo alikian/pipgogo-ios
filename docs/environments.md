@@ -3,7 +3,7 @@
 # Local, Dev and Prod builds
 
 Choose **Local**, **Dev** or **Prod** in Xcode's scheme picker, choose a device,
-then Run. A footer in the app shows **Build: Local**, **Build: Dev** or **Build: Prod**,
+then Run. A compact badge at the top of the app shows **Build: Local**, **Build: Dev** or **Build: Prod**,
 including before sign-in. The label describes the build, not server availability. Each scheme uses its matching configuration for Run, Test, Profile,
 Analyze and Archive. This is a build-time choice; switching requires rebuilding
 and installing. The old `pipgogo` scheme and Debug/Release configuration names

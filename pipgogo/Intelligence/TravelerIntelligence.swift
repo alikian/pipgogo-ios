@@ -29,7 +29,72 @@ struct TripLodging: Codable, Equatable, Sendable {
     var reference = ""
     var instructions = ""
 }
+struct FlightSegment: Codable, Identifiable, Equatable, Sendable {
+    var id = UUID()
+    var direction = "outbound"
+    var sequence = 1
+    var airline = ""
+    var flight_number = ""
+    var departure_airport = ""
+    var arrival_airport = ""
+    var departure_local = ""
+    var arrival_local = ""
+    var departure_timezone = ""
+    var arrival_timezone = ""
+    var departure_terminal = ""
+    var arrival_terminal = ""
+    var booking_reference = ""
+    var status = "booked"
+}
+struct GroundTransfer: Codable, Identifiable, Equatable, Sendable {
+    var id: String { leg }
+    var leg: String
+    var mode = "not_sure"
+    var arranged = false
+    var pickup_point = ""
+    var luggage = ""
+    var duration_minutes: Int? = nil
+    var airport_buffer_minutes = 120
+    var baggage_minutes = 45
+    var rest_minutes = 60
+    var notes = ""
+}
+struct DoorToDoorTravel: Codable, Equatable, Sendable {
+    var mode = "unknown"
+    var booking_status = "unknown"
+    var home = ""
+    var departure_airport = ""
+    var flights: [FlightSegment] = []
+    var transfers: [GroundTransfer] = []
+    static let legs = ["home_to_airport", "airport_to_hotel", "hotel_to_airport", "airport_to_home"]
+    var flightSearchURL: URL {
+        URL(string: "https://www.google.com/travel/flights")!
+    }
+    func flightSearchURL(destination: String, when: String, start: String?, end: String?) -> URL {
+        var url = URLComponents(string: "https://www.google.com/travel/flights")!
+        let origin = departure_airport.isEmpty ? home : departure_airport
+        let dates = [start, end].compactMap { $0 }.joined(separator: " to ")
+        url.queryItems = [URLQueryItem(name: "q", value: "Flights from \(origin) to \(destination) \(dates.isEmpty ? when : dates)")]
+        return url.url ?? flightSearchURL
+    }
+}
+struct TransferTiming: Codable, Identifiable, Equatable, Sendable {
+    var id: String { leg }
+    var leg: String
+    var airport: String
+    var time_zone: String
+    var leave_at: String?
+    var arrive_at: String?
+    var provisional: Bool
+}
+struct DoorToDoorSummary: Codable, Equatable, Sendable {
+    var provisional: Bool
+    var legs: [TransferTiming]
+    var windows: [String: String]
+    var warnings: [String]
+}
 struct TripIntake: Codable, Equatable, Sendable {
+    var door_to_door: DoorToDoorTravel? = nil
     var destination = ""
     var start_date: String? = nil
     var end_date: String? = nil
@@ -83,8 +148,12 @@ struct TripImport: Codable, Identifiable, Equatable, Sendable {
     var explanation: String
     var facts: [ImportFact]
     var confirmed_facts: [ImportFact]
+    var flights: [FlightSegment]? = nil
+    var confirmed_flights: [FlightSegment]? = nil
 }
 struct Journey: Codable, Equatable, Sendable {
+    var travel_summary: DoorToDoorSummary? = nil
+    var plan_needs_review: Bool? = nil
     var intake: TripIntake
     var messages: [PipMessage]
     var plan: [PipPlanItem]
@@ -112,6 +181,7 @@ struct PipAction: Codable, Sendable {
     var proposal_id: String? = nil
     var import_id: String? = nil
     var facts: [ImportFact] = []
+    var flights: [FlightSegment] = []
 }
 struct PipImportRequest: Codable, Sendable {
     var filename: String

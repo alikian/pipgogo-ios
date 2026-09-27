@@ -25,8 +25,13 @@ struct RootView: View {
                 ProgressView("Signing out…")
             }
         }
-        .safeAreaInset(edge: .bottom, spacing: 0) {
-            BuildEnvironmentIndicator(environment: environment)
+        .safeAreaInset(edge: .top, spacing: 0) {
+            HStack {
+                Spacer()
+                BuildEnvironmentIndicator(environment: environment)
+            }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 2)
         }
         .animation(.easeInOut(duration: 0.2), value: store.state)
     }
@@ -53,13 +58,13 @@ struct BuildEnvironmentIndicator: View {
     }
 
     var body: some View {
-        HStack(spacing: 6) {
-            Circle().fill(color).frame(width: 7, height: 7).accessibilityHidden(true)
-            Text("Build: \(title)").font(.caption.weight(.semibold))
+        HStack(spacing: 4) {
+            Circle().fill(color).frame(width: 5, height: 5).accessibilityHidden(true)
+            Text("Build: \(title)").font(.caption2.weight(.medium))
         }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 8)
-        .background(.regularMaterial)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 3)
+        .background(.regularMaterial, in: Capsule())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Build environment: \(title)")
         .accessibilityIdentifier("app.buildEnvironment")

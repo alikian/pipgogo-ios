@@ -4,6 +4,31 @@ import Testing
 
 @Suite(.serialized)
 struct APIClientTests {
+    @Test func doorToDoorRoundTripAndExternalSearch() throws {
+        var intake = TripIntake(); intake.destination = "New York"; intake.start_date = "2026-10-10"; intake.end_date = "2026-10-14"
+        var travel = DoorToDoorTravel(); travel.mode = "fly"; travel.departure_airport = "SAN"
+        var flight = FlightSegment(); flight.arrival_airport = "EWR"; flight.departure_airport = "SAN"
+        flight.departure_timezone = "America/Los_Angeles"; flight.arrival_timezone = "America/New_York"
+        flight.departure_local = "2026-10-10T23:00"; flight.arrival_local = "2026-10-11T07:00"
+        travel.flights = [flight]; travel.transfers = [GroundTransfer(leg: "airport_to_hotel")]; intake.door_to_door = travel
+        let decoded = try APIJSON.decoder().decode(TripIntake.self, from: APIJSON.encoder().encode(intake))
+        #expect(decoded == intake)
+        let url = travel.flightSearchURL(destination: intake.destination, when: "", start: intake.start_date, end: intake.end_date)
+        let query = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems?.first?.value ?? ""
+        #expect(url.host == "www.google.com")
+        #expect(query.contains("SAN") && query.contains("New York") && query.contains("2026-10-14"))
+    }
+
+    @Test func olderJourneyIntakeDecodesWithoutDoorToDoorFields() throws {
+        var intake = TripIntake(); intake.destination = "San Diego"
+        let encoded = try APIJSON.encoder().encode(intake)
+        var object = try #require(JSONSerialization.jsonObject(with: encoded) as? [String: Any])
+        object.removeValue(forKey: "door_to_door")
+        let decoded = try APIJSON.decoder().decode(TripIntake.self, from: JSONSerialization.data(withJSONObject: object))
+        #expect(decoded.door_to_door == nil)
+        #expect(decoded.destination == "San Diego")
+    }
+
     @Test func mapsUnauthorizedResponse() async {
         let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: makeSession(status: 401, body: Data()))
         await #expect(throws: APIClientError.unauthorized) { try await client.account(accessToken: "not-a-real-token") }

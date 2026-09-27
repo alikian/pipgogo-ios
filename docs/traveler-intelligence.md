@@ -83,3 +83,26 @@ Backend: 64 tests passed, 1 skipped (DynamoDB pagination under the memory fixtur
 and formatting passed. Browser authentication harness: 9 tests passed. iOS: 39 tests across
 4 suites passed. Signed Dev build and CloudFormation template validation passed. These automated checks
 cover source and mocked behavior; separate runtime evidence appears above. Device acceptance is pending.
+
+## Added requirement — door-to-door journeys
+
+Section 29 of the requirements adds progressive travel-mode/flight intake, upload/manual/search
+entry paths, reviewed structured flight segments, outbound and return ground transfers, time-zone
+aware first/last-day availability, and flight-change recalculation that protects reservations.
+Implemented in source: additive `door_to_door` intake with validated flight segments, four
+transfer legs, actual-airport summaries and UTC-based elapsed-time arithmetic. The initial screen
+now asks destination, timing and “Anything already decided?”; flight/transfer entry follows later.
+Manual flight entry, external search and confirmation uploads are available. Extracted flights
+remain proposed until corrected/confirmed; reviewed direction/order replaces the matching segment.
+Save recalculates transfer windows and flags accepted activity plans for review. “Save and update
+activity suggestions” creates a proposal; reservations and the accepted plan remain unchanged
+until deliberate acceptance. Old clients omitting the additive field preserve existing flights.
+
+Live flight status, traffic, pickup instructions and airline-specific buffers are not connected.
+Travelers enter transfer estimates and confirm buffers; missing timing remains provisional.
+Ambiguous/nonexistent local DST times are rejected for airline clarification. Connecting flights
+must follow the previous arrival; cross-airport connections are explicitly flagged.
+
+Verification: 73 backend tests passed, 1 skipped; 41 iOS tests and signed Dev build passed.
+A synthetic live GPT-6 confirmation extracted outbound/return EWR flights. Physical-device,
+real-media and external search acceptance remain pending.

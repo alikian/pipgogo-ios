@@ -122,15 +122,17 @@ struct TripIntakeView: View {
                         TextField("Approximate dates, e.g. October", text: $store.draft.approximate_dates)
                         Stepper("\(store.draft.duration_days ?? 4) days", value: Binding(get: { store.draft.duration_days ?? 4 }, set: { store.draft.duration_days = $0 }), in: 1...365)
                     }
+                    Section("Anything already decided?") {
+                        TextField("Bookings, ideas, or nothing yet", text: $store.draft.existing_plans, axis: .vertical)
+                    }
+                } else if step == 1 {
                     Section("How much is already planned?") {
                         Picker("Existing plans", selection: $store.draft.planning_state) {
                             Text("Mostly planned").tag("mostly_planned")
                             Text("Partly planned").tag("partly_planned")
                             Text("Starting from scratch").tag("starting_from_scratch")
-                        }.pickerStyle(.inline)
-                        TextField("Anything already planned?", text: $store.draft.existing_plans, axis: .vertical)
+                        }
                     }
-                } else if step == 1 {
                     Section("Who's coming?") {
                         if store.draft.travelers.isEmpty { Text("Just me for now").foregroundStyle(.secondary) }
                         ForEach($store.draft.travelers) { $traveler in
@@ -218,6 +220,7 @@ struct PipTripView: View {
     let tripID: UUID
     @State private var showIntake = false
     @State private var showImport = false
+    @State private var showTravel = false
     @State private var review: TripImport?
     @State private var tab = "conversation"
     @State private var memorySuggestion: String?
@@ -231,6 +234,13 @@ struct PipTripView: View {
                     }.pickerStyle(.segmented).padding()
                     ScrollView {
                         VStack(alignment: .leading, spacing: 18) {
+                            if trip.data.intake.door_to_door?.mode == nil || trip.data.intake.door_to_door?.mode == "unknown" {
+                                Button("How will you get there—fly, drive, train, or something else?") { store.edit(trip); showTravel = true }
+                            }
+                            if trip.data.plan_needs_review == true {
+                                Text("Travel details changed. Review the new transfer times and update your activity suggestions. Confirmed reservations are protected.").foregroundStyle(.orange)
+                                Button("Update affected plans") { Task { await store.act(PipAction(action: "plan")); tab = "plan" } }.disabled(store.busy || store.hasPending)
+                            }
                             if tab == "conversation" {
                                 if trip.data.messages.isEmpty {
                                     Text("🦆 Hi, I'm Pip.").font(.title2.bold())
@@ -256,6 +266,8 @@ struct PipTripView: View {
                                 }
                             } else if tab == "plan" {
                                 Text("Room to explore").font(.title.bold())
+                                TravelSummaryView(trip: trip.data)
+                                Button("Flights and transfers") { store.edit(trip); showTravel = true }
                                 Text("Suggestions are not bookings. Live hours, weather and availability have not been verified.").font(.caption).foregroundStyle(.secondary)
                                 ForEach(trip.data.intake.commitments) { item in
                                     Label(item.title, systemImage: "lock.fill").font(.headline)
@@ -284,6 +296,8 @@ struct PipTripView: View {
                                 Text(trip.data.intake.lodging.property_name)
                                 Text(trip.data.intake.lodging.address)
                                 Text(trip.data.intake.existing_plans)
+                                TravelSummaryView(trip: trip.data)
+                                Button("Flights and transfers") { store.edit(trip); showTravel = true }
                                 Button("Edit trip details") { store.edit(trip); showIntake = true }
                                 Button("Import existing plans", systemImage: "paperclip") { showImport = true }
                                 ForEach(trip.data.imports) { item in
@@ -314,6 +328,7 @@ struct PipTripView: View {
                 .sheet(isPresented: $showMemory) { MemoryView(store: store, initialValue: memorySuggestion ?? "") }
                 .sheet(isPresented: $showIntake) { TripIntakeView(store: store) }
                 .sheet(isPresented: $showImport) { ImportView(store: store) }
+                .sheet(isPresented: $showTravel) { DoorToDoorView(store: store) }
                 .sheet(item: $review) { item in ImportReviewView(store: store, item: item) }
             } else { ContentUnavailableView("Trip unavailable", systemImage: "suitcase") }
         }.onAppear { store.selectedID = tripID }
@@ -389,6 +404,7 @@ struct ImportReviewView: View {
     let item: TripImport
     @Environment(\.dismiss) private var dismiss
     @State private var facts: [ImportFact] = []
+    @State private var flights: [FlightSegment] = []
     var body: some View {
         NavigationStack {
             Form {
@@ -402,15 +418,24 @@ struct ImportReviewView: View {
                         Button("Remove this detail", role: .destructive) { facts.remove(at: index) }
                     }
                 }
-                Button("Confirm these details") { Task { await review(facts) } }.disabled(facts.isEmpty)
+                if !flights.isEmpty {
+                    Section { Text("Review every flight. Direction and segment order replace any saved flight with the same direction/order. Other bookings remain unchanged.") }
+                    ForEach($flights) { $flight in
+                        Section("Flight") {
+                            FlightFields(flight: $flight)
+                            Button("Remove flight", role: .destructive) { flights.removeAll { $0.id == flight.id } }
+                        }
+                    }
+                }
+                Button("Confirm these details") { Task { await review(facts, flights: flights) } }.disabled((facts.isEmpty && flights.isEmpty) || store.busy || store.hasPending)
                 Button("Reject import", role: .destructive) { Task { await review([]) } }
                 PipErrorView(store: store)
             }.navigationTitle("Review before adding")
-                .onAppear { facts = item.facts }
+                .onAppear { facts = item.facts; flights = item.flights ?? [] }
         }
     }
-    func review(_ selected: [ImportFact]) async {
-        await store.act(PipAction(action: "review_import", import_id: item.id, facts: selected))
+    func review(_ selected: [ImportFact], flights: [FlightSegment] = []) async {
+        await store.act(PipAction(action: "review_import", import_id: item.id, facts: selected, flights: flights))
         if store.error == nil { dismiss() }
     }
 }
@@ -453,6 +478,175 @@ struct MemoryView: View {
                 .confirmationDialog("Forget this memory?", isPresented: Binding(get: { forgetting != nil }, set: { if !$0 { forgetting = nil } })) {
                     Button("Forget", role: .destructive) { if let forgetting { Task { await store.forget(forgetting); self.forgetting = nil } } }
                 }
+        }
+    }
+}
+
+struct FlightFields: View {
+    @Binding var flight: FlightSegment
+    var body: some View {
+        Group {
+            Picker("Journey", selection: $flight.direction) { Text("Outbound").tag("outbound"); Text("Return").tag("return") }
+            Stepper("Segment \(flight.sequence)", value: $flight.sequence, in: 1...20)
+            TextField("Airline", text: $flight.airline)
+            TextField("Flight number", text: $flight.flight_number).textInputAutocapitalization(.characters)
+            TextField("Departure airport, e.g. SAN", text: $flight.departure_airport).textInputAutocapitalization(.characters).autocorrectionDisabled()
+            TextField("Arrival airport, e.g. JFK, LGA, EWR", text: $flight.arrival_airport).textInputAutocapitalization(.characters).autocorrectionDisabled()
+            TextField("Departure local: YYYY-MM-DDTHH:MM", text: $flight.departure_local).autocorrectionDisabled()
+            TextField("Departure time zone, e.g. America/Los_Angeles", text: $flight.departure_timezone).textInputAutocapitalization(.never).autocorrectionDisabled()
+            TextField("Arrival local: YYYY-MM-DDTHH:MM", text: $flight.arrival_local).autocorrectionDisabled()
+            TextField("Arrival time zone, e.g. America/New_York", text: $flight.arrival_timezone).textInputAutocapitalization(.never).autocorrectionDisabled()
+            TextField("Departure terminal (if known)", text: $flight.departure_terminal)
+            TextField("Arrival terminal (if known)", text: $flight.arrival_terminal)
+            TextField("Booking reference", text: $flight.booking_reference)
+            Picker("Flight status", selection: $flight.status) {
+                Text("Booked").tag("booked"); Text("Changed").tag("changed")
+                Text("Cancelled").tag("cancelled"); Text("Unknown").tag("unknown")
+            }
+        }
+    }
+}
+
+struct DoorToDoorView: View {
+    @Bindable var store: IntelligenceStore
+    @Environment(\.dismiss) private var dismiss
+    @State private var showUpload = false
+    @State private var review: TripImport?
+    private var travel: Binding<DoorToDoorTravel> {
+        Binding(get: { store.draft.door_to_door ?? DoorToDoorTravel() }, set: { store.draft.door_to_door = $0 })
+    }
+    var body: some View {
+        NavigationStack {
+            Form {
+                Section("How will you get there?") {
+                    Picker("Fly, drive, train, or something else?", selection: travel.mode) {
+                        Text("Not sure yet").tag("unknown"); Text("Fly").tag("fly")
+                        Text("Drive").tag("drive"); Text("Train").tag("train"); Text("Something else").tag("other")
+                    }
+                    TextField("Starting from (city or pickup point)", text: travel.home)
+                }
+                if travel.wrappedValue.mode == "fly" {
+                    Section("Do you already have your flights?") {
+                        Picker("Flights", selection: travel.booking_status) {
+                            Text("Not yet").tag("not_booked"); Text("Booked").tag("booked"); Text("Not sure").tag("unknown")
+                        }
+                        TextField("Departure airport or city", text: travel.departure_airport)
+                        Button("Upload flight confirmation", systemImage: "paperclip") {
+                            Task {
+                                await store.saveIntake()
+                                if store.error == nil && !store.hasPending { showUpload = true }
+                            }
+                        }
+                        Button("Enter flight details", systemImage: "airplane") { addFlight("outbound") }
+                        Link("Find flights", destination: travel.wrappedValue.flightSearchURL(destination: store.draft.destination, when: store.draft.approximate_dates, start: store.draft.start_date, end: store.draft.end_date))
+                        Text("Opens an external flight search with known trip details. Searching does not book a flight; add your booking whenever you're ready.").font(.caption)
+                    }
+                    ForEach(travel.flights) { $flight in
+                        Section("Flight") {
+                            FlightFields(flight: $flight)
+                            Button("Remove flight", role: .destructive) { travel.wrappedValue.flights.removeAll { $0.id == flight.id } }
+                        }
+                    }
+                    Section {
+                        Button("Add outbound connection") { addFlight("outbound") }
+                        Button("Add return flight or connection") { addFlight("return") }
+                        Text("Review local dates, times and time zones before saving. Leave unknown fields blank; your plan will stay provisional.").font(.caption)
+                    }
+                    Section("What ground transportation is already arranged?") {
+                        Text("Consider rideshare, a drop-off, parking, shuttle, transit, taxi or rental car. Pickup points and travel times need checking for your actual airport.")
+                    }
+                    ForEach(travel.transfers) { $transfer in
+                        Section(LocalizedStringKey(transfer.leg)) {
+                            Picker("Transport", selection: $transfer.mode) {
+                                ForEach(["not_sure", "rideshare", "drop_off", "parking", "shuttle", "transit", "taxi", "rental_car"], id: \.self) { Text(LocalizedStringKey($0)).tag($0) }
+                            }
+                            Toggle("Already arranged", isOn: $transfer.arranged)
+                            TextField("Pickup point", text: $transfer.pickup_point)
+                            TextField("Luggage needs", text: $transfer.luggage)
+                            TextField("Estimated travel minutes (unknown if blank)", value: $transfer.duration_minutes, format: .number).keyboardType(.numberPad)
+                            if transfer.leg == "home_to_airport" || transfer.leg == "hotel_to_airport" {
+                                Stepper("Airport buffer: \(transfer.airport_buffer_minutes) min", value: $transfer.airport_buffer_minutes, in: 0...600, step: 15)
+                            } else {
+                                Stepper("Arrival / baggage: \(transfer.baggage_minutes) min", value: $transfer.baggage_minutes, in: 0...300, step: 15)
+                                if transfer.leg == "airport_to_hotel" { Stepper("Rest after arrival: \(transfer.rest_minutes) min", value: $transfer.rest_minutes, in: 0...1440, step: 15) }
+                            }
+                            TextField("Transfer notes", text: $transfer.notes, axis: .vertical)
+                        }
+                    }
+                    Section { Text("Buffers are editable planning estimates, not airline advice or live traffic. Allow more time where your airline, international check-in, baggage or accessibility needs require it.").font(.caption) }
+                } else {
+                    Section { TextField("Journey details or anything already arranged", text: $store.draft.transportation_notes, axis: .vertical) }
+                }
+                if let trip = store.selected {
+                    ForEach(trip.data.imports.filter { $0.status == "proposed" }) { item in
+                        Button("Review \(item.filename)") {
+                            Task {
+                                await store.saveIntake()
+                                if store.error == nil && !store.hasPending { review = item }
+                            }
+                        }
+                    }
+                }
+                Section {
+                    Button("Save reviewed travel details") { Task { await save(updatePlan: false) } }
+                    Button("Save and update activity suggestions") { Task { await save(updatePlan: true) } }
+                    Text("Updated transfer windows are recalculated on save. Existing activities stay unchanged until you accept new suggestions; confirmed reservations are protected.").font(.caption)
+                }
+            }
+            .disabled(store.busy || store.hasPending)
+            .safeAreaInset(edge: .bottom) { if store.error != nil { PipErrorView(store: store).padding() } }
+            .navigationTitle("Door to door")
+            .toolbar { Button("Close") { dismiss() } }
+            .interactiveDismissDisabled(store.busy || store.hasPending)
+            .onAppear { prepareTransfers() }
+            .sheet(isPresented: $showUpload, onDismiss: reloadDraft) { ImportView(store: store) }
+            .sheet(item: $review, onDismiss: reloadDraft) { item in ImportReviewView(store: store, item: item) }
+        }
+    }
+    private func prepareTransfers() {
+        var value = travel.wrappedValue
+        for leg in DoorToDoorTravel.legs where !value.transfers.contains(where: { $0.leg == leg }) { value.transfers.append(GroundTransfer(leg: leg)) }
+        travel.wrappedValue = value
+    }
+    private func reloadDraft() { if let trip = store.selected, !store.hasPending { store.edit(trip); prepareTransfers() } }
+    private func addFlight(_ direction: String) {
+        var flight = FlightSegment(); flight.direction = direction
+        flight.sequence = (travel.wrappedValue.flights.filter { $0.direction == direction }.map(\.sequence).max() ?? 0) + 1
+        travel.wrappedValue.flights.append(flight)
+    }
+    private func save(updatePlan: Bool) async {
+        await store.saveIntake()
+        guard store.error == nil && !store.hasPending else { return }
+        if updatePlan { await store.act(PipAction(action: "plan")) }
+        if store.error == nil && !store.hasPending { dismiss() }
+    }
+}
+
+struct TravelSummaryView: View {
+    let trip: Journey
+    var body: some View {
+        if let travel = trip.intake.door_to_door, travel.mode == "fly" {
+            VStack(alignment: .leading, spacing: 10) {
+                Text("Door to door").font(.headline)
+                if trip.travel_summary?.provisional != false { Text("Provisional—some details or arrangements need confirmation.").font(.caption).foregroundStyle(.orange) }
+                ForEach(travel.flights.sorted { ($0.direction, $0.sequence) < ($1.direction, $1.sequence) }) { flight in
+                    Text("\(flight.departure_airport.isEmpty ? "?" : flight.departure_airport) → \(flight.arrival_airport.isEmpty ? "?" : flight.arrival_airport) · \(flight.airline) \(flight.flight_number)").font(.subheadline.bold())
+                    Text("\(flight.departure_local) \(flight.departure_timezone) → \(flight.arrival_local) \(flight.arrival_timezone)").font(.caption)
+                    Text(LocalizedStringKey(flight.status)).font(.caption)
+                }
+                if let summary = trip.travel_summary {
+                    ForEach(summary.legs) { leg in
+                        Text(LocalizedStringKey(leg.leg)).font(.subheadline.bold())
+                        Text("\(leg.airport.isEmpty ? "Airport unknown" : leg.airport) · \(leg.time_zone)").font(.caption)
+                        if let leave = leg.leave_at, let arrive = leg.arrive_at { Text("Leave \(leave) · arrive \(arrive)").font(.caption) }
+                    }
+                    ForEach(summary.windows.keys.sorted(), id: \.self) { key in
+                        Text(LocalizedStringKey(key)).font(.caption.bold())
+                        Text(summary.windows[key] ?? "").font(.caption)
+                    }
+                    ForEach(summary.warnings, id: \.self) { Text($0).font(.caption).foregroundStyle(.secondary) }
+                }
+            }.padding().background(Color.teal.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
         }
     }
 }

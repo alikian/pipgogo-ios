@@ -2146,3 +2146,51 @@ The first implementation is ready for testing when this scenario works:
 
 If this scenario works reliably, the core Pip traveler-intelligence system is ready for real-world pilot refinement.
 
+## 29. Door-to-door journey (outbound and return)
+
+User-supplied requirement added September 27, 2026 in chat, after the Google Doc snapshot above.
+This addition is authoritative. Status: implemented in source September 27; deployment and
+physical-device acceptance are tracked separately in the roadmap.
+
+Ask naturally: “How will you get there—fly, drive, train, or something else?” If flying, ask
+“Do you already have your flights?” Offer **Upload flight confirmation**, **Enter flight details**,
+or **Find flights**. If flights aren’t booked, offer a link to an external flight search with the
+trip details filled in where possible. The traveler can add the booking later.
+
+For booked flights, capture each outbound, connecting, and return flight: airline, flight number,
+airports, dates, local departure and arrival times, time zones, terminals when known, booking
+reference, and status. Let the traveler review and correct extracted details before saving them.
+
+Plan the ground transportation for each part of the trip: **home → departure airport → arrival
+airport → hotel**, then the reverse for the return trip. Ask what’s already arranged and suggest
+options such as Uber or another rideshare, a drop-off, parking, shuttle, transit, taxi, or rental
+car. Include pickup points, luggage needs, travel time, and realistic airport buffers.
+
+For a San Diego → New York trip, Pip should use the *actual* arrival airport and landing time
+to plan the hotel transfer. JFK, LGA, and EWR call for different routes.
+
+Flight and transfer times determine how much of the first and last days is available. Pip should
+account for time zones, baggage, hotel check-in and check-out, and rest. If a flight changes, it
+should recalculate affected transfers and activities while protecting confirmed reservations.
+
+Keep the first trip screen light: **destination, when, and “Anything already decided?”** Ask
+about flights and transfers progressively. If details are unknown, show a clearly provisional plan.
+
+### Acceptance criteria
+
+- The initial screen asks only for destination, timing and “Anything already decided?”;
+  transportation, flight booking and transfer questions follow progressively.
+- Flying offers all three entry paths. External search pre-fills known trip details where
+  supported; opening a search never marks a flight as booked. Bookings can be added later.
+- Upload and manual entry support every outbound, connecting and return segment and the fields
+  above. Extracted details remain proposed until reviewed, corrected and confirmed.
+- The journey covers outbound and return ground legs, distinguishing already-arranged transfers
+  from suggestions, with pickup points, luggage, time estimates and airport buffers.
+- San Diego → New York examples use the actual JFK, LGA or EWR arrival and local landing time;
+  an unknown airport/time is visibly provisional rather than silently assumed.
+- First/last-day availability accounts for time-zone and date changes, baggage, transfers,
+  check-in/check-out and rest. Overnight and connecting flights preserve correct chronology.
+- A changed flight triggers a reviewable update of affected transfers/activities. Confirmed
+  reservations remain intact; conflicts are surfaced for the traveler’s decision.
+- Estimated transfer durations and buffers are labeled; unavailable live flight/transport data
+  is not presented as verified. Existing ownership, versioning and retry guarantees still apply.
