@@ -5,7 +5,7 @@
 **Current stage: Dev hosted on ECS Fargate · Next: 5.2a — Device acceptance**
 Updated September 27, 2026 · [Project time log](TIME_LOG.md)
 
-**Total logged time: 7 hours 28 minutes 29 seconds** · 6 hours estimated + 1 hour 28 minutes 29 seconds recorded; see the time log for scope.
+**Total logged time: 7 hours 29 minutes 28 seconds** · 6 hours estimated + 1 hour 29 minutes 28 seconds recorded; see the time log for scope.
 
 | Available on the iPhone | Still to build |
 | --- | --- |
@@ -57,7 +57,7 @@ selected through Photos, camera capture, or documents selected through Files. Fi
 imports accept **PDF (.pdf) and DOCX (.docx) only**; other document formats are
 unsupported. Photos and camera continue to accept images. Example inputs include
 flight confirmations, hotel reservations and itineraries. Schedule after the basic-flow acceptance milestone (2.8);
-the next work milestone is **5.2a — hosted Dev environment**; the next product feature remains **2.7 — partial companion package**.
+the next work milestone is **5.2a — hosted Dev device acceptance**; the next product feature remains **2.7 — partial companion package**.
 
 | Part | Scope | Completion check |
 | --- | --- | --- |
@@ -106,18 +106,20 @@ not an existing reservation.
 ## 5.1 · Automated release versioning
 
 **Status: ○ Planned.** Git/GitHub source control already exists. This milestone adds release
-versioning before automated deployment and TestFlight distribution. Backend and iOS versions
+semantic release versioning for production deployment and TestFlight distribution.
+Commit-based Dev deployment is already implemented. Backend and iOS versions
 remain independent; the next product feature is 2.7, partial companion package.
 
 | Part | Scope | Completion check |
 | --- | --- | --- |
 | 5.1a — Version policy | Define independent major.minor.patch release versions, including pre-1.0 breaking-change rules, and a single version source per repository. Classify release changes with `fix:`, `feat:` and explicit breaking-change markers. Keep release versions distinct from API `/v1` and record versions. | Document examples for fixes, features and breaking changes; version sources agree with packaged application metadata. |
 | 5.1b — Release PR automation | Use GitHub Actions to prepare version bumps and changelogs in release PRs. Require passing checks and deliberate approval before merging; create immutable Git tags and GitHub releases from the approved commit. | Demonstrate a release PR and tag with matching version/commit; repeated workflow runs cannot duplicate a release or move an existing tag. |
-| 5.1c — Build identity and delivery | Assign monotonically increasing iOS build numbers; stamp app version/build and source commit into artifacts. Identify backend images by version, commit and immutable digest. Connect approved releases to deployment/TestFlight workflows when available. | Concurrent runs and retries cannot reuse a build number for different uploads; artifacts and test reports identify the exact backend and iOS versions/commits tested together. |
+| 5.1c — Build identity and delivery · partially implemented | Assign monotonically increasing iOS build numbers; stamp app version/build and source commit into artifacts. Identify backend images by version, commit and immutable digest. Connect approved releases to deployment/TestFlight workflows when available. | Concurrent runs and retries cannot reuse a build number for different uploads; artifacts and test reports identify the exact backend and iOS versions/commits tested together. |
 | 5.1d — Compatibility and recovery | Preserve compatibility with older installed apps; document backend rollback to a previously tested image and iOS recovery through a new build/release. | Rehearse a release and backend rollback in staging; record compatibility results and retain the release artifacts needed for recovery. |
 
-Versioning automation is not implemented yet. Hosting, signing/upload credentials and CI checks
-are separate prerequisites for delivery; adding this milestone does not enable publishing.
+Semantic versioning and release PR automation are not implemented yet. Backend Dev
+images already have immutable commit tags, source revision labels and deployment digests.
+iOS build-number automation, release versions and TestFlight delivery remain planned.
 
 ## 5.2 · Backend deployment
 
@@ -129,12 +131,12 @@ The next product feature is 2.7, partial companion package.
 
 **App build configuration implemented:** Local (simulator/LAN), Dev (`https://dev.pippipgo.com`) and Prod (`https://pippipgo.com`) schemes select their backend at build time and keep saved tokens separate. Dev is deployed and intentionally shares existing development Cognito/data with Local; Prod identity/data isolation remains a prerequisite. The variants replace one another on a device. See iOS `docs/environments.md`.
 
-| Part | Scope | Completion check |
+| Part | Delivered | Remaining acceptance/work |
 | --- | --- | --- |
-| **5.2a — Dev deployed · device verification next** | Deploy the API at `https://dev.pippipgo.com` through CloudFormation with TLS/DNS, container registry, runtime IAM and defined data/authentication boundaries. Preserve existing Cognito and retained data. | Dev build on a physical iPhone completes authentication and the trip/check-in flow with the Mac backend stopped; record hosting, readiness, isolation and rollback evidence. |
-| 5.2b — Dev pipeline implemented; release/Prod pending | Add GitHub Actions tests, Ruff lint/format and container validation. Use short-lived AWS credentials; publish versioned images and deploy by immutable digest from 5.1. Validate in staging before approved production promotion. | A release deploys the tested image; failed checks block promotion, secrets stay outside Git/images, and reruns do not deploy a different artifact under the same version. |
-| 5.2c — Hosted API and iOS integration | Configure production Cognito/DynamoDB access and a dedicated HTTPS API URL; update iOS release configuration and restrict development-only settings/callbacks appropriately. Keep the sign-in domain migration separate. | A physical iPhone on cellular or another network completes sign-in, refresh, logout and the implemented trip flow with the Mac backend stopped; record app/backend versions and account-isolation results. |
-| 5.2d — Operations and recovery | Add monitoring, actionable alerts, traffic/cost limits and log retention without exposing tokens or travel data. Validate real DynamoDB concurrency, interrupted account deletion, retention/per-trip erasure requirements and backup recovery; document rollback. | Exercise alerts and recovery in staging, roll back to a tested image without losing retained data, and record operational evidence before traveler testing. |
+| **5.2a — Hosted Dev · 🟡 deployed** | Standard ECS Fargate at `https://dev.pippipgo.com`; separate CloudFormation, HTTPS/DNS, ECR, scoped runtime IAM; live authenticated access and two-account isolation passed | Verify the Dev app on a physical iPhone over cellular with the Mac backend stopped; complete the planned rollback evidence |
+| 5.2b — Deployment pipeline · 🟡 Dev implemented | GitHub Actions tests, Ruff, CloudFormation lint and real container checks; branch-bound OIDC; immutable image digests; successful initial deployment and rolling update | Semantic release/version automation from 5.1 and reviewed production promotion; configure production prerequisites before enabling its workflow |
+| 5.2c — Production API and iOS integration · ○ planned | Local/Dev/Prod app schemes and environment indicator implemented; Dev installed on Ali’s iPhone 12 | Separate Prod Cognito/DynamoDB, coordinate apex DNS, configure matching Prod app authentication, deploy and verify the complete physical-device journey |
+| 5.2d — Operations and recovery · 🟡 initial controls only | CPU scaling with a maximum task count, 14-day logs, unhealthy-target/5xx alarms, circuit-breaker rollback and documented digest redeployment | Alert subscriptions/drills, traffic and budget controls, intentional rollback drill, real concurrency/deletion recovery, retention and backup recovery checks |
 
 Dev hosting and delivery stacks are deployed. Backend `infra/hosting.md` documents
 standard Fargate, persistence separation, branch strategy, cost assumptions and rollback.
@@ -148,25 +150,35 @@ ECR image, TLS, readiness, authenticated access, two-account isolation and brows
 refresh/revocation/logout checks passed. See backend `docs/hosting-verification.md`. Complete the
 remaining acceptance checks below before marking this milestone complete.
 
-1. Select AWS hosting and define region, cost limits and the Dev data/authentication
-   boundary. Document whether Local shares Dev data; keep future production data
-   separate and preserve existing Cognito identities and retained DynamoDB records.
-2. Add reproducible CloudFormation for the container runtime, image registry,
-   least-privilege runtime IAM, HTTPS certificate and Route 53 record. Preserve
-   `auth.pippipgo.com`, apex website planning, certificate validation and mail DNS.
-3. Deploy a traceable backend image, configure Cognito/DynamoDB, and verify public
-   `/health`, `/ready` and authenticated `/v1/me`. Add useful logs, monitoring and
-   a documented redeploy/rollback command without exposing tokens or trip details.
-4. Verify the Dev build shows **Build: Dev**, calls the hosted API and uses the
-   matching authentication settings. Run sign-in, refresh, logout, account isolation
-   and the implemented trip/check-in flow on a physical iPhone using cellular or
-   another network, with the Mac backend stopped.
+- [x] Select standard ECS Fargate in `us-west-2`; document cost assumptions and the shared Local/Dev data/authentication boundary.
+- [x] Keep `persistence.yaml` separate from `delivery.yaml` and `hosting.yaml`; preserve the deployed persistence stack and authentication resources.
+- [x] Deploy HTTPS, DNS, registry, runtime IAM, logs, scaling and initial alarms through CloudFormation.
+- [x] Verify health/readiness, authenticated account access, trip creation, two-account isolation, cleanup and browser refresh/revocation/logout.
+- [x] Complete a GitHub-driven rolling update: [run 36302546875](https://github.com/alikian/pippipgo-backend/actions/runs/36302546875), task definition revision 2, 56 backend tests passed and 1 skipped.
+- [ ] Confirm **Build: Dev**, sign-in, refresh/logout and the implemented trip/check-in flow on a physical iPhone using cellular or another network with the Mac backend stopped.
+- [ ] Rehearse an intentional rollback to a known-good image and record the result; a successful rolling update does not prove rollback.
 
-Completion requires recorded deployment and physical-device evidence, not merely
-DNS resolution or a successful app build. Initial Dev deployment may use documented
-manual commands; GitHub Dev deployment is now implemented. Semantic release/version
-and production promotion work remains 5.1 and 5.2b.
-Production hosting at `https://pippipgo.com` remains a later deployment step.
+Browser testing used a temporary process-only DNS pin while the Mac cached an earlier
+negative result; hostname/TLS verification remained enabled. GitHub's public HTTPS
+checks used normal DNS. See the [verification evidence](https://github.com/alikian/pippipgo-backend/blob/develop/docs/hosting-verification.md)
+for the exact boundaries. Device acceptance remains unconfirmed.
+
+### Branch strategy and environment boundaries
+
+| Branch/build | Target | Current state |
+| --- | --- | --- |
+| Local app | Mac localhost/LAN backend | Available when the local server is running; server currently stopped |
+| `develop` / Dev app | `https://dev.pippipgo.com` | Default branch in both repositories; backend pushes deploy through GitHub Actions; documentation-only pushes skip deployment |
+| `main` / Prod app | `https://pippipgo.com` | Reserved for production promotion; deployment disabled until separate persistence/authentication and apex DNS ownership are ready |
+
+Local and Dev deliberately share development accounts and trip data. Production must
+use separate resources. App variants replace one another on a device and retain separate
+token stores. Feature branches start from `develop`; promote reviewed work to `main`.
+The workflow routing does not itself enforce branch protection or required reviewers.
+
+The Dev service currently routes `/v1/*`, `/health` and `/ready`. Neither the public
+homepage nor `/docs` is published by this deployment. The next product implementation
+after hosted-Dev acceptance remains **2.7 — partial companion package**.
 
 ## 5.3 · Public website — pippipgo.com
 
@@ -189,6 +201,7 @@ require separately defined scope before implementation.
 
 ## Device checks still open
 
+- [ ] Confirm hosted Dev on cellular: Dev indicator, sign-in, trip/check-in, refresh and logout with the Mac backend stopped (5.2a).
 - [ ] Set up Appium and verify a physical-iPhone automation session (2.8a).
 - [ ] Add and run existing-screen Appium regression tests (2.8b).
 
@@ -196,10 +209,12 @@ require separately defined scope before implementation.
 - [ ] Profile: save → reopen → edit → clear.
 - [ ] Companions: create → edit → delete; verify account switching.
 - [ ] Trips: create with companions → reopen → edit → review a conflict → delete.
+- [ ] Check-in: save → reopen → clear; edit the trip and verify stale-context reconfirmation.
 - [ ] Run the complete trip journey after check-in and packages are built (2.8).
 
-The installed app currently uses the Mac's LAN backend. Drafts and pending requests are held
-in memory; durable offline use and a hosted production API are still future work.
+The installed Dev build targets the hosted API. The Local build still requires the Mac's
+LAN backend. Drafts and pending requests remain in memory; durable offline use and a
+hosted production API are still future work.
 
 ## Details and maintenance
 

@@ -16,7 +16,7 @@
 | Basic trip flow | 2.1–2.6 implemented; 2.2–2.6 still need device acceptance |
 | AI planning | 3.1–3.6 planned; no AI-generated trips in the app yet |
 | Offline / hosting | Dev API deployed on standard ECS Fargate; device acceptance, Prod and offline remain |
-| Latest checks | 110 Local iOS tests; 7 configuration checks each for Dev/Prod; three signed builds passed. Prior backend: 48 passed, 1 skipped |
+| Latest checks | 110 Local iOS tests; 7 configuration checks each for Dev/Prod; three signed builds passed. Backend: 56 passed, 1 skipped; Dev deployment and rolling update passed |
 
 Update `ROADMAP.md` in both repositories with each milestone change. Keep implementation and
 device acceptance statuses separate. Detailed requirements and historical checkpoints follow.
