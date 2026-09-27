@@ -1,0 +1,7 @@
+#include "Common.xcconfig"
+PIPGOGO_APP_ENVIRONMENT = local
+PIPGOGO_DISPLAY_NAME = PipPipGo Local
+// When this host changes, also update its NSExceptionDomains key in Debug-Info.plist.
+PIPGOGO_LAN_HOST = 192.168.0.156
+PIPGOGO_BACKEND_BASE_URL = http:$(PIPGOGO_URL_SLASH)$(PIPGOGO_URL_SLASH)$(PIPGOGO_LAN_HOST):8765
+PIPGOGO_BACKEND_BASE_URL[sdk=iphonesimulator*] = http:$(PIPGOGO_URL_SLASH)$(PIPGOGO_URL_SLASH)localhost:8765

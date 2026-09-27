@@ -43,4 +43,4 @@ The existing account loader now uses this shared path; it no longer duplicates t
 
 The full iOS suite passed with **29 tests**: 15 existing authentication/account tests plus 14 shared-client tests. New cases cover immutable bodies/keys/versions across 401 and timeout retry, a bounded 401 retry, refresh failure, conflict current-record preservation, non-version 409, validation details, non-JSON errors and status retention, list/sync/tombstone decoding, DELETE semantics, invalid operations, authenticated downloads and cancellation.
 
-Run the `pipgogo` scheme's tests in Xcode or with `xcodebuild test` targeting an installed simulator. Device build verification is tracked in AGENTS.md. Tests use mocked HTTP responses; this milestone does not claim live mutation acceptance for screens not yet implemented.
+Run the `Local` scheme's tests in Xcode or with `xcodebuild test` targeting an installed simulator. Device build verification is tracked in AGENTS.md. Tests use mocked HTTP responses; this milestone does not claim live mutation acceptance for screens not yet implemented.

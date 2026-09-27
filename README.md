@@ -4,7 +4,7 @@ GitHub: [alikian/pippipgo-ios](https://github.com/alikian/pippipgo-ios).
 
 Public domain: **pippipgo.com** (GoDaddy registration, AWS DNS). Sign-in uses **https://auth.pippipgo.com**; the root domain does not host a website yet.
 
-**[View the roadmap and current progress](ROADMAP.md)** — Next: **2.7 · Partial companion package**.
+**[View the roadmap and current progress](ROADMAP.md)** — Next: **5.2a · Hosted Dev environment**.
 
 **[Project time log](TIME_LOG.md)** — Work sessions, recorded time, and historical estimates.
 
@@ -14,7 +14,7 @@ SwiftUI client for PipPipGo's Google/Cognito sign-in, authenticated account, tra
 
 ## Backend address
 
-Debug Simulator builds use `http://localhost:8765`; Debug device builds currently use `http://192.168.0.156:8765`. Update `PIPGOGO_BACKEND_BASE_URL` and the Debug ATS exception if the Mac address changes. Release builds intentionally use `https://api.pipgogo.invalid` until hosting exists and contain no HTTP transport exception.
+Select the **Local**, **Dev** or **Prod** Xcode scheme. Local uses the Mac backend (localhost on Simulator, LAN address on iPhone); Dev targets `https://dev.pippipgo.com`; Prod targets `https://pippipgo.com`. Dev/Prod API hosting is not deployed yet. See [build environments and switching instructions](docs/environments.md).
 
 ## Local backend
 
@@ -28,13 +28,13 @@ The iOS OAuth flow always uses real Cognito. The backend must run in Cognito aut
 
 ## Google sign-in
 
-Select a signing team for device builds if Xcode requests one. Run the `pipgogo` scheme, tap **Continue with Google**, complete the hosted sign-in, and allow the app to reopen through `pipgogo://auth/callback`.
+Select a signing team for device builds if Xcode requests one. Run the `Local` scheme, tap **Continue with Google**, complete the hosted sign-in, and allow the app to reopen through `pipgogo://auth/callback`.
 
 ## Physical iPhone on the development LAN
 
-Debug device builds use `http://192.168.0.156:8765`; Simulator builds keep
-`http://localhost:8765`. Debug includes a local-network permission message and an HTTP
-exception for this specific LAN IP. Release settings are unchanged.
+Local device builds use `http://192.168.0.156:8765`; Simulator builds keep
+`http://localhost:8765`. Local includes a local-network permission message and an HTTP
+exception for this specific LAN IP. Dev and Prod require HTTPS.
 
 Start the backend from pippipgo-backend with:
 
@@ -43,7 +43,7 @@ uv run python -m scripts.login_test --profile alikianus --region us-west-2 --lan
 ```
 
 Keep both devices on the same Wi-Fi and allow the app's Local Network permission.
-If your Mac's IP changes, update the Debug device URL and matching Debug plist exception.
+If your Mac's IP changes, update `PIPGOGO_LAN_HOST` in `Configurations/Local.xcconfig` and its HTTP exception in `pipgogo/Resources/Debug-Info.plist`.
 The iOS OAuth callback remains `pipgogo://auth/callback`. The browser login test remains
 a localhost-only OAuth flow; the phone uses its native sign-in and calls the LAN API.
 

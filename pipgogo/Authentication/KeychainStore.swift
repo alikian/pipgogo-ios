@@ -8,7 +8,9 @@ protocol TokenStoring: Sendable {
 }
 
 struct KeychainStore: TokenStoring {
-    private let service = "com.pipgogo.ios.authentication"
+    private let service: String
+
+    init(environment: AppEnvironment = .local) { service = environment.keychainService }
     private let account = "cognito-token-set"
 
     func load() throws -> TokenSet? {

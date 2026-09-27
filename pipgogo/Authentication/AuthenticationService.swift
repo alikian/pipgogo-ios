@@ -6,9 +6,9 @@ actor AuthenticationService: AccessTokenProviding {
     private var tokens: TokenSet?
     private var refreshTask: Task<TokenSet, Error>?
 
-    init(configuration: AppConfiguration = .live, keychain: any TokenStoring = KeychainStore(), urlSession: URLSession = .shared) {
+    init(configuration: AppConfiguration = .live, keychain: (any TokenStoring)? = nil, urlSession: URLSession = .shared) {
         cognito = CognitoClient(configuration: configuration, urlSession: urlSession)
-        self.keychain = keychain
+        self.keychain = keychain ?? KeychainStore(environment: configuration.environment)
     }
 
     func restore() async throws -> Bool {

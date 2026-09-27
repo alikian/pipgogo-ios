@@ -1,0 +1,5 @@
+// Shared app identity. Local/Dev/Prod replace one another on the same device.
+PIPGOGO_URL_SLASH = /
+// Existing Cognito foundation. Override per environment when separate pools/clients are deployed.
+PIPGOGO_COGNITO_DOMAIN = https:$(PIPGOGO_URL_SLASH)$(PIPGOGO_URL_SLASH)auth.pippipgo.com
+PIPGOGO_COGNITO_CLIENT_ID = 5ungc4grbiid7de7rjbh0jn2ff

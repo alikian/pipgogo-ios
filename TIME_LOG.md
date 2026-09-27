@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 6 hours 53 minutes 0 seconds** — 6 hours estimated + 53 minutes 0 seconds recorded.
+**Total logged time: 7 hours 0 minutes 33 seconds** — 6 hours estimated + 1 hour 0 minutes 33 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 53 minutes 0 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 1 hour 0 minutes 33 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **6 hours 53 minutes 0 seconds (includes 6 hours estimated)** |
+| Total time spent | **7 hours 0 minutes 33 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -42,6 +42,9 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-26-15 | September 26, 2026 | Codex | Sara iPhone installation | Built and installed PipPipGo on Sara’s iPhone 16 Pro Max; verified signature and device provisioning; launch blocked by iOS signing/trust security denial; backend ready | 18:54:34–18:55:40, UTC−07:00; no excluded pauses | 1.10 minutes (66 seconds) | Recorded |
 | 2026-09-26-16 | September 26, 2026 | Codex | Documentation naming | Standardized PipPipGo/pippipgo naming guidance and container example in both repositories; clarified historical domains, refreshed README milestone/check-in links; verified whitespace and mirrored logs/roadmaps | 23:09:33–23:10:16, UTC−07:00; no excluded pauses | 0.72 minutes (43 seconds) | Recorded |
 | 2026-09-26-17 | September 26, 2026 | Codex | Commit/push preparation | Reviewed both repositories, fetched remotes, scanned pending files for credential patterns and verified whitespace and mirrored documentation; prior implementation test results retained | 23:10:54–23:11:35, UTC−07:00; no excluded pauses | 0.68 minutes (41 seconds) | Recorded |
+| 2026-09-26-18 | September 26, 2026 | Codex | 2.9 · Photos and document import planning | Added Photos/Files access and PDF/DOCX-only Files imports; expanded extraction and device acceptance criteria; validated mirrored milestone text and whitespace | 23:29:03–23:29:40, UTC−07:00; no excluded pauses | 0.62 minutes (37 seconds) | Recorded |
+| 2026-09-26-19 | September 26, 2026 | Codex | Local/Dev/Prod app builds | Added three schemes/configurations, backend selection, labels and environment-scoped tokens; passed 110 Local tests, 7 configuration checks each for Dev/Prod and all three signed builds; verified bundled settings and updated documentation | 23:32:39–23:37:08, UTC−07:00; no excluded pauses | 4.48 minutes (269 seconds) | Recorded |
+| 2026-09-26-20 | September 26, 2026 | Codex | Dev setup milestone and build indicator | Prioritized hosted Dev setup 5.2a; added accessible Local/Dev/Prod footer; passed 110 tests and three signed builds; verified Simulator appearance; Local installed on Ali iPhone 12, launch blocked by locked device | 23:37:24–23:39:51, UTC−07:00; no excluded pauses | 2.45 minutes (147 seconds) | Recorded |
 
 The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
 

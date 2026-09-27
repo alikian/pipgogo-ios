@@ -1,0 +1,4 @@
+#include "Common.xcconfig"
+PIPGOGO_APP_ENVIRONMENT = prod
+PIPGOGO_DISPLAY_NAME = PipPipGo
+PIPGOGO_BACKEND_BASE_URL = https:$(PIPGOGO_URL_SLASH)$(PIPGOGO_URL_SLASH)pippipgo.com

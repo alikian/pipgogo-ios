@@ -8,7 +8,7 @@
 
 ## Progress at a glance
 
-**[Readable roadmap](ROADMAP.md)** · **Next: 2.7 — Partial companion package**
+**[Readable roadmap](ROADMAP.md)** · **Next: 5.2a — Hosted Dev environment**
 
 | Area | Current state |
 | --- | --- |
@@ -16,7 +16,7 @@
 | Basic trip flow | 2.1–2.6 implemented; 2.2–2.6 still need device acceptance |
 | AI planning | 3.1–3.6 planned; no AI-generated trips in the app yet |
 | Offline / production hosting | Not delivered; app uses the Mac's LAN backend |
-| Latest checks | 103 iOS tests; 48 backend tests passed, 1 skipped; lint/format passed; signed iPhone build installed |
+| Latest checks | 110 Local iOS tests; 7 configuration checks each for Dev/Prod; three signed builds passed. Prior backend: 48 passed, 1 skipped |
 
 Update `ROADMAP.md` in both repositories with each milestone change. Keep implementation and
 device acceptance statuses separate. Detailed requirements and historical checkpoints follow.
@@ -52,7 +52,7 @@ Backend project: `/Users/alikianzadeh/git/pippipgo-backend`. Read its `docs/api.
 - Historical September 25 verification: a signed Debug build was installed and launched on the connected iPhone 12 using the former sign-in domain `https://auth.pipgogo.com` and the LAN backend at `http://192.168.0.156:8765`. Verify the Mac address and server availability on later runs.
 - Fixed duplicate OAuth callback parameters crashing the parser and literal `+` handling in OAuth form bodies. The networking test suite is serialized because its mock URLProtocol uses shared response state.
 - All 15 simulator tests passed, including callback/state/PKCE, code exchange, refresh, revocation request and account response checks. These mocked tests do not prove live Google sign-in or revocation.
-- **Step 1 complete (September 25, 2026):** signed iPhone build and session restoration were agent-verified; sign-in, logout persistence and the 16-minute expiry/refresh test were user-confirmed. Agent-operated Chrome verified live refresh-token revocation (`invalid_grant` after a working baseline), B denied read/list/overwrite of A's trip, A's original trip unchanged, and test-trip soft deletion. Final browser test session signed out. See backend `docs/auth-verification.md` for evidence and limits. Steps 2.1–2.6 are implemented; profile, companion, and trip physical-device acceptance is pending. The next implementation milestone is 2.7, partial companion package.
+- **Step 1 complete (September 25, 2026):** signed iPhone build and session restoration were agent-verified; sign-in, logout persistence and the 16-minute expiry/refresh test were user-confirmed. Agent-operated Chrome verified live refresh-token revocation (`invalid_grant` after a working baseline), B denied read/list/overwrite of A's trip, A's original trip unchanged, and test-trip soft deletion. Final browser test session signed out. See backend `docs/auth-verification.md` for evidence and limits. Steps 2.1–2.6 are implemented; profile, companion, and trip physical-device acceptance is pending. The next work milestone is 5.2a, hosted Dev environment; the next product feature remains 2.7.
 
 ## Step 2 milestones — basic iOS trip flow
 
@@ -102,7 +102,7 @@ See backend `infra/managed-login.md` for pricing, recreation and staged-downgrad
 - In-use deletion explains active-trip protection. Deletion handles empty-data tombstones and removes list rows without promising permanent history erasure. Session-owned drafts survive navigation; sign-out cancels/resets work and ignores late responses.
 - Verification: **57 iOS tests passed** (42 prior plus 15 companion state/service cases); backend companion-in-use tests passed with memory and Moto-backed DynamoDB (**2 passed**). Mocked tests do not prove live device acceptance.
 - Signed Debug iPhone build passed and was installed on the connected iPhone 12. The bundled PipPipGo display name and app-icon configuration are preserved.
-- Physical-device companion CRUD/account switching and the earlier profile save/reopen/clear check remain pending. See iOS `docs/companions.md` for acceptance instructions and limitations. Milestone 2.4 is now implemented; see its checkpoint below. Next implementation milestone: **2.7 — partial companion package**.
+- Physical-device companion CRUD/account switching and the earlier profile save/reopen/clear check remain pending. See iOS `docs/companions.md` for acceptance instructions and limitations. Milestone 2.4 is now implemented; see its checkpoint below. Next implementation milestone: **5.2a — hosted Dev environment**.
 
 - Language preferences in the traveler profile and companion editor use a simple single-selection dropdown with a Not set option. Keep the backend string-array format: a new selection writes one value, clearing writes an empty array. Existing custom values remain selectable; legacy multiple values are not rewritten merely by viewing the form.
 
@@ -119,7 +119,7 @@ See backend `infra/managed-login.md` for pricing, recreation and staged-downgrad
 - Session drafts survive navigation, and sign-out cancels/resets work. Late reads/writes cannot restore the previous account's state; replayed receipts do not replace newer fetched trips. Durable offline persistence remains Step 4.
 - Verification: **73 iOS tests passed** (57 prior plus 16 trip model/state/service cases), and **6 backend regression cases passed** across memory and Moto-backed DynamoDB. No API or AWS changes were required.
 - Signed Debug build passed and was installed on the connected iPhone 12. The LAN backend reported ready with Cognito and DynamoDB.
-- Physical-device trip create/reopen/companion selection/account switching acceptance remains pending, alongside earlier profile/companion acceptance. See iOS `docs/trips.md`. Next implementation milestone: **2.7 — partial companion package**. AI planning remains a separate planned Step 3 feature.
+- Physical-device trip create/reopen/companion selection/account switching acceptance remains pending, alongside earlier profile/companion acceptance. See iOS `docs/trips.md`. Next implementation milestone: **5.2a — hosted Dev environment**. AI planning remains a separate planned Step 3 feature.
 
 ## Milestone 2.5 implementation — September 26, 2026
 
@@ -128,7 +128,7 @@ See backend `infra/managed-login.md` for pricing, recreation and staged-downgrad
 - Deletion requires a clean draft and confirmation, handles empty-data tombstones, and removes the trip from the active list. Conflict resolution never automatically repeats deletion. The UI explains retained history; known deletions prevent stale receipts from restoring rows. Sign-out cancels/resets deletion and ignores late responses.
 - Verification: **85 iOS tests passed** and **10 backend regressions passed** with memory/Moto DynamoDB. No API or infrastructure changes were required. Physical-device editing/conflict/deletion acceptance remains pending, as do earlier unconfirmed device checks. See iOS `docs/trips.md`.
 - Signed Debug build passed and was installed on the connected iPhone 12. The LAN backend reported ready with Cognito and DynamoDB.
-- Next implementation milestone: **2.7 — partial companion package**. AI planning and durable offline storage remain separate Step 3 and Step 4 work.
+- Next implementation milestone: **5.2a — hosted Dev environment**. AI planning and durable offline storage remain separate Step 3 and Step 4 work.
 
 - Trip details refresh automatically when opened, when the app becomes active, and when the editor closes. Keep the manual circular refresh button removed; automatic reads must preserve drafts and never submit mutations.
 
@@ -189,12 +189,13 @@ are separate prerequisites for delivery; adding this milestone does not enable p
 ## 5.2 · Backend deployment
 
 **Status: ○ Planned.** Deploy a hosted HTTPS API so PipPipGo works without the Mac's LAN
-backend. Build on release versioning (5.1) before TestFlight distribution and traveler testing.
+backend. Start with hosted Dev setup (5.2a); use release versioning (5.1) for
+automated delivery before TestFlight distribution and traveler testing.
 The next product feature is 2.7, partial companion package.
 
 | Part | Scope | Completion check |
 | --- | --- | --- |
-| 5.2a — Hosting and environments | Choose AWS application hosting; document cost, region, staging/production isolation and API domain. Manage hosting, TLS/DNS, container registry and least-privilege runtime IAM through backend CloudFormation. Preserve existing Cognito and retained DynamoDB data. | Review reproducible templates and environment configuration; verify the container starts and its health/readiness checks pass. |
+| 5.2a — Hosted Dev environment (next) | Deploy `https://dev.pippipgo.com` through CloudFormation with HTTPS, runtime IAM, monitoring and defined data/authentication boundaries; preserve existing identities and retained data. | Dev build completes authentication and trip/check-in acceptance on a physical phone with the Mac backend stopped; record deployment, isolation and rollback evidence. |
 | 5.2b — Deployment pipeline | Add GitHub Actions tests, Ruff lint/format and container validation. Use short-lived AWS credentials; publish versioned images and deploy by immutable digest from 5.1. Validate in staging before approved production promotion. | A release deploys the tested image; failed checks block promotion, secrets stay outside Git/images, and reruns do not deploy a different artifact under the same version. |
 | 5.2c — Hosted API and iOS integration | Configure production Cognito/DynamoDB access and a dedicated HTTPS API URL; update iOS release configuration and restrict development-only settings/callbacks appropriately. Keep the sign-in domain migration separate. | A physical iPhone on cellular or another network completes sign-in, refresh, logout and the implemented trip flow with the Mac backend stopped; record app/backend versions and account-isolation results. |
 | 5.2d — Operations and recovery | Add monitoring, actionable alerts, traffic/cost limits and log retention without exposing tokens or travel data. Validate real DynamoDB concurrency, interrupted account deletion, retention/per-trip erasure requirements and backup recovery; document rollback. | Exercise alerts and recovery in staging, roll back to a tested image without losing retained data, and record operational evidence before traveler testing. |
@@ -235,24 +236,75 @@ require separately defined scope before implementation.
 - Missing/read-failed trips cannot be confirmed. Sign-out cancels work, clears notes and ignores late responses. Live travel data remains unavailable, with warnings and missing categories shown. No package generation or durable offline storage was added.
 - Validation: **103 iOS tests passed**; **48 backend tests passed, 1 skipped**, including six new memory/Moto check-in regressions; Ruff lint/format passed. Signed Debug iPhone build passed and was installed/launched on the designated iPhone 12. The LAN backend reported ready with Cognito/DynamoDB. No API or infrastructure changes were required.
 - Physical-device save/reopen/clear, stale-version/conflict handling and account switching acceptance remain pending, alongside earlier device checks. See iOS `docs/check-ins.md`. Mocked tests and installation are not device acceptance.
-- Next implementation milestone: **2.7 — partial companion package**.
+- Next implementation milestone: **5.2a — hosted Dev environment**.
 
 
-## 2.9 · Trip input from screenshots and camera
+## 2.9 · Trip input from Photos, camera and Files
 
-**Status: ○ Planned, not implemented.** Import trip details from a screenshot selected
-from Photos or a photo taken with the camera, such as a flight confirmation, hotel
-reservation or itinerary. Schedule after the basic-flow acceptance milestone (2.8);
-the next implementation milestone remains **2.7 — partial companion package**.
+**Status: ○ Planned, not implemented.** Import trip details from screenshots/photos
+selected through Photos, camera capture, or documents selected through Files. Files
+imports accept **PDF (.pdf) and DOCX (.docx) only**; other document formats are
+unsupported. Photos and camera continue to accept images. Example inputs include
+flight confirmations, hotel reservations and itineraries. Schedule after the basic-flow acceptance milestone (2.8);
+the next work milestone is **5.2a — hosted Dev environment**; the next product feature remains **2.7 — partial companion package**.
 
 | Part | Scope | Completion check |
 | --- | --- | --- |
-| 2.9a — Image input | Add Import trip details with screenshot/photo selection and camera capture, preview, crop/rotate, retake and cancel. Handle denied permissions and unavailable camera without losing the current trip draft. | On a physical iPhone, select a screenshot and capture a reservation photo; preview/cancel/retake work and permission failures offer a recoverable path. |
-| 2.9b — Extract trip fields | Recognize text and map available destinations, dates, flight numbers/airports/times, accommodation names/addresses and reservation references into an editable draft. Show the source image/text alongside extracted values; flag unclear dates, time zones and unreadable/missing fields instead of guessing. Select on-device OCR or a server/provider approach during implementation; explain any image upload before it occurs and define retention/deletion. Treat image text as data, never instructions to execute. | Representative flight, hotel and itinerary images produce reviewable fields; blurred, cropped, ambiguous and unsupported content remains explicitly unresolved. Images and extracted private data are not included in diagnostic logs. |
+| 2.9a — Photos, camera and Files input | Add Import trip details with user-selected Photos access, camera capture and a Files picker restricted to PDF and DOCX. Validate file content/type as well as extension; reject other formats with a clear message. Provide source preview, image crop/rotate, camera retake and cancel. Handle limited/denied Photos access, unavailable camera and inaccessible files without losing the current trip draft. | On a physical iPhone, select a screenshot/photo, capture a reservation photo, and import a PDF and a DOCX from Files. Unsupported or mislabeled files are rejected; preview/cancel/retake and access-failure recovery work. |
+| 2.9b — Extract trip fields | Extract text from images, PDFs (including scanned pages) and DOCX documents, and map available destinations, dates, flight numbers/airports/times, accommodation names/addresses and reservation references into an editable draft. Show the source image/document text alongside extracted values; flag unclear dates, time zones and unreadable/missing fields instead of guessing. Select on-device OCR or a server/provider approach during implementation; explain any image/document upload before it occurs and define retention/deletion. Treat imported text as data, never instructions to execute. | Representative flight, hotel and itinerary images, PDFs and DOCX files produce reviewable fields. Blurred, cropped, ambiguous or unreadable content remains explicitly unresolved; corrupt/password-protected documents fail recoverably. Source files and extracted private data are not included in diagnostic logs. |
 | 2.9c — Review and save | Let the traveler correct fields and explicitly choose a new trip or selected updates to an existing trip. Show proposed changes, preserve unrelated/manual fields, and require approval before saving. Reuse ownership, validation, version-conflict and idempotency rules; repeated input must not silently create duplicates. | Correct an extracted date, save and reopen; existing trip fields are preserved unless selected for replacement. A lost response and retry cannot duplicate a trip; concurrent edits require deliberate resolution. Changes to confirmed trip context require a new check-in. |
-| 2.9d — Device acceptance | Test screenshot and camera flows end to end with dedicated sample reservations, plus poor images, permission denial, cancellation, extraction/network failures, duplicate input and account switching. Extend Appium coverage where supported and record manual camera steps separately. | Record actual device/extraction results for flight and hotel inputs: capture/select → extract → review/correct → save → reopen. Separate automated, manual, skipped and blocked checks before accepting the milestone. |
+| 2.9d — Device acceptance | Test Photos, camera, PDF and DOCX flows end to end with dedicated sample reservations, plus poor images, scanned PDFs, unsupported/mislabeled formats, corrupt/password-protected documents, limited/denied access, cancellation, extraction/network failures, duplicate input and account switching. Extend Appium coverage where supported and record manual camera steps separately. | Record actual device/extraction results for flight and hotel inputs across Photos, camera, PDF and DOCX: capture/select → extract → review/correct → save → reopen. Separate automated, manual, skipped and blocked checks before accepting the milestone. |
 
 Imported details are traveler-supplied information, not independently verified live
 travel facts. Automatic email/calendar connections and continuous screen recording
-are outside this milestone. Durable offline import queues remain Step 4; raw image
+are outside this milestone. Durable offline import queues remain Step 4; raw image/document
 storage is not a requirement for saving the approved structured trip details.
+
+## Local, Dev and Prod app builds — September 26, 2026
+
+- Shared Xcode schemes/configurations are now `Local`, `Dev`, `Prod`; the former `pipgogo` scheme and Debug/Release configuration names are replaced. The project, target, module, bundle ID and native OAuth callbacks retain their configured identities.
+- Local targets localhost on Simulator and the Mac LAN backend on device. Dev targets `https://dev.pippipgo.com`; Prod targets `https://pippipgo.com`. Dev/Prod require HTTPS with no Local HTTP exceptions or automatic fallback. Select a scheme and rebuild to switch; every scheme uses its own configuration for Run and Archive.
+- All builds keep bundle ID `com.pipgogo.ios`, so installation replaces the existing variant. Display names distinguish Local and Dev; Prod displays PipPipGo. Keychain token services are separate per environment; Local preserves its existing service for session continuity.
+- Cognito settings are configurable through `Configurations/*.xcconfig` and currently share the existing foundation. Build selection does not establish separate backend databases or user pools. Hosted Dev/Prod APIs, identity/data isolation and end-to-end device acceptance remain milestone 5.2.
+- Production routing must send `/v1/*` on pippipgo.com to the API while website paths serve milestone 5.3. No AWS, DNS, OAuth or production hosting changes were made. See iOS `docs/environments.md` for configuration and commands. Next product milestone remains 2.7.
+- Validation: 110 Local simulator tests passed; 7 configuration tests each passed under Dev and Prod (Prod test build explicitly enabled testability). Signed device builds passed for all three variants; bundled URLs/names/HTTP policy and scheme Run/Archive mappings were verified. Hosted API/device acceptance is still pending; the new variants were built, not installed during this session.
+
+
+### 5.2a — Next: hosted Dev environment
+
+**Status: ○ Planned, not deployed.** This is the next work milestone, before returning
+to product milestone 2.7. Deliver a usable HTTPS API at `https://dev.pippipgo.com`
+for the Dev app build, so testing no longer requires the Mac backend.
+
+1. Select AWS hosting and define region, cost limits and the Dev data/authentication
+   boundary. Document whether Local shares Dev data; keep future production data
+   separate and preserve existing Cognito identities and retained DynamoDB records.
+2. Add reproducible CloudFormation for the container runtime, image registry,
+   least-privilege runtime IAM, HTTPS certificate and Route 53 record. Preserve
+   `auth.pippipgo.com`, apex website planning, certificate validation and mail DNS.
+3. Deploy a traceable backend image, configure Cognito/DynamoDB, and verify public
+   `/health`, `/ready` and authenticated `/v1/me`. Add useful logs, monitoring and
+   a documented redeploy/rollback command without exposing tokens or trip details.
+4. Verify the Dev build shows **Build: Dev**, calls the hosted API and uses the
+   matching authentication settings. Run sign-in, refresh, logout, account isolation
+   and the implemented trip/check-in flow on a physical iPhone using cellular or
+   another network, with the Mac backend stopped.
+
+Completion requires recorded deployment and physical-device evidence, not merely
+DNS resolution or a successful app build. Initial Dev deployment may use documented
+manual commands; automated release/version/promotion work remains 5.1 and 5.2b.
+Production hosting at `https://pippipgo.com` remains a later deployment step.
+
+The app now shows its configured build environment (Local, Dev or Prod) in an accessible footer across root sign-in, account and navigation states. The label reflects the build configuration; it does not claim the remote API is deployed or healthy.
+
+Environment indicator validation: 110 Local simulator tests passed; Local/Dev/Prod signed builds passed. The Local sign-in footer was visually verified in Simulator. Updated Local installed on Ali’s iPhone 12; automatic launch was blocked because the device was locked. Hosted Dev setup remains planned, with no AWS/DNS changes in this session.
+
+## Hosting decision — September 27, 2026
+
+Use standard ECS Fargate for the API. Backend `infra/persistence.yaml` replaces the
+foundation filename only; preserve deployed `pipgogo-dev-foundation` and retained
+resources. `delivery.yaml` manages ECR/OIDC/roles; `hosting.yaml` manages the runtime.
+Use `develop` as the default branch, deploy backend develop to Dev and main to Prod.
+Local and Dev share current development data/authentication. Production requires
+separate persistence/auth and coordinated apex DNS ownership before enabling delivery.
+See backend `infra/hosting.md`; live deployment/device evidence must be recorded separately.
