@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 8 hours 7 minutes 38 seconds** — 6 hours estimated + 2 hours 7 minutes 38 seconds recorded.
+**Total logged time: 8 hours 8 minutes 1 second** — 6 hours estimated + 2 hours 8 minutes 1 second recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 2 hours 7 minutes 38 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 2 hours 8 minutes 1 second (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **8 hours 7 minutes 38 seconds (includes 6 hours estimated)** |
+| Total time spent | **8 hours 8 minutes 1 second (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -54,6 +54,7 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-27-07 | September 27, 2026 | Codex | GPT-6 direct API | Switched defaults/ECS/docs to GPT-6 Astra; validated live structured response with existing secret; 64 tests passed, 1 skipped, lint/format/template passed | 13:03:50–13:04:34, UTC−07:00; no excluded pauses | 0.73 minutes (44 seconds) | Recorded |
 | 2026-09-27-08 | September 27, 2026 | Codex | Dev rollout preparation | Verified branch, infrastructure lint, 9 harness tests, credential-pattern scan, rollback image and signed app; prepared non-replacing IAM change set; execution/push blocked pending specific user approval | 13:05:06–13:06:29, UTC−07:00; no excluded pauses | 1.38 minutes (83 seconds) | Recorded |
 | 2026-09-27-09 | September 27, 2026 | Codex | Dev rollout | Applied approved IAM change, pushed backend 66c505e, completed Actions/ECS deployment; verified public health/auth rejection and live Astra from one-off runtime task; iOS publication remains separately approval-blocked | 13:08:43–13:14:36, UTC−07:00; no excluded pauses (includes AWS rollout waits) | 5.88 minutes (353 seconds) | Recorded |
+| 2026-09-27-10 | September 27, 2026 | Codex | iOS source publication | Verified branch, whitespace and credential-pattern scan; committed and pushed matching iOS rebuild a237028 to develop after explicit approval | 13:19:25–13:19:48, UTC−07:00; no excluded pauses | 0.38 minutes (23 seconds) | Recorded |
 
 The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
 

@@ -61,7 +61,8 @@ Old app product endpoints are retired; authentication remains compatible. No dat
 Public health/readiness returned 200 and unauthenticated journey access returned 401.
 A synthetic runtime AI task exited 0 and logged its success marker without credentials or
 traveler records. This verifies provider/runtime access, not an authenticated phone journey.
-The signed matching iOS build is ready; source publication and device installation remain pending.
+The matching iOS source is published on `develop` as `a237028`; the signed Dev build is ready.
+Device installation and acceptance remain pending.
 
 Deployment run: https://github.com/alikian/pippipgo-backend/actions/runs/36346947300
 Image digest: `sha256:c881f73fd70106066289e7f2188753df5abdf664fb8ee7b171ee276eb5f4e402`.

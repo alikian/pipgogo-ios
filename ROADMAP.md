@@ -27,8 +27,7 @@ product records are retained. The old product screens and APIs have been replace
 The rebuilt backend is deployed at `https://dev.pippipgo.com` from commit `66c505e`.
 New product endpoints begin at `/v1/journeys`; the previous product endpoints are retired.
 Authentication remains compatible and legacy data is retained. The matching signed Dev iOS
-build is ready but has not been installed during this rebuild. Its source publication awaits
-separate approval. See [implementation notes](docs/traveler-intelligence.md).
+build is ready but has not been installed during this rebuild. Its source is published on `develop` as `a237028`. See [implementation notes](docs/traveler-intelligence.md).
 
 Provider: **GPT-6 Astra via the direct OpenAI API**, `gpt-6-astra`.
 The server secret and direct structured inference were verified using the deployed ECS image
