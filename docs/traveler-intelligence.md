@@ -128,3 +128,7 @@ Dev rollout 36357597703 succeeded; CloudFormation UPDATE_COMPLETE, ECS revision 
 health/readiness 200 and unauthenticated journey access 401 were verified. Synthetic live
 extraction, EWR first/last-day planning and intake checks passed; these do not prove a real
 authenticated device journey.
+
+Home greeting: uses the saved explicit/confirmed preferred name, with a neutral fallback.
+“What Pip remembers” now offers a dedicated preferred-name field; saving updates both home
+and trip-intake greetings. Signed Dev build passed; physical-device acceptance remains pending.

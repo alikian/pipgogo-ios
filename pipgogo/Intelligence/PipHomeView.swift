@@ -19,6 +19,12 @@ struct PipHomeView: View {
                     HStack(alignment: .top) {
                         Text("🦆").font(.system(size: 48)).accessibilityHidden(true)
                         VStack(alignment: .leading, spacing: 8) {
+                            if let name = store.preferredName {
+                                Text("Hi, \(name)").font(.title2.bold()).accessibilityIdentifier("pip.greeting")
+                            } else {
+                                Text("Hi there").font(.title2.bold()).accessibilityIdentifier("pip.greeting")
+                                Button("Add your preferred name") { showMemory = true }.font(.subheadline)
+                            }
                             Text("A little less planning.\nA little more exploring.").font(.largeTitle.bold())
                             Text("I'm Pip. Let's make this trip feel like you.").foregroundStyle(.secondary)
                         }
@@ -598,10 +604,25 @@ struct MemoryView: View {
     @State private var value = ""
     @State private var tripOnly = false
     @State private var forgetting: APIRecord<TravelerMemory>?
+    @State private var preferredName = ""
     var body: some View {
         NavigationStack {
             Form {
                 Section { Text("You can correct Pip anytime. Temporary trip needs stay separate from what you want remembered.") }
+                Section("What should Pip call you?") {
+                    TextField("Preferred name", text: $preferredName).textContentType(.nickname)
+                    Button("Save name") {
+                        Task {
+                            let existing = store.memories.filter { !$0.deleted && $0.data.key == "preferred_name" && $0.data.scope == "persistent" }.max { $0.revision < $1.revision }
+                            var memory = TravelerMemory()
+                            memory.key = "preferred_name"
+                            memory.value = preferredName.trimmingCharacters(in: .whitespacesAndNewlines)
+                            memory.original_text = memory.value
+                            memory.status = "explicit"
+                            await store.saveMemory(memory, id: existing.flatMap { UUID(uuidString: $0.id) } ?? UUID(), version: existing?.version ?? 0)
+                        }
+                    }.disabled(preferredName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || store.busy || store.hasPending)
+                }
                 ForEach(store.memories) { item in
                     VStack(alignment: .leading, spacing: 8) {
                         Text(item.data.value)
@@ -626,7 +647,7 @@ struct MemoryView: View {
                 }
                 PipErrorView(store: store)
             }.navigationTitle("What Pip remembers")
-                .onAppear { if !initialValue.isEmpty { value = initialValue } }
+                .onAppear { preferredName = store.preferredName ?? ""; if !initialValue.isEmpty { value = initialValue } }
                 .confirmationDialog("Forget this memory?", isPresented: Binding(get: { forgetting != nil }, set: { if !$0 { forgetting = nil } })) {
                     Button("Forget", role: .destructive) { if let forgetting { Task { await store.forget(forgetting); self.forgetting = nil } } }
                 }
