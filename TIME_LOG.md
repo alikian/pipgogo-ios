@@ -57,6 +57,7 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-27-10 | September 27, 2026 | Codex | iOS source publication | Verified branch, whitespace and credential-pattern scan; committed and pushed matching iOS rebuild a237028 to develop after explicit approval | 13:19:25–13:19:48, UTC−07:00; no excluded pauses | 0.38 minutes (23 seconds) | Recorded |
 | 2026-09-27-11 | September 27, 2026 | Codex | Build-label layout fix | Replaced bottom full-width environment bar with compact top badge to free Tell Pip composer; signed Dev build and whitespace checks passed; device visual confirmation pending | 13:23:40–13:24:06, UTC−07:00; no excluded pauses | 0.43 minutes (26 seconds) | Recorded |
 | 2026-09-27-12 | September 27, 2026 | Codex | Door-to-door requirement | Added user-supplied outbound/return flight and transfer scope, acceptance criteria and roadmap dependencies; verified mirrored requirements and whitespace; implementation remains planned | 15:46:32–15:47:08, UTC−07:00; no excluded pauses | 0.60 minutes (36 seconds) | Recorded |
+| 2026-09-27-13 | September 27, 2026 | Codex | Door-to-door and conversational intake | Implemented reviewed flights, transfer timing, progressive personal intake and speech input; passed 75 backend/42 iOS tests, signed build, synthetic live model checks and simulator visual review; deployed Dev revision 5 and published iOS | 22:51:03–23:13:02, UTC+00:00; no excluded pauses | 21.98 minutes (1319 seconds) | Recorded |
 
 The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
 
@@ -65,7 +66,6 @@ This rename segment excludes initial repository inspection and subsequent time-l
 The documentation release-preparation segment excludes initial diff review, time-log bookkeeping and commit/push operations.
 
 The release-versioning planning segment excludes subsequent time-log bookkeeping.
-| 2026-09-27-13 | September 27, 2026 | Codex | Door-to-door and conversational intake | Implemented reviewed flights, transfer timing, progressive personal intake and speech input; passed 75 backend/42 iOS tests, signed build, synthetic live model checks and simulator visual review; deployed Dev revision 5 and published iOS | 22:51:03–23:13:02, UTC+00:00; no excluded pauses | 21.98 minutes (1319 seconds) | Recorded |
 
 The Appium planning segment excludes initial document inspection and subsequent time-log bookkeeping.
 
