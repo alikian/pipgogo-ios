@@ -113,6 +113,7 @@ struct TripIntake: Codable, Equatable, Sendable {
     var notes = ""
 }
 struct PipMessage: Codable, Identifiable, Equatable, Sendable {
+    var action: String? = nil
     var id: String
     var role: String
     var text: String

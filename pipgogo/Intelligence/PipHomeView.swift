@@ -492,6 +492,9 @@ struct PipTripView: View {
                                 }
                             } else if tab == "plan" {
                                 Text("Room to explore").font(.title.bold())
+                                if trip.data.proposal == nil, let message = trip.data.messages.last, message.role == "pip", message.action == "feedback" {
+                                    Text(message.text).font(.headline)
+                                }
                                 TravelSummaryView(trip: trip.data)
                                 Button("Flights and transfers") { store.edit(trip); showTravel = true }
                                 Text("Suggestions are not bookings. Live hours, weather and availability have not been verified.").font(.caption).foregroundStyle(.secondary)
