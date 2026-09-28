@@ -2212,3 +2212,12 @@ preferences and transport questionnaires together. Infer planning readiness from
 Implementation: short intake screen, explicit name-memory gate, date confirmation, speech
 permission/cancellation flow, upload review and server `intake` action are implemented in source.
 Physical-device speech, keyboard/layout, date and complete conversation acceptance remain pending.
+
+## 31. Master implementation prompt — September 27, 2026
+
+Use the [master implementation prompt](master-implementation-prompt.md) for the next usable
+vertical slice. The live source document was rechecked September 28 UTC (modified September 27
+23:40:33 UTC). Section 27 agrees with progressive intake and internal inferred readiness.
+Persist conversation progress; apply deterministic next-step priorities; review imports before
+planning; offer a provisional plan without a long questionnaire; show explicit revision changes.
+Implementation and acceptance boundaries: [conversation slice](conversation-slice.md).

@@ -120,6 +120,8 @@ struct PipMessage: Codable, Identifiable, Equatable, Sendable {
     var memory_observations: [String]?
 }
 struct PipPlanItem: Codable, Identifiable, Equatable, Sendable {
+    var starts_at: String? = nil
+    var ends_at: String? = nil
     var id: String
     var title: String
     var timing: String
@@ -131,6 +133,13 @@ struct PipProposal: Codable, Equatable, Sendable {
     var items: [PipPlanItem]
     var explanation: String
     var created_at: String
+    var changes: PlanChanges? = nil
+}
+struct PlanChanges: Codable, Equatable, Sendable {
+    var unchanged: [String]
+    var added: [String]
+    var changed: [String]
+    var removed: [String]
 }
 struct ImportFact: Codable, Equatable, Sendable {
     var kind: String
@@ -151,7 +160,14 @@ struct TripImport: Codable, Identifiable, Equatable, Sendable {
     var flights: [FlightSegment]? = nil
     var confirmed_flights: [FlightSegment]? = nil
 }
+struct IntakeProgress: Codable, Equatable, Sendable {
+    var next_step: String
+    var question: String?
+    var turns: Int
+    var skipped: [String]
+}
 struct Journey: Codable, Equatable, Sendable {
+    var conversation: IntakeProgress? = nil
     var travel_summary: DoorToDoorSummary? = nil
     var plan_needs_review: Bool? = nil
     var intake: TripIntake
@@ -178,6 +194,7 @@ struct TravelerMemory: Codable, Equatable, Sendable {
 struct PipAction: Codable, Sendable {
     var action: String
     var text = ""
+    var skip_topic: String? = nil
     var proposal_id: String? = nil
     var import_id: String? = nil
     var facts: [ImportFact] = []
@@ -283,6 +300,9 @@ final class IntelligenceStore {
         } catch APIClientError.conflict(let body, _) {
             guard ticket == epoch else { return }
             error = body.message
+            if ["import_review_required", "intake_changed", "proposal_changed"].contains(body.code) {
+                pending = nil; conflict = nil; return
+            }
             conflict = try? body.currentRecord?.data.decoded(as: Journey.self).mapRecord(body.currentRecord!)
         } catch APIClientError.rejected(let status, let body, _) {
             guard ticket == epoch else { return }

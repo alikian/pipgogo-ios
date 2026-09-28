@@ -130,6 +130,22 @@
         }
       }
     },
+    "Add arranged transfers" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Add arranged transfers"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "افزودن رفت‌وآمدهای هماهنگ‌شده"
+          }
+        }
+      }
+    },
     "Add destination and timing" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -232,6 +248,7 @@
       }
     },
     "Add your preferred name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -260,6 +277,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "نشانی"
+          }
+        }
+      }
+    },
+    "Adds: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adds: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اضافه می‌شود: %@"
           }
         }
       }
@@ -705,6 +738,22 @@
         }
       }
     },
+    "Changes: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changes: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغییر می‌کند: %@"
+          }
+        }
+      }
+    },
     "Changing language keeps your trips and memories." : {
       "localizations" : {
         "en" : {
@@ -806,6 +855,7 @@
       }
     },
     "Choose where and when" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -872,6 +922,22 @@
         }
       }
     },
+    "Confirmed bookings stay unchanged." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirmed bookings stay unchanged."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "رزروهای تأییدشده بدون تغییر می‌مانند."
+          }
+        }
+      }
+    },
     "Connecting…" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -902,6 +968,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ادامه"
+          }
+        }
+      }
+    },
+    "Continue planning" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue planning"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادامه برنامه‌ریزی"
           }
         }
       }
@@ -1089,6 +1171,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "مقصد"
+          }
+        }
+      }
+    },
+    "Destination and timing" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destination and timing"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مقصد و زمان"
           }
         }
       }
@@ -1578,6 +1676,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "چطور می‌روید—هواپیما، ماشین، قطار یا راه دیگری؟"
+          }
+        }
+      }
+    },
+    "I don't know yet; skip" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I don't know yet; skip"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هنوز نمی‌دانم؛ رد شو"
           }
         }
       }
@@ -2296,6 +2410,7 @@
       }
     },
     "Preferred name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2412,6 +2527,22 @@
         }
       }
     },
+    "Remember this? %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Remember this? %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "این را به خاطر بسپارم؟ %@"
+          }
+        }
+      }
+    },
     "Remove commitment" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2476,6 +2607,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "حذف هم‌سفر"
+          }
+        }
+      }
+    },
+    "Removes: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Removes: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف می‌شود: %@"
           }
         }
       }
@@ -2565,6 +2712,22 @@
         }
       }
     },
+    "Review imported details" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Review imported details"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بررسی جزئیات واردشده"
+          }
+        }
+      }
+    },
     "Review local dates, times and time zones before saving. Leave unknown fields blank; your plan will stay provisional." : {},
     "Review saved trip" : {
       "extractionState" : "stale",
@@ -2634,6 +2797,7 @@
       }
     },
     "Save name" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2937,6 +3101,22 @@
         }
       }
     },
+    "Start a provisional plan" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start a provisional plan"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شروع برنامه موقت"
+          }
+        }
+      }
+    },
     "Starting from (city or pickup point)" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -2967,6 +3147,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "از صفر شروع می‌کنم"
+          }
+        }
+      }
+    },
+    "Stays: %@" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stays: %@"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بدون تغییر: %@"
           }
         }
       }
@@ -3473,6 +3669,7 @@
       }
     },
     "What should Pip call you?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

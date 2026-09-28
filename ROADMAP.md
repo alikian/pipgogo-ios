@@ -6,9 +6,9 @@ The prior questionnaire/check-in/package roadmap is superseded and retained in
 
 | Milestone | Local implementation | Acceptance / remaining scope |
 | --- | --- | --- |
-| 1 · Trip and traveler intake | Personal one-question intake with compact summary, speech/upload and inferred readiness; reviewed outbound/connection/return flights, external search, four transfer legs, party/lodging/commitments and import review | Door-to-door device acceptance (section 29), real booking/media review, saved-traveler management and lifecycle validation |
+| 1 · Trip and traveler intake | Personal one-question intake with saved progress, skips, plan handoff and import-review gating; compact summary, speech/upload and inferred readiness; reviewed outbound/connection/return flights, external search, four transfer legs, party/lodging/commitments and import review | Door-to-door device acceptance (section 29), real booking/media review, saved-traveler management and lifecycle validation |
 | 2 · Getting to know you and memory | Conversation, skip/three-exchange completion, atomic scoped learning and natural-language/explicit correction controls | Live learning/correction quality and returning-user acceptance |
-| 3 · Personalized initial plan | Typed OpenAI proposals; airport/time-zone-aware transfer and first/last-day windows; fixed commitments protected | Device/live-quality acceptance of airport-specific timing, geographical/density checks, individual plan-item manipulation |
+| 3 · Personalized initial plan | Typed OpenAI proposals with revision diffs and timestamp-window validation; airport/time-zone-aware transfer and first/last-day windows; fixed commitments protected | Device/live-quality acceptance of airport-specific timing, geographical/density checks, individual plan-item manipulation |
 | 4 · Learning during a trip | Current-trip feedback, temporary context and explicit revision acceptance/rejection | Flight-change device acceptance, live adaptive journey, repeated-choice learning and memory corrections |
 | 5 · Multilingual and multimodal | English/Farsi catalog and RTL, text/photo/PDF/DOCX import path | Translation/device review, camera/audio/live voice and media acceptance |
 | 6 · Location and live context | Planned | Permission-driven location, authoritative places/hours/transit/weather |
@@ -61,3 +61,5 @@ editable trip summary, ambiguous-date confirmation, speech/type/upload input, qu
 and context-aware acknowledgement/next question. No planning-state questionnaire remains.
 The synthetic simulator layout was visually checked; device speech/permission and full-flow acceptance remain pending. Existing travelers/reservations
 can still be edited separately from the light intake screen.
+
+Latest vertical slice: [implementation map and acceptance boundaries](docs/conversation-slice.md).

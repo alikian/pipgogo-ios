@@ -41,6 +41,31 @@ struct APIClientTests {
         store.selectedID = UUID(); store.newTrip(language: "en"); #expect(store.selectedID == nil)
     }
 
+    @Test func savedConversationAndPlanChangesSurviveReload() throws {
+        let progress = try APIJSON.decoder().decode(IntakeProgress.self, from: Data(#"{"next_step":"lodging","question":"Where are you staying?","turns":2,"skipped":["flights"],"answers":{"travel_mode":{"text":"train"}}}"#.utf8))
+        #expect(progress.next_step == "lodging")
+        #expect(progress.skipped == ["flights"])
+        let changes = PlanChanges(unchanged: ["Hotel"], added: ["Market"], changed: [], removed: ["Long walk"])
+        #expect(try APIJSON.decoder().decode(PlanChanges.self, from: APIJSON.encoder().encode(changes)) == changes)
+        let request = try APIRequest<Journey>.put(.journeyAction(UUID()), body: PipAction(action: "skip_intake", skip_topic: "lodging"), expectedVersion: 3)
+        let body = try APIJSON.decoder().decode(JSONValue.self, from: request.body!)
+        #expect(body["skip_topic"] == .string("lodging"))
+    }
+
+    @MainActor @Test func importReviewRejectionDoesNotFreezeActions() async throws {
+        let id = UUID()
+        var intake = TripIntake(); intake.destination = "New York"
+        let record = APIRecord(id: id.uuidString.lowercased(), kind: "journey", version: 1, revision: 1, updatedAt: Date(), deleted: false,
+            data: Journey(intake: intake, messages: [], plan: [], proposal: nil, imports: [], onboarding_done: false, temporary_context: ""))
+        let error = Data(#"{"error":{"code":"import_review_required","message":"Review the import first"}}"#.utf8)
+        let store = IntelligenceStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(status: 409, body: error)])), authentication: TestTokens())
+        store.journeys = [record]; store.selectedID = id; store.edit(record)
+        await store.act(PipAction(action: "plan"))
+        #expect(!store.hasPending)
+        #expect(store.error == "Review the import first")
+        #expect(store.selected?.data.intake.destination == "New York")
+    }
+
     @Test func mapsUnauthorizedResponse() async {
         let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: makeSession(status: 401, body: Data()))
         await #expect(throws: APIClientError.unauthorized) { try await client.account(accessToken: "not-a-real-token") }

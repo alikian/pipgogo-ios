@@ -89,6 +89,18 @@ struct PipHomeView: View {
     }
 }
 
+struct PlanChangesView: View {
+    let changes: PlanChanges
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            if !changes.unchanged.isEmpty { Text("Stays: \(changes.unchanged.joined(separator: ", "))") }
+            if !changes.added.isEmpty { Text("Adds: \(changes.added.joined(separator: ", "))") }
+            if !changes.changed.isEmpty { Text("Changes: \(changes.changed.joined(separator: ", "))") }
+            if !changes.removed.isEmpty { Text("Removes: \(changes.removed.joined(separator: ", "))") }
+        }.font(.subheadline)
+    }
+}
+
 struct PipErrorView: View {
     @Bindable var store: IntelligenceStore
     var body: some View {
@@ -119,6 +131,7 @@ struct TripIntakeView: View {
     @Bindable var store: IntelligenceStore
     @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @State private var inputNotice: String?
     @State private var waitingForReply = false
     @State private var answeringFollowup = false
@@ -126,6 +139,7 @@ struct TripIntakeView: View {
     @State private var acknowledgement = ""
     @State private var editSummary = false
     @State private var openedInitialSummary = false
+    @State private var showPlan = false
     @State private var showUpload = false
     @State private var showTravel = false
     @State private var review: TripImport?
@@ -144,7 +158,11 @@ struct TripIntakeView: View {
     }
     private var proposedImports: [TripImport] { store.selected?.data.imports.filter { $0.status == "proposed" } ?? [] }
     private var hasReviewedBooking: Bool { store.selected?.data.imports.contains { $0.status == "confirmed" } == true }
-    private var needsTravelMode: Bool { (store.draft.door_to_door?.mode ?? "unknown") == "unknown" }
+    private var step: String { store.selected?.data.conversation?.next_step ?? "bookings" }
+    private var readyToPlan: Bool { step == "ready_to_plan" }
+    private var needsTravelMode: Bool { ["travel_mode", "flights"].contains(step) }
+    private var progressQuestion: String? { store.selected?.data.conversation?.question }
+    private var inputLayout: AnyLayout { dynamicTypeSize.isAccessibilitySize ? AnyLayout(VStackLayout(alignment: .leading, spacing: 14)) : AnyLayout(HStackLayout(spacing: 18)) }
     var body: some View {
         NavigationStack {
             ScrollView {
@@ -165,31 +183,42 @@ struct TripIntakeView: View {
                     } else {
                         VStack(alignment: .leading, spacing: 12) {
                             if answeringFollowup {
-                                Text(acknowledgement).font(.title3).accessibilityIdentifier("intake.nextQuestion")
+                                Text(acknowledgement.isEmpty ? (progressQuestion ?? "") : acknowledgement).font(.title3).accessibilityIdentifier("intake.nextQuestion")
                             } else {
                                 Text("What's already decided?").font(.title2.bold())
                                 Text("Tell me in your own words, or add a booking.").foregroundStyle(.secondary)
                             }
+                            if !readyToPlan && step != "review_import" {
                             TextField("Type or speak…", text: activeAnswer, axis: .vertical)
                                 .lineLimit(3...7).padding(14)
                                 .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
                                 .accessibilityIdentifier("intake.answer")
-                            HStack(spacing: 18) {
+                            inputLayout {
                                 Button(speech.recording ? "Stop" : "Speak", systemImage: speech.recording ? "stop.circle" : "mic") {
                                     if speech.recording { speech.stop() }
                                     else { let prefix = activeAnswer.wrappedValue; Task { await speech.start(language: store.draft.language) { activeAnswer.wrappedValue = prefix.isEmpty ? $0 : prefix + " " + $0 } } }
                                 }
                                 Button("Upload", systemImage: "paperclip") { Task { await upload() } }
                                 if !answeringFollowup {
-                                    Button("Nothing yet") { store.draft.existing_plans = String(localized: "Nothing booked or decided yet.") }.foregroundStyle(.secondary)
+                                    Button("Nothing yet") { store.draft.existing_plans = String(localized: "Nothing booked or decided yet."); Task { await continueConversation() } }.foregroundStyle(.secondary)
                                 }
                             }.font(.subheadline)
+                            }
                             if let message = speech.error { Text(message).font(.caption).foregroundStyle(.secondary) }
                             if answeringFollowup && needsTravelMode {
                                 ViewThatFits(in: .horizontal) {
                                     HStack { travelChoices }
                                     VStack(alignment: .leading, spacing: 10) { travelChoices }
                                 }
+                            }
+                            if answeringFollowup && !readyToPlan && ["bookings", "travel_mode", "flights", "lodging", "transfers"].contains(step) {
+                                Button("I don't know yet; skip") { Task { await skipQuestion() } }.font(.subheadline)
+                            }
+                            if answeringFollowup && step == "transfers" {
+                                Button("Add arranged transfers") { showTravel = true }
+                            }
+                            if answeringFollowup && step != "review_import" && !readyToPlan {
+                                Button("Start a provisional plan") { Task { await makePlan() } }.font(.subheadline)
                             }
                             ForEach(proposedImports) { item in
                                 Button("Review \(item.filename)", systemImage: "doc.text.magnifyingglass") { speech.stop(); review = item }
@@ -201,15 +230,16 @@ struct TripIntakeView: View {
                     if store.busy { ProgressView("Pip is thinking…") }
                 }.padding(22)
             }
+            .scrollDismissesKeyboard(.interactively)
             .background(Color(.systemGroupedBackground))
             .tint(.teal)
             .safeAreaInset(edge: .bottom) {
                 Button {
-                    Task { await continueConversation() }
+                    Task { if let item = proposedImports.first { review = item } else if readyToPlan { await makePlan() } else { await continueConversation() } }
                 } label: {
-                    Text("Continue").font(.headline).frame(maxWidth: .infinity).padding(12)
+                    Text(!proposedImports.isEmpty ? "Review imported details" : readyToPlan ? "Create a lightweight plan" : "Continue").font(.headline).frame(maxWidth: .infinity).padding(12)
                 }.buttonStyle(.borderedProminent)
-                    .disabled(locked || destination.isEmpty || !proposedImports.isEmpty)
+                    .disabled(locked || destination.isEmpty)
                     .padding(.horizontal, 22).padding(.vertical, 10).background(.regularMaterial)
             }
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { speech.stop(); dismiss() } } }
@@ -218,8 +248,21 @@ struct TripIntakeView: View {
                 guard !openedInitialSummary else { return }
                 openedInitialSummary = true
                 if destination.isEmpty { editSummary = true }
+                else if let current = store.selected {
+                    let progress = current.data.conversation
+                    if (progress?.turns ?? 0) > 0 || progress?.next_step != "bookings" && progress != nil {
+                        answeringFollowup = true
+                        acknowledgement = progress?.question ?? current.data.messages.last(where: { $0.role == "pip" })?.text ?? ""
+                    } else if !current.data.messages.isEmpty {
+                        answeringFollowup = true
+                        acknowledgement = current.data.messages.last(where: { $0.role == "pip" })?.text ?? ""
+                    }
+                }
             }
             .sheet(isPresented: $editSummary) { TripSummaryEditor(intake: $store.draft) }
+            .sheet(isPresented: $showPlan) {
+                if let id = store.selectedID { NavigationStack { PipTripView(store: store, tripID: id, tab: "plan") } }
+            }
             .sheet(isPresented: $showUpload) { ImportView(store: store) }
             .sheet(item: $review, onDismiss: refreshDraft) { item in ImportReviewView(store: store, item: item) }
             .sheet(isPresented: $showTravel, onDismiss: {
@@ -252,7 +295,27 @@ struct TripIntakeView: View {
             }
         }
     }
-    private func refreshDraft() { if let current = store.selected, !store.hasPending { store.edit(current) } }
+    private func refreshDraft() {
+        if let current = store.selected, !store.hasPending {
+            store.edit(current)
+            if let progress = current.data.conversation, progress.next_step != "bookings" {
+                answeringFollowup = true
+                acknowledgement = progress.question ?? ""
+            }
+        }
+    }
+    private func skipQuestion() async {
+        speech.stop()
+        await store.act(PipAction(action: "skip_intake", skip_topic: step))
+        if store.error == nil && !store.hasPending { refreshDraft(); answer = "" }
+    }
+    private func makePlan() async {
+        speech.stop()
+        await store.saveIntake()
+        guard store.error == nil && !store.hasPending else { return }
+        await store.act(PipAction(action: "plan"))
+        if store.error == nil && !store.hasPending { showPlan = true }
+    }
     private func chooseFlying(booked: Bool) async {
         speech.stop()
         var travel = store.draft.door_to_door ?? DoorToDoorTravel(); travel.mode = "fly"; travel.booking_status = booked ? "booked" : "not_booked"
@@ -284,9 +347,9 @@ struct TripIntakeView: View {
     }
     private func finishReply() {
         guard waitingForReply else { return }
+        refreshDraft()
         acknowledgement = store.selected?.data.messages.last(where: { $0.role == "pip" })?.text ?? ""
         waitingForReply = false; answeringFollowup = true; answer = ""
-        refreshDraft()
     }
 }
 
@@ -385,7 +448,7 @@ struct PipTripView: View {
     @State private var showImport = false
     @State private var showTravel = false
     @State private var review: TripImport?
-    @State private var tab = "conversation"
+    @State var tab = "conversation"
     @State private var memorySuggestion: String?
     @State private var showMemory = false
     var body: some View {
@@ -397,14 +460,14 @@ struct PipTripView: View {
                     }.pickerStyle(.segmented).padding()
                     ScrollView {
                         VStack(alignment: .leading, spacing: 18) {
-                            if trip.data.intake.door_to_door?.mode == nil || trip.data.intake.door_to_door?.mode == "unknown" {
-                                Button("How will you get there—fly, drive, train, or something else?") { store.edit(trip); showTravel = true }
-                            }
                             if trip.data.plan_needs_review == true {
                                 Text("Travel details changed. Review the new transfer times and update your activity suggestions. Confirmed reservations are protected.").foregroundStyle(.orange)
                                 Button("Update affected plans") { Task { await store.act(PipAction(action: "plan")); tab = "plan" } }.disabled(store.busy || store.hasPending)
                             }
                             if tab == "conversation" {
+                                if let progress = trip.data.conversation, trip.data.plan.isEmpty && trip.data.proposal == nil {
+                                    Button(progress.next_step == "review_import" ? "Review imported details" : "Continue planning") { store.edit(trip); showIntake = true }
+                                }
                                 if trip.data.messages.isEmpty {
                                     Text("🦆 Hi, I'm Pip.").font(.title2.bold())
                                     Text("I'll travel with you, help when you need me, and get to know what you like along the way.")
@@ -417,7 +480,7 @@ struct PipTripView: View {
                                         Text(message.role == "pip" ? "Pip 🦆" : "You").font(.caption.bold()).foregroundStyle(.secondary)
                                         Text(message.text).textSelection(.enabled)
                                         ForEach(message.memory_observations ?? [], id: \.self) { observation in
-                                            Button(observation) { memorySuggestion = observation; showMemory = true }.font(.caption)
+                                            Button { memorySuggestion = observation; showMemory = true } label: { Text("Remember this? \(observation)") }.font(.caption)
                                         }
                                     }.padding(16).frame(maxWidth: .infinity, alignment: .leading)
                                         .background(message.role == "pip" ? Color.teal.opacity(0.08) : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 18))
@@ -445,6 +508,10 @@ struct PipTripView: View {
                                 ForEach(trip.data.plan) { item in PlanItemView(item: item) }
                                 if let proposal = trip.data.proposal {
                                     Divider(); Text("A suggestion for you").font(.title2.bold()); Text(proposal.explanation)
+                                    if let changes = proposal.changes {
+                                        PlanChangesView(changes: changes)
+                                    }
+                                    Text("Confirmed bookings stay unchanged.").font(.caption).foregroundStyle(.secondary)
                                     ForEach(proposal.items) { item in PlanItemView(item: item) }
                                     HStack {
                                         Button("Accept changes") { Task { await store.act(PipAction(action: "accept_plan", proposal_id: proposal.id)) } }.buttonStyle(.borderedProminent)
@@ -482,7 +549,7 @@ struct PipTripView: View {
                             Button { showImport = true } label: { Image(systemName: "plus.circle.fill").font(.title2).accessibilityLabel("Attach existing plans") }
                             TextField("Tell Pip…", text: $store.composer, axis: .vertical).lineLimit(1...5).padding(10).background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 16))
                             Button {
-                                Task { await store.act(PipAction(action: tab == "plan" ? "feedback" : "conversation", text: store.composer)) }
+                                Task { await store.act(PipAction(action: (tab == "plan" || !trip.data.plan.isEmpty) ? "feedback" : (trip.data.conversation != nil && !trip.data.onboarding_done ? "intake" : "conversation"), text: store.composer)) }
                             } label: { Image(systemName: "arrow.up.circle.fill").font(.title).accessibilityLabel("Send") }
                             .disabled(store.composer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                         }.padding().disabled(store.busy || store.hasPending)
