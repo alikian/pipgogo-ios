@@ -66,6 +66,36 @@ struct APIClientTests {
         #expect(store.selected?.data.intake.destination == "New York")
     }
 
+    @MainActor @Test func preferredNameAloneDoesNotSkipTravelerIntroduction() {
+        let store = IntelligenceStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!), authentication: TestTokens())
+        var memory = TravelerMemory(); memory.key = "preferred_name"; memory.value = "Sara"
+        store.memories = [APIRecord(id: UUID().uuidString, kind: "memory", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: memory)]
+        #expect(store.needsIntroduction)
+        store.introduction = APIRecord(id: "me", kind: "introduction", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: TravelerIntroduction(messages: [], onboarding_done: true))
+        #expect(!store.needsIntroduction)
+        store.reset()
+        #expect(store.needsIntroduction)
+        #expect(store.introduction == nil)
+    }
+
+    @MainActor @Test func introductionTimeoutKeepsAnswerAndRequestForExactRetry() async throws {
+        let intro = APIRecord(id: "me", kind: "introduction", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: TravelerIntroduction(messages: [], onboarding_done: false))
+        let body = try APIJSON.encoder().encode(intro)
+        let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(error: .timedOut), .init(status: 200, body: body), .init(status: 200, body: body), .init(status: 200, body: Data(#"{"items":[]}"#.utf8))]))
+        let store = IntelligenceStore(client: client, authentication: TestTokens())
+        store.introduction = APIRecord(id: "me", kind: "introduction", version: 0, revision: 0, updatedAt: Date(), deleted: false, data: intro.data)
+        store.introductionAnswer = "Wandering in Italy"
+        await store.introduce(language: "en")
+        #expect(store.hasPending)
+        #expect(store.introductionAnswer == "Wandering in Italy")
+        let frozen = store.pendingIntroduction?.body
+        await store.retryIntroduction()
+        #expect(!store.hasPending)
+        #expect(StubURLProtocol.bodies[0] == frozen)
+        #expect(StubURLProtocol.bodies[1] == frozen)
+        #expect(store.journeys.isEmpty)
+    }
+
     @Test func mapsUnauthorizedResponse() async {
         let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: makeSession(status: 401, body: Data()))
         await #expect(throws: APIClientError.unauthorized) { try await client.account(accessToken: "not-a-real-token") }

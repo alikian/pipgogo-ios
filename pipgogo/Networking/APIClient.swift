@@ -6,10 +6,12 @@ protocol AccessTokenProviding: Sendable {
 
 /// Fixed routes prevent accidentally sending a bearer token to a caller-supplied host.
 enum APIEndpoint: Sendable, Equatable {
+    case introduction
     case account, accountExport, journeys, journey(UUID), journeyAction(UUID), journeyImport(UUID)
     case memory, memoryItem(UUID), travelers, traveler(UUID), preferences, sync(after: Int)
     var path: String {
         switch self {
+        case .introduction: "/v1/traveler-conversation"
         case .account: "/v1/me"
         case .accountExport: "/v1/me/export"
         case .journeys: "/v1/journeys"
@@ -28,7 +30,7 @@ enum APIEndpoint: Sendable, Equatable {
         switch self { case .journeyAction, .journeyImport: false; default: true }
     }
     var canPut: Bool {
-        switch self { case .journey, .journeyAction, .journeyImport, .memoryItem, .traveler, .preferences: true; default: false }
+        switch self { case .introduction, .journey, .journeyAction, .journeyImport, .memoryItem, .traveler, .preferences: true; default: false }
     }
     var canPost: Bool { false }
     var canDelete: Bool {

@@ -11,6 +11,8 @@ struct PipHomeView: View {
     @State private var showIntake = false
     @State private var showMemory = false
     @State private var showSettings = false
+    @State private var showIntroduction = false
+    @State private var startTripAfterIntroduction = false
 
     var body: some View {
         NavigationStack {
@@ -25,18 +27,31 @@ struct PipHomeView: View {
                                 Text("Hi there").font(.title2.bold()).accessibilityIdentifier("pip.greeting")
                                 Button("Add your preferred name") { showMemory = true }.font(.subheadline)
                             }
-                            Text("A little less planning.\nA little more exploring.").font(.largeTitle.bold())
+                            Text(store.loaded && store.needsIntroduction ? "Let's get to know you" : "A little less planning.\nA little more exploring.").font(.largeTitle.bold())
                             Text("I'm Pip. Let's make this trip feel like you.").foregroundStyle(.secondary)
                         }
                     }.padding(.top, 16)
+                    if store.loaded && store.needsIntroduction {
+                        Text("Before we plan, I'd love to get to know you a little.").font(.title3)
+                        Text("Tell me about a trip or day out you really enjoyed. What made it good?").font(.headline)
+                        Button("Tell Pip about yourself", systemImage: "bubble.left.and.bubble.right") { showIntroduction = true }
+                            .buttonStyle(.borderedProminent).disabled(store.busy || store.introduction == nil)
+                        Button("Skip for now") {
+                            Task {
+                                await store.introduce(language: language, skip: true)
+                                if store.error == nil && !store.hasPending { store.newTrip(language: language); showIntake = true }
+                            }
+                        }.disabled(store.busy || store.hasPending || store.introduction == nil)
+                    } else if store.loaded {
                     Button {
                         store.newTrip(language: language); showIntake = true
                     } label: {
                         Label("Where are we going?", systemImage: "plus").frame(maxWidth: .infinity).padding(10)
                     }.buttonStyle(.borderedProminent).disabled(store.hasPending || store.busy).accessibilityIdentifier("pip.createTrip")
+                    }
                     PipErrorView(store: store)
                     if store.busy { ProgressView() }
-                    if store.loaded && store.journeys.isEmpty {
+                    if store.loaded && store.journeys.isEmpty && !store.needsIntroduction {
                         ContentUnavailableView("Your next chapter starts here", systemImage: "suitcase.rolling", description: Text("Choose a destination and timing. We'll work out the rest together."))
                     }
                     ForEach(store.journeys) { trip in
@@ -62,10 +77,17 @@ struct PipHomeView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
+                        Button("Get to know me", systemImage: "bubble.left.and.bubble.right") { showIntroduction = true }
                         Button("What Pip remembers", systemImage: "sparkles") { showMemory = true }
                         Button("Language", systemImage: "globe") { showSettings = true }
                         Button("Sign out", systemImage: "rectangle.portrait.and.arrow.right", role: .destructive, action: signOut)
                     } label: { Image(systemName: "person.crop.circle").accessibilityLabel("Settings") }
+                }
+            }
+            .sheet(isPresented: $showIntroduction, onDismiss: { if startTripAfterIntroduction { startTripAfterIntroduction = false; showIntake = true } }) {
+                TravelerIntroductionView(store: store, language: language) {
+                    showIntroduction = false
+                    store.newTrip(language: language); startTripAfterIntroduction = true
                 }
             }
             .sheet(isPresented: $showIntake) { TripIntakeView(store: store) }
@@ -80,12 +102,71 @@ struct PipHomeView: View {
                     }.navigationTitle("Language")
                 }.presentationDetents([.medium])
             }
-            .task { await store.refresh() }
-            .refreshable { await store.refresh() }
+            .task { await store.refresh(); await store.loadIntroduction() }
+            .refreshable { await store.refresh(); await store.loadIntroduction() }
         }
         .tint(.teal)
         .environment(\.locale, Locale(identifier: language))
         .environment(\.layoutDirection, language == "fa" ? .rightToLeft : .leftToRight)
+    }
+}
+
+struct TravelerIntroductionView: View {
+    @Bindable var store: IntelligenceStore
+    let language: String
+    let continueToTrip: () -> Void
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.scenePhase) private var scenePhase
+    @State private var speech = IntakeSpeech()
+    @State private var keepTalking = false
+    @State private var reviewMemory: String?
+    @State private var showMemory = false
+    private var done: Bool { store.introduction?.data.onboarding_done == true }
+    var body: some View {
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .leading, spacing: 20) {
+                    Text("Let's get to know you").font(.largeTitle.bold())
+                    if store.introduction?.data.messages.isEmpty != false {
+                        Text("I'm Pip. I'll learn what matters to you, and you can correct me anytime.")
+                        Text("Tell me about a trip or day out you really enjoyed. What made it good?").font(.title3.bold())
+                    } else if let message = store.introduction?.data.messages.last(where: { $0.role == "pip" }) {
+                        Text(message.text).font(.title3)
+                        ForEach(message.memory_observations ?? [], id: \.self) { value in
+                            Button { reviewMemory = value; showMemory = true } label: { Text("Remember this? \(value)") }
+                        }
+                    }
+                    if done && !keepTalking {
+                        Text("That's enough to get started. I'll learn more as we go.")
+                        Button("Continue with my trip") { speech.stop(); continueToTrip() }.buttonStyle(.borderedProminent)
+                        Button("Keep talking") { keepTalking = true }
+                    } else {
+                        TextField("Type or speak…", text: $store.introductionAnswer, axis: .vertical)
+                            .lineLimit(3...8).disabled(store.busy || store.hasPending).padding().background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+                        Button(speech.recording ? "Stop" : "Speak", systemImage: speech.recording ? "stop.circle" : "mic") {
+                            if speech.recording { speech.stop() }
+                            else { let prefix = store.introductionAnswer; Task { await speech.start(language: language) { store.introductionAnswer = prefix.isEmpty ? $0 : prefix + " " + $0 } } }
+                        }
+                        if let error = speech.error { Text(error).font(.caption) }
+                        Button("Continue") { speech.stop(); Task { await store.introduce(language: language) } }
+                            .buttonStyle(.borderedProminent).disabled(store.busy || store.hasPending || store.introduction == nil || store.introductionAnswer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        Button("Skip for now") {
+                            speech.stop()
+                            Task { await store.introduce(language: language, skip: true); if store.error == nil && !store.hasPending { continueToTrip() } }
+                        }.disabled(store.busy || store.hasPending || store.introduction == nil)
+                    }
+                    PipErrorView(store: store)
+                    if store.busy { ProgressView("Pip is thinking…") }
+                }.padding(22)
+            }
+                .scrollDismissesKeyboard(.interactively)
+                .background(Color(.systemGroupedBackground))
+                .toolbar { Button("Close") { speech.stop(); dismiss() } }
+                .sheet(isPresented: $showMemory) { MemoryView(store: store, initialValue: reviewMemory ?? "") }
+                .onDisappear { speech.stop() }
+                .onChange(of: scenePhase) { _, phase in if phase == .background { speech.stop() } }
+                .interactiveDismissDisabled(store.busy || store.hasPending || speech.recording)
+        }
     }
 }
 
@@ -118,9 +199,9 @@ struct PipErrorView: View {
                     Button("Use the saved trip", role: .destructive) { store.useServerAfterReview() }
                 } else if store.hasPending {
                     Text("Your request is kept unchanged for a safe retry.").font(.caption)
-                    Button("Retry same request") { Task { if store.pending != nil { await store.retry() } else { await store.retryAux() } } }.disabled(store.busy)
+                    Button("Retry same request") { Task { if store.pendingIntroduction != nil { await store.retryIntroduction() } else if store.pending != nil { await store.retry() } else { await store.retryAux() } } }.disabled(store.busy)
                 } else {
-                    Button("Reload") { Task { await store.refresh() } }.disabled(store.busy)
+                    Button("Reload") { Task { await store.refresh(); await store.loadIntroduction() } }.disabled(store.busy)
                 }
             }.padding().background(Color.red.opacity(0.06), in: RoundedRectangle(cornerRadius: 16))
         }

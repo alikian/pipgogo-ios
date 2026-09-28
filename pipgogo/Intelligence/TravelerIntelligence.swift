@@ -179,6 +179,15 @@ struct Journey: Codable, Equatable, Sendable {
     var onboarding_done: Bool
     var temporary_context: String
 }
+struct TravelerIntroduction: Codable, Equatable, Sendable {
+    var messages: [PipMessage]
+    var onboarding_done: Bool
+}
+struct IntroductionRequest: Codable, Sendable {
+    var text = ""
+    var language = "en"
+    var skip = false
+}
 struct TravelerMemory: Codable, Equatable, Sendable {
     var category = "traveler_preference"
     var key = ""
@@ -213,6 +222,14 @@ final class IntelligenceStore {
     var journeys: [APIRecord<Journey>] = []
     var memories: [APIRecord<TravelerMemory>] = []
     var travelers: [APIRecord<TripTraveler>] = []
+    var introduction: APIRecord<TravelerIntroduction>?
+    var introductionAnswer = ""
+    private(set) var pendingIntroduction: APIRequest<APIRecord<TravelerIntroduction>>?
+    var needsIntroduction: Bool {
+        introduction?.data.onboarding_done != true &&
+        !journeys.contains { $0.data.onboarding_done } &&
+        !memories.contains { !$0.deleted && $0.data.scope == "persistent" && !["preferred_name", "nickname"].contains($0.data.key) }
+    }
     var selectedID: UUID?
     var draft = TripIntake()
     var draftID = UUID()
@@ -224,7 +241,7 @@ final class IntelligenceStore {
     var conflict: APIRecord<Journey>?
     private(set) var pending: APIRequest<APIRecord<Journey>>?
     private(set) var pendingAux: APIRequest<APIRecord<JSONValue>>?
-    var hasPending: Bool { pending != nil || pendingAux != nil }
+    var hasPending: Bool { pending != nil || pendingAux != nil || pendingIntroduction != nil }
     private var epoch = UUID()
     private let client: APIClient
     private let authentication: any AccessTokenProviding
@@ -242,6 +259,7 @@ final class IntelligenceStore {
     func reset() {
         epoch = UUID(); journeys = []; memories = []; travelers = []; selectedID = nil
         draft = TripIntake(); draftID = UUID(); draftVersion = 0; composer = ""
+        introduction = nil; introductionAnswer = ""; pendingIntroduction = nil
         pending = nil; pendingAux = nil; conflict = nil; error = nil; busy = false; loaded = false
     }
     func refresh() async {
@@ -254,6 +272,45 @@ final class IntelligenceStore {
             let party: APIRecordList<TripTraveler> = try await client.send(.get(.travelers), using: authentication)
             guard ticket == epoch else { return }
             journeys = trips.items; memories = memory.items; travelers = party.items; loaded = true; error = nil
+        } catch { if ticket == epoch { self.error = error.localizedDescription } }
+    }
+    func loadIntroduction() async {
+        guard !busy, !hasPending else { return }
+        busy = true; let ticket = epoch
+        defer { if ticket == epoch { busy = false } }
+        do {
+            let value: APIRecord<TravelerIntroduction> = try await client.send(.get(.introduction), using: authentication)
+            guard ticket == epoch else { return }
+            introduction = value; error = nil
+        } catch { if ticket == epoch { self.error = error.localizedDescription } }
+    }
+    func introduce(language: String, skip: Bool = false) async {
+        guard !busy, !hasPending, let introduction else { return }
+        do {
+            pendingIntroduction = try .put(.introduction, body: IntroductionRequest(text: skip ? "" : introductionAnswer, language: language, skip: skip), expectedVersion: introduction.version)
+            await retryIntroduction()
+        } catch { self.error = error.localizedDescription }
+    }
+    func retryIntroduction() async {
+        guard !busy, let request = pendingIntroduction else { return }
+        busy = true; error = nil; let ticket = epoch
+        defer { if ticket == epoch { busy = false } }
+        do {
+            _ = try await client.send(request, using: authentication)
+            let current: APIRecord<TravelerIntroduction> = try await client.send(.get(.introduction), using: authentication)
+            let memory: APIRecordList<TravelerMemory> = try await client.send(.get(.memory), using: authentication)
+            guard ticket == epoch else { return }
+            introduction = current; memories = memory.items; introductionAnswer = ""; pendingIntroduction = nil
+        } catch APIClientError.conflict(let body, _) {
+            guard ticket == epoch else { return }
+            error = body.message; pendingIntroduction = nil
+            if let current = body.currentRecord, let data = try? current.data.decoded(as: TravelerIntroduction.self) {
+                introduction = APIRecord(id: current.id, kind: current.kind, version: current.version, revision: current.revision, updatedAt: current.updatedAt, deleted: current.deleted, data: data)
+            }
+        } catch APIClientError.rejected(let status, let body, _) {
+            guard ticket == epoch else { return }
+            error = body.message
+            if [400, 403, 404, 413, 422, 429].contains(status) || body.code == "ai_unavailable" { pendingIntroduction = nil }
         } catch { if ticket == epoch { self.error = error.localizedDescription } }
     }
     func newTrip(language: String) {

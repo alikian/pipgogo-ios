@@ -131,6 +131,7 @@
       }
     },
     "Add arranged transfers" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -637,6 +638,22 @@
         }
       }
     },
+    "Before we plan, I'd love to get to know you a little." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Before we plan, I'd love to get to know you a little."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قبل از برنامه‌ریزی، دوست دارم کمی شما را بشناسم."
+          }
+        }
+      }
+    },
     "Booked" : {
       "localizations" : {
         "en" : {
@@ -957,6 +974,7 @@
     },
     "Consider rideshare, a drop-off, parking, shuttle, transit, taxi or rental car. Pickup points and travel times need checking for your actual airport." : {},
     "Continue" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -973,6 +991,7 @@
       }
     },
     "Continue planning" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1001,6 +1020,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ادامه با گوگل"
+          }
+        }
+      }
+    },
+    "Continue with my trip" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with my trip"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادامه سفر من"
           }
         }
       }
@@ -1176,6 +1212,7 @@
       }
     },
     "Destination and timing" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1546,6 +1583,23 @@
         }
       }
     },
+    "Get to know me" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get to know me"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "من را بشناس"
+          }
+        }
+      }
+    },
     "Help me find flights" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1681,6 +1735,7 @@
       }
     },
     "I don't know yet; skip" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1725,6 +1780,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "همراهت سفر می‌کنم، هر وقت نیاز داشته باشی کمک می‌کنم و در طول راه سلیقه‌ات را می‌شناسم."
+          }
+        }
+      }
+    },
+    "I'm Pip. I'll learn what matters to you, and you can correct me anytime." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "I'm Pip. I'll learn what matters to you, and you can correct me anytime."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "من پیپ هستم. یاد می‌گیرم چه چیزهایی برایتان مهم است و هر وقت خواستید می‌توانید اصلاحم کنید."
           }
         }
       }
@@ -1880,6 +1951,23 @@
         }
       }
     },
+    "Keep talking" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep talking"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ادامه گفتگو"
+          }
+        }
+      }
+    },
     "Language" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1903,6 +1991,22 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Leave %1$@ · arrive %2$@"
+          }
+        }
+      }
+    },
+    "Let's get to know you" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Let's get to know you"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "بیایید شما را بشناسیم"
           }
         }
       }
@@ -2713,6 +2817,7 @@
       }
     },
     "Review imported details" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3000,6 +3105,23 @@
         }
       }
     },
+    "Skip for now" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skip for now"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فعلاً رد شو"
+          }
+        }
+      }
+    },
     "Skip; continue with my trip" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3102,6 +3224,7 @@
       }
     },
     "Start a provisional plan" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3232,6 +3355,23 @@
         }
       }
     },
+    "Tell Pip about yourself" : {
+      "extractionState" : "stale",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell Pip about yourself"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از خودتان به پیپ بگویید"
+          }
+        }
+      }
+    },
     "Tell Pip…" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3245,6 +3385,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "به پیپ بگو…"
+          }
+        }
+      }
+    },
+    "Tell me about a trip or day out you really enjoyed. What made it good?" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tell me about a trip or day out you really enjoyed. What made it good?"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "از سفر یا روزی بگویید که واقعاً لذت بردید. چه چیزی آن را خوب کرد؟"
           }
         }
       }
@@ -3277,6 +3433,22 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "با زبان خودتان بگویید، یا یک رزرو اضافه کنید."
+          }
+        }
+      }
+    },
+    "That's enough to get started. I'll learn more as we go." : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "That's enough to get started. I'll learn more as we go."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "برای شروع کافی است. در طول راه بیشتر یاد می‌گیرم."
           }
         }
       }

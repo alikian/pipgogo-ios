@@ -97,3 +97,22 @@ visually inspected; this is not a full VoiceOver or keyboard-interaction accepta
 Final delivery: backend e0e2dc0 / successful run 36379145134 / stable ECS revision 7.
 Matching iOS source 1a2c9a1; the compact screenshot is `docs/evidence/conversation/compact-screen.png`.
 No physical-device installation was performed in this session.
+
+## Traveler-first correction
+
+New travelers now see the personal story question on Home before the trip-creation button.
+An editable name alone does not qualify as travel memory. The dedicated optional introduction
+supports text, speech, skip, roughly three exchanges, Keep talking, and Continue with my trip.
+Its conversation persists independently of journeys: no dummy destination or phantom trip.
+Returning travelers with useful memory or completed onboarding continue directly to trips and
+can revisit Get to know me from the menu. The introduction uses the same authenticated owner,
+version/idempotency, scoped-memory and late-response protections. Questions concern the person,
+not destination, dates, flights or hotels.
+
+Verification: 95 backend tests passed (1 skipped), 46 iOS tests passed, signed build passed.
+A live synthetic Italy story received a relevant personal follow-up about a remembered discovery;
+no journey was created. Physical-device introduction and speech acceptance remain pending.
+
+Page-by-page navigation and function diagrams: [interactive atlas](page-flows.html) and
+[editable Mermaid source](page-flows.md). Includes 19 diagrams: overview, screens, tabs, sheets
+and shared recovery. These are functional maps, not pixel-perfect screen mockups.
