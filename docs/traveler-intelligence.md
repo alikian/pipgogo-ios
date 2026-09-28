@@ -55,17 +55,17 @@ No live weather, opening-hours, places or transport-data provider is connected.
 
 ## Deployment and acceptance boundary
 
-The rebuilt backend is deployed to `https://dev.pippipgo.com` from commit `7b4d7bb`,
-using ECS task definition `pippipgo-dev-backend:5`. The new app requires `/v1/journeys`.
+The rebuilt backend is deployed to `https://dev.pippipgo.com` from commit `e0e2dc0`,
+using ECS task definition `pippipgo-dev-backend:7`. The new app requires `/v1/journeys`.
 Old app product endpoints are retired; authentication remains compatible. No data purge occurred.
 Public health/readiness returned 200 and unauthenticated journey access returned 401.
 A synthetic runtime AI task exited 0 and logged its success marker without credentials or
 traveler records. This verifies provider/runtime access, not an authenticated phone journey.
-The matching iOS source is published on `develop` as `d20cb8e`; the signed Dev build is ready.
+The matching iOS source is published on `develop` as `1a2c9a1`; the signed Dev build is ready.
 Device installation and acceptance remain pending.
 
-Deployment run: https://github.com/alikian/pippipgo-backend/actions/runs/36357597703
-Image digest: `sha256:31b557ebd5cb44efa2415fe8b14fad3363b6e611fac22a0452709979ff209e5d`.
+Deployment run: https://github.com/alikian/pippipgo-backend/actions/runs/36379145134
+Image digest: `sha256:bb4bfc4d94856e3324a7a7ec721823861ac4b907f84350ede7c6de3a8588c5ef`.
 Legacy-product rollback image: `sha256:70420e259fc435ead60004180ccb67452b4acb9b2fdc4eb0e6c3957d372460c7`.
 Rollback restores the prior product API and requires its matching older client.
 
@@ -135,3 +135,16 @@ and trip-intake greetings. Signed Dev build passed; physical-device acceptance r
 
 Empty trips now open Destination and timing immediately. The compact summary and Edit appear
 only after a destination exists. Signed Dev build passed; device acceptance remains pending.
+
+## Master-prompt vertical slice — September 27, 2026 PDT
+
+[Implementation map and acceptance matrix](conversation-slice.md) document the saved conversation
+controller, deterministic routing, review gates, bounded intake, inferred-memory review and plan
+revision protections. Backend `e0e2dc0` deployed through successful run 36379145134; ECS revision 7
+is stable and CloudFormation UPDATE_COMPLETE. Health/readiness 200 and unauthenticated journeys
+401 verified. Matching iOS source `1a2c9a1` is published; signed Dev build passed.
+
+91 backend tests passed, 1 skipped; Ruff passed. 44 iOS tests passed. Live synthetic GPT-6
+extraction/review/plan/accept/feedback preserved the fixed museum and changed one evening while
+retaining four suggestions. Screenshots verify the first/follow-up screen and compact iPhone SE
+layout; large text was inspected. Real authenticated phone and VoiceOver acceptance remain pending.

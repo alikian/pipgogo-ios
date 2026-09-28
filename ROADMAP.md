@@ -24,10 +24,10 @@ product records are retained. The old product screens and APIs have been replace
 
 ## Delivery boundary
 
-The rebuilt backend is deployed at `https://dev.pippipgo.com` from commit `7b4d7bb`.
+The rebuilt backend is deployed at `https://dev.pippipgo.com` from commit `e0e2dc0`.
 New product endpoints begin at `/v1/journeys`; the previous product endpoints are retired.
 Authentication remains compatible and legacy data is retained. The matching signed Dev iOS
-build is ready but has not been installed during this rebuild. Its source is published on `develop` as `d20cb8e`. See [implementation notes](docs/traveler-intelligence.md).
+build is ready but has not been installed during this rebuild. Its source is published on `develop` as `1a2c9a1`. See [implementation notes](docs/traveler-intelligence.md).
 
 Provider: **GPT-6 Astra via the direct OpenAI API**, `gpt-6-astra`.
 The server secret and direct structured inference were verified using the deployed ECS image
@@ -63,3 +63,7 @@ The synthetic simulator layout was visually checked; device speech/permission an
 can still be edited separately from the light intake screen.
 
 Latest vertical slice: [implementation map and acceptance boundaries](docs/conversation-slice.md).
+
+Conversation controller delivery: Dev ECS revision 7 is stable; 91 backend tests passed (1 skipped),
+44 iOS tests and final signed Dev build passed. Live synthetic review/plan/adaptation passed.
+Physical-device acceptance remains pending.

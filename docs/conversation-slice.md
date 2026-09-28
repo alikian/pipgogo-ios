@@ -67,3 +67,33 @@ or cancellation capability was added. Production/offline/hardware work is outsid
 Next smallest experiment: one traveler runs the San Diego → EWR hotel-arrival flow on Dev,
 corrects one imported fact, accepts a light evening plan, requests less walking and reopens it.
 Record duplicate questions, unclear estimates and unnecessary choices before broadening scope.
+
+
+Verification checkpoint: 91 backend tests passed, 1 skipped (memory-fixture DynamoDB pagination);
+Ruff lint/format passed. 44 iOS tests passed across four suites; signed Dev build passed.
+A live GPT-6 synthetic flow extracted/reviewed SAN–EWR return flights, produced a five-anchor
+plan, accepted it, then changed only the first evening for temporary fatigue while retaining
+four other suggestions and the fixed museum. An initial ambiguous “today” run exposed empty
+feedback as a destructive proposal; the regression now guarantees clarification preserves the
+accepted plan. Explicit “usually loves walking” remained distinct from temporary fatigue.
+
+Synthetic screenshots are checked in to the iOS repository:
+`docs/evidence/conversation/first-screen.png` and `next-question.png`. Large-text layout was
+visually inspected; this is not a full VoiceOver or keyboard-interaction acceptance run.
+
+| Acceptance scenario | Evidence / remaining check |
+| --- | --- |
+| Preferred name and returning context | Existing explicit-name tests plus saved-progress tests; synthetic first/follow-up screenshots. Physical-account revisit pending. |
+| Nothing booked / ambiguous weekend | Immediate Nothing yet action, existing editable date confirmation, skip/provisional-plan entry. Device tap sequence pending. |
+| Booked flights and transfers | Live synthetic reviewed SAN–EWR/return extraction; unit coverage for JFK/LGA/EWR timing and four transfer legs. Real booking/photo review pending. |
+| Partial fixed plan | Live synthetic hotel/museum preserved through plan acceptance and first-evening adaptation. |
+| Correction and memory | Atomic correction/deletion and temporary-context tests; live general walking preference separated from first-evening fatigue. Inferred persistent memory waits for review. |
+| Different travelers | Existing scoped-context/ownership tests; comparative real-traveler quality experiment remains pending. |
+| Language continuity | English/Farsi next-step UI and existing language-independent memory; live language-switch acceptance pending. |
+| Ownership | Repository/API suite covers user partitions, foreign object references, conflicts and retries with memory/Moto DynamoDB. New live test uses isolated memory, not production identities. |
+| Unknown data | Provisional transfer summaries and explicit live-data-unavailable context. No flight-status, traffic, price or pickup-rule integration. |
+| Small-screen accessibility | First screen visually verified on iPhone SE (3rd generation) simulator and iPhone 16 Pro; large accessibility text inspected. VoiceOver, keyboard and permission interaction remain pending. |
+
+Final delivery: backend e0e2dc0 / successful run 36379145134 / stable ECS revision 7.
+Matching iOS source 1a2c9a1; the compact screenshot is `docs/evidence/conversation/compact-screen.png`.
+No physical-device installation was performed in this session.
