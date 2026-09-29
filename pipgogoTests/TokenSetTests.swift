@@ -3,6 +3,14 @@ import Testing
 @testable import pipgogo
 
 struct TokenSetTests {
+    @Test func googleProfilePhotoUsesHTTPSAndHandlesMissingPhoto() throws {
+        #expect(SignedInProfile(picture: "https://lh3.googleusercontent.com/a/photo").pictureURL != nil)
+        for picture in [nil, "", "http://lh3.googleusercontent.com/photo", "https://googleusercontent.com.evil.test/photo", "https://user:password@lh3.googleusercontent.com/photo"] as [String?] {
+            #expect(SignedInProfile(picture: picture).pictureURL == nil)
+        }
+        #expect(try JSONDecoder().decode(SignedInProfile.self, from: Data("{}".utf8)).pictureURL == nil)
+    }
+
     @Test func refreshPreservesRotatedFieldsWhenOmitted() throws {
         let original = TokenSet(accessToken: "old", idToken: "identity", refreshToken: "refresh", tokenType: "Bearer", expiresAt: .distantPast)
         let response = TokenResponse(accessToken: "new", idToken: nil, refreshToken: nil, tokenType: nil, expiresIn: 120)

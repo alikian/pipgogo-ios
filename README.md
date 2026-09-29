@@ -1,3 +1,5 @@
+> Current product scope: [simple travel organizer](docs/simple-travel-organizer.md), selected September 28, 2026. The traveler-intelligence material below is retained history; AI credentials remain configured.
+
 # PipPipGo
 
 Pip is a conversational travel companion: understand the trip, get to know the traveler,

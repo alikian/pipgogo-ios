@@ -112,7 +112,3 @@ not destination, dates, flights or hotels.
 Verification: 95 backend tests passed (1 skipped), 46 iOS tests passed, signed build passed.
 A live synthetic Italy story received a relevant personal follow-up about a remembered discovery;
 no journey was created. Physical-device introduction and speech acceptance remain pending.
-
-Page-by-page navigation and function diagrams: [interactive atlas](page-flows.html) and
-[editable Mermaid source](page-flows.md). Includes 19 diagrams: overview, screens, tabs, sheets
-and shared recovery. These are functional maps, not pixel-perfect screen mockups.

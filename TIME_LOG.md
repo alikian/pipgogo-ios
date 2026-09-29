@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 8 hours 32 minutes 51 seconds** — 6 hours estimated + 2 hours 32 minutes 51 seconds recorded.
+**Total logged time: 11 hours 50 minutes 44 seconds** — 6 hours estimated + 5 hours 50 minutes 44 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 2 hours 32 minutes 51 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 5 hours 50 minutes 44 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **8 hours 32 minutes 51 seconds (includes 6 hours estimated)** |
+| Total time spent | **11 hours 50 minutes 44 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -61,6 +61,38 @@ with their UTC offset (for example `09:00–09:25, UTC−07:00`), plus any exclu
 | 2026-09-27-14 | September 27, 2026 | Codex | Personal home greeting | Added saved-name greeting and explicit preferred-name editing with English/Farsi strings; signed Dev build passed | 23:18:19–23:19:26, UTC+00:00; no excluded pauses | 1.12 minutes (67 seconds) | Recorded |
 | 2026-09-27-15 | September 27, 2026 | Codex | Empty trip intake | Empty trips open destination/timing immediately and hide Edit until a destination exists; signed Dev build passed | 23:20:25–23:21:07, UTC+00:00; no excluded pauses | 0.70 minutes (42 seconds) | Recorded |
 | 2026-09-27-16 | September 27, 2026 | Codex | Master-prompt conversation vertical slice | Verified live source; implemented saved intake policy, review gates, inference consent, timed-plan guards and safe clarification; 91 backend/44 iOS tests, signed build, live synthetic flow and compact/large-text visual checks; Dev revision 7 deployed | September 28 04:35:03–04:55:03, UTC+00:00; no excluded pauses (includes deployment waits) | 20.00 minutes (1200 seconds) | Recorded |
+| 2026-09-27-17 | September 27, 2026 | Codex | Build badge/menu layout | Moved environment badge into its own noninteractive row above navigation; signed Dev build and whitespace check passed; physical-device visual acceptance pending | September 28 05:21:03–05:21:50, UTC+00:00; no excluded pauses | 0.78 minutes (47 seconds) | Recorded |
+| 2026-09-27-18 | September 27, 2026 | Codex | Introduction copy | Removed requested move-on sentence from displayed replies and provider instructions; signed Dev build and provider lint passed | September 28 05:26:31–05:27:05, UTC+00:00; no excluded pauses | 0.57 minutes (34 seconds) | Recorded |
+
+| 2026-09-28-01 | September 28, 2026 | Codex | Simple travel organizer | Implemented profile, companions, multi-destination trips/hotels/transport and versioned persistence; 99 backend tests, 48 iOS tests, lint and signed Dev build passed; rollout pending | 07:11:11–07:16:06, UTC+00:00; no excluded pauses; initial inspection excluded | 4.92 minutes (295 seconds) | Recorded |
+
+| 2026-09-28-02 | September 28, 2026 | Codex | Simple organizer Dev deployment | Published backend e1e3d2a, CI checks passed, CloudFormation/ECS revision 9 stable; HTTPS health/readiness and organizer auth protection passed; AI configuration retained | 07:18:15–07:24:28, UTC+00:00; no excluded pauses (includes CI/AWS waits); subsequent bookkeeping excluded | 6.22 minutes (373 seconds) | Recorded |
+
+| 2026-09-28-03 | September 28, 2026 | Codex | Destination editor crash | Diagnosed index-out-of-range crash; preserved navigation draft and stable-ID bindings; 49 simulator tests and signed Dev build passed; installed/launched fixed Dev simulator app | 07:40:12–07:42:35, UTC+00:00; no excluded pauses; subsequent bookkeeping excluded | 2.38 minutes (143 seconds) | Recorded |
+
+| 2026-09-28-04 | September 28, 2026 | Codex | Destination controls | Removed Edit, added × delete, immediate Add navigation and ordering menu; signed Dev/simulator builds passed; installed/launched simulator app | 07:46:44–07:47:47, UTC+00:00; no excluded pauses; bookkeeping excluded | 1.05 minutes (63 seconds) | Recorded |
+
+| 2026-09-28-05 | September 28, 2026 | Codex | Destination swipe deletion | Replaced × with swipe-to-delete; signed Dev/simulator builds passed; simulator installed/launched | 07:50:25–07:51:07, UTC+00:00; no excluded pauses; bookkeeping excluded | 0.70 minutes (42 seconds) | Recorded |
+
+| 2026-09-28-06 | September 28, 2026 | Codex | Google home photo | Added userInfo photo/fallback/session fences; deployed non-replacing Cognito picture mapping; 50 iOS/99 backend tests, lint and Dev builds passed; simulator app updated | 07:53:09–07:55:39, UTC+00:00; no excluded pauses; bookkeeping excluded | 2.50 minutes (150 seconds) | Recorded |
+
+| 2026-09-28-07 | September 28, 2026 | Codex | Compact home header | Put title and Sign out on one row; user confirmed Google photo works; signed Dev/simulator builds passed; simulator updated | 08:06:08–08:07:03, UTC+00:00; no excluded pauses; bookkeeping excluded | 0.92 minutes (55 seconds) | Recorded |
+
+| 2026-09-28-08 | September 28, 2026 | Codex | Profile companion organization | Moved companion management into Profile, compact home summary and in-trip Add someone; 50 tests and Dev builds passed; simulator updated | 08:11:19–08:12:31, UTC+00:00; no excluded pauses; bookkeeping excluded | 1.20 minutes (72 seconds) | Recorded |
+
+| 2026-09-28-09 | September 28, 2026 | Codex | Companion summary limit | Show three names plus remaining count; signed Dev/simulator builds passed; simulator updated | 08:13:55–08:14:25, UTC+00:00; no excluded pauses; bookkeeping excluded | 0.50 minutes (30 seconds) | Recorded |
+
+| 2026-09-28-10 | September 28, 2026 | Codex | Ask Pip AI conversation | Added separate prompt, travel-only chat/follow-ups/plan revision and authorized profile context; 105 backend/51 iOS tests, Dev builds and synthetic live checks passed; deployed ECS revision 11 and installed simulator app | 08:20:46–08:37:18, UTC+00:00; no excluded pauses (includes CI/AWS waits); bookkeeping excluded | 16.53 minutes (992 seconds) | Recorded |
+
+| 2026-09-28-11 | September 28, 2026 | Codex | Ask Pip conversation review | Retrieved only the user-identified account chat, prepared a temporary transcript and reviewed repetition/save-trip gap | 08:49:05–08:50:39, UTC+00:00; 5 seconds measured idle wait excluded (rounded); bookkeeping excluded | 1.48 minutes (89 seconds) | Recorded |
+
+| 2026-09-28-12 | September 28, 2026 | Codex | Chat Markdown rendering | Confirmed budget fields absent; added styled assistant Markdown; 52 tests and signed Dev/simulator builds passed; simulator updated | 08:51:40–08:53:20, UTC+00:00; no excluded pauses; bookkeeping excluded | 1.67 minutes (100 seconds) | Recorded |
+
+| 2026-09-28-13 | September 28, 2026 | Codex | Optional trip budgets | Total/currency, category estimates/actuals, exact totals, old-client preservation, 109 backend/53 iOS tests, builds, Dev rollout and simulator install | 08:54:06–09:02:55, UTC; no excluded pauses | 529 seconds | Recorded |
+
+| 2026-09-28-14 | September 28, 2026 | Codex | Reviewed chat trip creation | Structured drafts, editor review/save, bounded history, safe IDs, backend/iOS tests and builds, synthetic live inference, Dev deployment and simulator install | 09:07:55–09:16:16, UTC; initial investigation before this timestamp unrecorded; no excluded pauses | 501 seconds | Recorded |
+
+| 2026-09-28-15 | September 28, 2026 | Codex | Preserve whole travel party | Adult/child counts, explicit legacy-note recovery, unnamed traveler display, tests/builds, synthetic inference, Dev deployment and simulator install | 09:19:27–09:28:03, UTC; no excluded pauses | 516 seconds | Recorded |
 
 The backend-deployment planning segment excludes initial inspection and bookkeeping. Its 22 seconds overlap the domain-cutover session and are counted only once in project elapsed totals. The cutover row was assigned ID 08 to resolve a concurrent ID collision. This confirmation segment excludes subsequent time-log bookkeeping.
 
@@ -78,6 +110,29 @@ No human-effort duration has been supplied.
 **Basis:** `Recorded` means start/end times were captured during the session; `Estimate` means
 an approximation supplied later. Contributor should identify who did the work, such as
 `User` or `Codex`. Use minutes for each row and hours/minutes in the totals.
+
+| 2026-09-28-16 | September 28, 2026 | Codex | Talk to Pip live voice | Authenticated GPT-Live relay, native microphone/audio/captions, account and cancellation fences; 133 backend/56 iOS tests, lint, signed Dev build and synthetic live audio inference passed; deployment/device acceptance pending | 21:11:59–21:19:42, UTC−07:00; initial investigation before capture unrecorded; no excluded pauses; bookkeeping excluded | 463 seconds | Recorded |
+
+| 2026-09-28-17 | September 28, 2026 | Codex | Voice button visibility | Added home and fixed chat voice buttons with dedicated sheet; 56 simulator tests and signed Dev build passed; push/deployment blocked by automatic approval review; installation pending | 21:25:57–21:27:19, UTC−07:00; no excluded pauses; bookkeeping excluded | 82 seconds | Recorded |
+
+| 2026-09-28-18 | September 28, 2026 | Codex | Approved voice rollout | Committed/pushed scoped backend voice changes; CI and Dev deployment passed, ECS revision 15 stable, public health/auth checks passed; installed/launched signed Dev app on Ali’s iPhone | 21:28:01–21:35:06, UTC−07:00; no excluded pauses; bookkeeping excluded | 425 seconds | Recorded |
+
+| 2026-09-28-19 | September 28, 2026 | Codex | Silent voice investigation | Verified accepted Dev sockets and real-provider synthetic relay audio; added microphone feedback/stall detection and permission/interruption fixes; 57 simulator tests and signed build passed; update installed, launch blocked by locked phone; root cause pending device check | 21:36:37–21:40:57, UTC−07:00; no excluded pauses; bookkeeping excluded | 260 seconds | Recorded |
+
+| 2026-09-28-20 | September 28, 2026 | Codex | Voice greeting | Added once-per-session spoken introduction; exact greeting/audio verified with silent synthetic input; backend tests/lint and CI passed; Dev deployed as ECS revision 16 with healthy public checks | 21:44:03–21:50:51, UTC−07:00; no excluded pauses; bookkeeping excluded | 408 seconds | Recorded |
+
+| 2026-09-28-21 | September 28, 2026 | Codex | Physical microphone capture fix | Reproduced capture timeout on phone; explicit input sink fixed the same physical test; 57 simulator tests and signed build passed; installed update, normal launch blocked by relocked phone | 23:45:51–23:50:52, UTC−07:00; no excluded pauses; bookkeeping excluded | 301 seconds | Recorded |
+| 2026-09-29-01 | September 29, 2026 | Codex | Live voice audio-session threading | Serial background activation/deactivation and cancellation fences; 59 simulator tests and signed build passed; installed on iPhone, remote launch failed; physical capture still fails with new and original activation | 00:13:12–00:21:48, UTC−07:00; no excluded pauses; bookkeeping excluded | 516 seconds | Recorded |
+| 2026-09-29-02 | September 29, 2026 | Codex | iPhone 16 Pro Max voice comparison | Full capture fails on iOS 27; plain and voice-processed microphone controls pass; failed graph experiments reverted; clean signed app installed, launch blocked by locked phone | 00:25:09–00:32:50, UTC−07:00; no excluded pauses; bookkeeping excluded | 461 seconds | Recorded |
+| 2026-09-29-03 | September 29, 2026 | Codex | Duplex microphone/output graph repair | Explicit final mixer-output connection restores capture; sustained playback and three restarts pass on both phones; 59 simulator tests and fresh signed build pass; installed both, launched iPhone 16 Pro Max; user conversation confirmation pending | 00:54:57–01:01:11, UTC−07:00; no excluded pauses; bookkeeping excluded | 374 seconds | Recorded |
+| 2026-09-29-04 | September 29, 2026 | Codex | Voice conversation bubbles | Recorded user acceptance of working voice; added timed speaker bubbles and scrolling; 62 simulator tests, light/dark visual checks and signed build passed; installed on Akiphone, launch blocked by locked phone | 01:04:05–01:11:53, UTC−07:00; no excluded pauses; bookkeeping excluded | 468 seconds | Recorded |
+| 2026-09-29-05 | September 29, 2026 | Codex | GPT-6 Luna model switch | Changed typed chat and voice reasoning; 133 backend tests, lint and CI passed; synthetic live reply and voice session accepted; Dev ECS revision 17 steady and HTTPS checks passed | 01:12:09–01:20:33, UTC−07:00; no excluded pauses; bookkeeping excluded | 504 seconds | Recorded |
+| 2026-09-29-06 | September 29, 2026 | Codex | Locked-screen voice | Enabled background audio and retained established calls during screen lock; 62 simulator tests and signed Dev build passed; installed on Akiphone; physical lock acceptance pending | 08:21:01–08:23:17, UTC; no excluded pauses; bookkeeping excluded | 136 seconds | Recorded |
+| 2026-09-29-07 | September 29, 2026 | Codex | Complete profile in live voice | Removed field truncation; 135 backend tests and Ruff passed; full synthetic profile accepted by OpenAI; Dev ECS revision 18 steady and health/readiness passed | 08:23:28–08:29:35, UTC; no excluded pauses; bookkeeping excluded | 367 seconds | Recorded |
+| 2026-09-29-08 | September 29, 2026 | Codex | Saved trips in live voice | Added read-only trip context and disclosure; 135 backend tests, Ruff and live synthetic flight recall passed; signed app installed; Dev ECS revision 19 steady, HTTPS checks passed | 08:30:33–08:36:40, UTC; no excluded pauses; bookkeeping excluded | 367 seconds | Recorded |
+| 2026-09-29-09 | September 29, 2026 | Codex | Companions and voice session lifecycle | Added companions and trip membership; installed disclosure build; implemented silence check-in and goodbye closure; 142 backend tests/Ruff and real-provider silence/goodbye checks passed; Dev revisions 20 and 21 deployed | 08:38:44–08:54:33, UTC; no excluded pauses; bookkeeping excluded | 949 seconds | Recorded |
+| 2026-09-29-10 | September 29, 2026 | Codex | Natural goodbye recognition | Fixed polite/multisentence farewells and fragment spacing; 157 backend tests, Ruff and live synthetic goodbye passed; Dev revision 22 deployed and healthy | 09:00:19–09:07:59, UTC; no excluded pauses; bookkeeping excluded | 460 seconds | Recorded |
+| 2026-09-29-11 | September 29, 2026 | Codex | Commit and push all changes | Reviewed both repositories and remote synchronization; credential-pattern scan clear; 157 backend and 62 simulator tests, Ruff and CloudFormation lint passed; prepared all pending changes for commit/push | 22:15:36–22:16:55, UTC; no excluded pauses; bookkeeping and Git transfer excluded | 79 seconds | Recorded |
 
 ## Earlier work — user-supplied estimates
 

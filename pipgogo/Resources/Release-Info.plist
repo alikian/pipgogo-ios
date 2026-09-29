@@ -2,8 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Use the microphone when you choose to speak your trip plans.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Talk to Pip using live voice conversation. Audio is shared with OpenAI while voice is active.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Turn your spoken trip plans into text for you to review before sending to Pip.</string>
 	<key>CFBundleDisplayName</key>

@@ -1,3 +1,5 @@
+> Current product scope: [simple travel organizer](simple-travel-organizer.md), selected September 28, 2026. The traveler-intelligence material below is retained history; AI credentials remain configured.
+
 # Traveler intelligence — implementation and delivery
 
 The [source requirements](traveler-intelligence-requirements.md) replace the old questionnaire,

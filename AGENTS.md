@@ -2,22 +2,16 @@
 
 ## Authoritative scope
 
-The user requested a major rebuild on September 27, 2026. Use the
-[new requirements](docs/traveler-intelligence-requirements.md), [roadmap](ROADMAP.md),
-and [implementation notes](docs/traveler-intelligence.md). The prior questionnaire,
-check-in and companion-package feature sequence is superseded. Its instructions and
-historical evidence are retained in `docs/archive/2026-09-27-legacy-AGENTS.md`.
+The current September 28, 2026 scope is the [simple travel organizer](docs/simple-travel-organizer.md) and [roadmap](ROADMAP.md): traveler profile, companions and multi-destination trips with hotels and plane/train/car transport. This supersedes the September 27 traveler-intelligence requirements as the active product scope. Preserve the historical requirements and implementation evidence.
 
-Preserve Google/Cognito authentication and working ECS/DynamoDB architecture. Rebuild the
-product around trip intake, getting to know the traveler, persistent memory, lightweight plans,
-current-trip learning and user-controlled adaptation. **Pip never overplans.** Fixed commitments
-outrank suggestions; trip-specific context outranks general memory. Imported facts require review.
-Never infer sensitive needs or turn temporary feedback into permanent preferences. Corrections win.
+Preserve Google/Cognito authentication, ECS/DynamoDB, account ownership and existing data. Keep AI credentials and the configured OpenAI model, while the core organizer works without AI calls. Optional Ask Pip uses backend `prompt.md`; chat messages/history and the traveler profile may be sent to OpenAI, not saved companions or trips. Chat can revise discussed plans but cannot silently modify organizer data. Never infer sensitive needs.
 
-The latest user-selected model is OpenAI GPT-6 Astra through the direct OpenAI Responses API. Use a server-side
+The latest user-selected model is OpenAI GPT-6 Luna (selected September 29, 2026) through the direct OpenAI Responses API. Use a server-side
 OpenAI API key from Secrets Manager or the local environment; no provider credentials belong in the iOS bundle. Do not substitute
 a model without user instruction. Record model agreement/access, IAM deployment, live inference,
 mocked tests and physical-device acceptance separately.
+
+Live voice was requested September 28, 2026: use `gpt-live-1` for Talk to Pip, with GPT-6 Luna for Responses delegation and typed chat. Keep voice credentials on the backend; audio and captions are transient. Live voice includes saved trips and companions as read-only context (requested September 29, 2026), including each trip’s selected companions. See `docs/live-voice.md` for rollout and acceptance evidence.
 
 ## Project time tracking
 
@@ -33,13 +27,12 @@ immutable retry body/key/version, explicit conflict review, account-switch reset
 fences, account-deletion disable markers and retained AWS data. New journey/memory/traveler records
 are separate from legacy product records. Legacy data is retained, not automatically migrated.
 Manage AWS infrastructure with the backend CloudFormation templates. Coordinate app/API rollout;
-the rebuilt app requires new journey endpoints and is not compatible with the old product API.
+the simplified app requires `/v1/travel-organizer` before device rollout.
 
 Backend checks: `uv run pytest -q`, `uv run ruff check app scripts tests`, and
 `uv run ruff format --check app scripts tests`. iOS uses Local/Dev/Prod schemes; run relevant
 simulator tests and signed builds. Mocked tests/builds do not prove live provider or device acceptance.
-Use the first four-day San Diego scenario in requirement section 28 as core end-to-end acceptance.
-Later location, pilot, hands-free and custom hardware milestones remain sequential product work.
+Use the multi-destination acceptance scenario in docs/simple-travel-organizer.md for the active scope. Prior AI/location/hardware milestones are deferred.
 
 ## Retained authentication and infrastructure references
 

@@ -16,6 +16,10 @@ final class AuthenticationStore {
     }
 
     private(set) var state: State = .restoring
+    private(set) var profilePictureURL: URL?
+    private var sessionEpoch = UUID()
+    let chat: TravelChatStore
+    let organizer: OrganizerStore
     let intelligence: IntelligenceStore
     private let configuration: AppConfiguration
     private let authentication: AuthenticationService
@@ -25,6 +29,8 @@ final class AuthenticationStore {
     init(configuration: AppConfiguration = .live, authentication: AuthenticationService? = nil, apiClient: APIClient? = nil) {
         let auth = authentication ?? AuthenticationService(configuration: configuration)
         let client = apiClient ?? APIClient(baseURL: configuration.backendBaseURL)
+        chat = TravelChatStore(client: client, authentication: auth)
+        organizer = OrganizerStore(client: client, authentication: auth)
         intelligence = IntelligenceStore(client: client, authentication: auth)
         self.configuration = configuration
         self.authentication = auth
@@ -41,7 +47,11 @@ final class AuthenticationStore {
     }
 
     func signIn() async {
+        sessionEpoch = UUID()
+        profilePictureURL = nil
         intelligence.reset()
+        organizer.reset()
+        chat.reset()
         state = .signingIn
         do {
             let verifier = try PKCE.randomURLSafeString(byteCount: 64)
@@ -61,16 +71,28 @@ final class AuthenticationStore {
     }
 
     func loadAccount() async {
+        let ticket = sessionEpoch
         state = .loadingAccount
         do {
-            state = .signedIn(try await apiClient.account(using: authentication))
+            let account = try await apiClient.account(using: authentication)
+            guard ticket == sessionEpoch else { return }
+            state = .signedIn(account)
+            // Photo loading is optional and must never prevent opening the app.
+            let photo = try? await authentication.profilePictureURL()
+            guard ticket == sessionEpoch else { return }
+            profilePictureURL = photo
         } catch {
+            guard ticket == sessionEpoch else { return }
             state = .accountError(error.localizedDescription)
         }
     }
 
     func signOut() async {
+        sessionEpoch = UUID()
+        profilePictureURL = nil
         intelligence.reset()
+        organizer.reset()
+        chat.reset()
         state = .signingOut
         var message: String?
         do { try await authentication.clearAndRevoke() }

@@ -5,33 +5,36 @@ struct RootView: View {
     var environment: AppEnvironment = AppConfiguration.live.environment
 
     var body: some View {
-        Group {
-            switch store.state {
-            case .restoring:
-                ProgressView("Restoring your session…")
-            case .signedOut:
-                WelcomeView(isBusy: false, errorMessage: nil) { Task { await store.signIn() } }
-            case .signingIn:
-                WelcomeView(isBusy: true, errorMessage: nil) {}
-            case .signInError(let message):
-                WelcomeView(isBusy: false, errorMessage: message) { Task { await store.signIn() } }
-            case .loadingAccount:
-                AccountLoadingView()
-            case .signedIn:
-                PipHomeView(store: store.intelligence, signOut: { Task { await store.signOut() } })
-            case .accountError(let message):
-                AccountErrorView(message: message, retry: { Task { await store.loadAccount() } }, signOut: { Task { await store.signOut() } })
-            case .signingOut:
-                ProgressView("Signing out…")
-            }
-        }
-        .safeAreaInset(edge: .top, spacing: 0) {
+        VStack(spacing: 0) {
             HStack {
-                Spacer()
                 BuildEnvironmentIndicator(environment: environment)
+                Spacer()
             }
             .padding(.horizontal, 16)
             .padding(.vertical, 2)
+            .allowsHitTesting(false)
+
+            Group {
+                switch store.state {
+                case .restoring:
+                    ProgressView("Restoring your session…")
+                case .signedOut:
+                    WelcomeView(isBusy: false, errorMessage: nil) { Task { await store.signIn() } }
+                case .signingIn:
+                    WelcomeView(isBusy: true, errorMessage: nil) {}
+                case .signInError(let message):
+                    WelcomeView(isBusy: false, errorMessage: message) { Task { await store.signIn() } }
+                case .loadingAccount:
+                    AccountLoadingView()
+                case .signedIn:
+                    TravelOrganizerView(store: store.organizer, chat: store.chat, profilePictureURL: store.profilePictureURL, signOut: { Task { await store.signOut() } })
+                case .accountError(let message):
+                    AccountErrorView(message: message, retry: { Task { await store.loadAccount() } }, signOut: { Task { await store.signOut() } })
+                case .signingOut:
+                    ProgressView("Signing out…")
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .animation(.easeInOut(duration: 0.2), value: store.state)
     }

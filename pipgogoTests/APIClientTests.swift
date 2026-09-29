@@ -1,9 +1,330 @@
+import AVFoundation
 import Foundation
+import SwiftUI
 import Testing
 @testable import pipgogo
 
 @Suite(.serialized)
 struct APIClientTests {
+    #if !targetEnvironment(simulator)
+    @MainActor @Test func physicalVoiceCaptureProducesAudioBuffers() async throws {
+        let allowed = await AVAudioApplication.requestRecordPermission()
+        guard allowed else {
+            Issue.record("Allow PipPipGo microphone access to run the device capture check.")
+            return
+        }
+        let audio = VoiceAudio()
+        defer { audio.stop() }
+        let stream = try await audio.start()
+        let data = try await withThrowingTaskGroup(of: Data?.self) { group in
+            group.addTask {
+                var iterator = stream.makeAsyncIterator()
+                return try await iterator.next()
+            }
+            group.addTask {
+                try await Task.sleep(for: .seconds(4))
+                throw APIClientError.invalidRequest("Microphone produced no PCM buffers within four seconds.")
+            }
+            defer { group.cancelAll() }
+            return try await group.next()!
+        }
+        #expect(data != nil && !data!.isEmpty && data!.count.isMultiple(of: 2))
+    }
+    @MainActor @Test func physicalBasicMicrophoneProducesFrames() async throws {
+        try await checkBasicCapture(voiceProcessing: false)
+    }
+
+    @MainActor @Test func physicalVoiceProcessedMicrophoneProducesFrames() async throws {
+        try await checkBasicCapture(voiceProcessing: true)
+    }
+
+    @MainActor @Test func physicalVoiceCaptureSustainsPlaybackAndRestart() async throws {
+        guard await AVAudioApplication.requestRecordPermission() else {
+            Issue.record("Allow microphone permission for the sustained capture check.")
+            return
+        }
+        for _ in 0..<3 {
+            try await checkSustainedVoiceCapture()
+            await VoiceAudioSession.shared.flush()
+        }
+    }
+
+    @MainActor private func checkSustainedVoiceCapture() async throws {
+        let audio = VoiceAudio()
+        defer { audio.stop() }
+        let stream = try await audio.start()
+        // Exercise simultaneous output without recording or playing the user's speech.
+        try audio.play(Data(repeating: 0, count: 9600))
+        let bytes = try await withThrowingTaskGroup(of: Int.self) { group in
+            group.addTask {
+                var count = 0
+                for try await data in stream {
+                    guard !data.isEmpty, data.count.isMultiple(of: 2) else {
+                        throw APIClientError.invalidRequest("Invalid PCM capture data.")
+                    }
+                    count += data.count
+                    if count >= 96_000 { return count }
+                }
+                return count
+            }
+            group.addTask {
+                try await Task.sleep(for: .seconds(6))
+                throw APIClientError.invalidRequest("Capture did not sustain two seconds of PCM audio.")
+            }
+            defer { group.cancelAll() }
+            return try await group.next()!
+        }
+        #expect(bytes >= 96_000)
+    }
+
+    @MainActor private func checkBasicCapture(voiceProcessing: Bool) async throws {
+        guard await AVAudioApplication.requestRecordPermission() else {
+            Issue.record("Allow microphone permission for the capture comparison.")
+            return
+        }
+        let owner = UUID()
+        try await VoiceAudioSession.shared.activate(owner: owner)
+        let engine = AVAudioEngine()
+        if voiceProcessing { try engine.inputNode.setVoiceProcessingEnabled(true) }
+        let stream = AsyncThrowingStream<UInt32, Error> { continuation in
+            engine.inputNode.installTap(onBus: 0, bufferSize: 2048, format: nil) { buffer, _ in
+                continuation.yield(buffer.frameLength)
+            }
+        }
+        defer {
+            engine.inputNode.removeTap(onBus: 0)
+            engine.stop()
+            VoiceAudioSession.shared.deactivate(owner: owner)
+        }
+        try engine.start()
+        let frames = try await withThrowingTaskGroup(of: UInt32?.self) { group in
+            group.addTask {
+                var iterator = stream.makeAsyncIterator()
+                return try await iterator.next()
+            }
+            group.addTask {
+                try await Task.sleep(for: .seconds(4))
+                throw APIClientError.invalidRequest("Basic microphone produced no frames within four seconds.")
+            }
+            defer { group.cancelAll() }
+            return try await group.next()!
+        }
+        #expect((frames ?? 0) > 0)
+    }
+    #endif
+
+    @MainActor @Test func stoppedVoiceCaptureCannotStartLater() async {
+        let audio = VoiceAudio()
+        audio.stop()
+        do {
+            _ = try await audio.start()
+            Issue.record("A stopped call must not activate its microphone.")
+        } catch {
+            #expect(error is CancellationError)
+        }
+    }
+
+    @Test func audioSessionChangesRunOffMainAndIgnoreStaleCleanup() async throws {
+        let changes = AudioSessionChanges()
+        let session = VoiceAudioSession(activate: {
+            #expect(!Thread.isMainThread)
+            changes.append("activate")
+        }, deactivate: {
+            #expect(!Thread.isMainThread)
+            changes.append("deactivate")
+        })
+        let first = UUID(), second = UUID()
+        try await session.activate(owner: first)
+        session.deactivate(owner: first)
+        try await session.activate(owner: second)
+        session.deactivate(owner: first)
+        await session.flush()
+        #expect(changes.values == ["activate", "deactivate", "activate"])
+        session.deactivate(owner: second)
+        await session.flush()
+        #expect(changes.values == ["activate", "deactivate", "activate", "deactivate"])
+    }
+
+    @Test func voiceBubblesPreserveOverlappingSpeechAndLateFragments() {
+        var transcript = VoiceTranscript()
+        transcript.append("Hi, I’m Pip.", speaker: .pip, startMilliseconds: 0, endMilliseconds: 800)
+        transcript.append("I’d like", speaker: .user, startMilliseconds: 1000, endMilliseconds: 1500)
+        let userID = transcript.messages[1].id
+        transcript.append("Sure.", speaker: .pip, startMilliseconds: 2200, endMilliseconds: 2400)
+        transcript.append(" to visit Paris.", speaker: .user, startMilliseconds: 1500, endMilliseconds: 3000)
+        #expect(transcript.messages.count == 3)
+        #expect(transcript.messages[1].id == userID)
+        #expect(transcript.messages[1].text == "I’d like to visit Paris.")
+        transcript.append("Also Rome.", speaker: .user, startMilliseconds: 8000, endMilliseconds: 8800)
+        transcript.append(" Paris.", speaker: .user, startMilliseconds: 3000, endMilliseconds: 3300)
+        #expect(transcript.messages.count == 4)
+        #expect(transcript.messages[1].text == "I’d like to visit Paris. Paris.")
+        #expect(transcript.messages.last?.text == "Also Rome.")
+        #expect(transcript.messages[1].fragments.last?.startMilliseconds == 3000)
+    }
+
+    @Test func voiceBubblesOrderDelayedSpeakersAndClearTransientHistory() {
+        var transcript = VoiceTranscript()
+        transcript.append("Of course.", speaker: .pip, startMilliseconds: 4000, endMilliseconds: 4800)
+        transcript.append("Can you help?", speaker: .user, startMilliseconds: 1000, endMilliseconds: 2500)
+        #expect(transcript.messages.map(\.speaker) == [.user, .pip])
+        transcript.clear()
+        #expect(transcript.messages.isEmpty)
+        transcript.append("Hello", speaker: .user, startMilliseconds: nil, endMilliseconds: nil)
+        transcript.append(" hello", speaker: .user, startMilliseconds: nil, endMilliseconds: nil)
+        transcript.append("Hi", speaker: .pip, startMilliseconds: .nan, endMilliseconds: .infinity)
+        #expect(transcript.messages.map(\.text) == ["Hello hello", "Hi"])
+    }
+
+    @Test func voiceBubblesBoundSessionMemory() {
+        var transcript = VoiceTranscript()
+        for index in 0..<600 {
+            let time = Double(index) * 2000
+            transcript.append(String(repeating: "x", count: 100), speaker: index.isMultiple(of: 2) ? .user : .pip,
+                              startMilliseconds: time, endMilliseconds: time + 100)
+        }
+        #expect(transcript.messages.count <= 64)
+        #expect(transcript.messages.reduce(0) { $0 + $1.text.count } <= 8000)
+        #expect(transcript.messages.reduce(0) { $0 + $1.fragments.count } <= 512)
+    }
+
+    @Test func microphoneLevelDetectsSignedPCMAndSilence() {
+        #expect(LiveVoiceStore.level(Data(repeating: 0, count: 960)) == 0)
+        #expect(LiveVoiceStore.level(Data([0, 128])) == 1)
+        #expect(LiveVoiceStore.level(Data([0, 64])) == 0.5)
+        #expect(LiveVoiceStore.level(Data([0])) == 0)
+    }
+
+    @MainActor @Test func liveVoiceUsesBackendAuthorizationWithoutURLTokens() throws {
+        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://dev.pippipgo.com?discard=1#fragment")!, token: "test-access-token")
+        #expect(request.url?.absoluteString == "wss://dev.pippipgo.com/v1/travel-chat/live")
+        #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer test-access-token")
+        #expect(throws: (any Error).self) {
+            try LiveVoiceStore.request(baseURL: URL(string: "https://name:password@example.com")!, token: "token")
+        }
+    }
+
+    @Test func legacyPartyIncludesUnnamedTravelers() throws {
+        let party = OrganizerParty.legacyNotes("Travelers: 3 adults and one 14-year-old; select travelers during review.")
+        #expect(party == OrganizerParty(adults: 3, children: 1))
+        #expect(party?.total == 4)
+        #expect(OrganizerParty.legacyNotes("Visit 3 adult attractions") == nil)
+        var trip = OrganizerTrip(name: "Party")
+        trip.party = party
+        #expect(try JSONDecoder().decode(OrganizerTrip.self, from: JSONEncoder().encode(trip)).party == party)
+    }
+
+    @Test func chatDraftDecodesAndLegacyMessagesRemainReadable() throws {
+        let old = Data(#"{"id":"old","role":"assistant","text":"A plan"}"#.utf8)
+        #expect(try JSONDecoder().decode(TravelChatMessage.self, from: old).trip_draft == nil)
+        var trip = OrganizerTrip(name: "London")
+        trip.budget = OrganizerBudget(currency: "GBP", total: "2000")
+        trip.stops = [OrganizerStop(destination: "London", arrival: "2026-10-10")]
+        let message = TravelChatMessage(id: "draft", role: "assistant", text: "Review trip", trip_draft: trip)
+        let restored = try JSONDecoder().decode(TravelChatMessage.self, from: JSONEncoder().encode(message))
+        #expect(restored.trip_draft == trip)
+    }
+
+    @Test func budgetTotalsAreExactAndOldTripsStillDecode() throws {
+        var budget = OrganizerBudget(); budget.total = "15000"
+        budget.flights.estimated = "6000"; budget.hotels.estimated = "3600"
+        budget.flights.actual = "6200.50"; budget.food.actual = "0.10"; budget.other.actual = "0.20"
+        #expect(budget.estimatedTotal == 9600)
+        #expect(budget.actualTotal == Decimal(string: "6200.80"))
+        #expect(budget.remaining == Decimal(string: "8799.20"))
+        #expect(budget.unallocated == 5400)
+        budget.total = "100"; #expect(budget.remaining! < 0)
+        budget.currency = "JPY"; #expect(!budget.isValid)
+        budget.currency = "USD"; budget.food.actual = "-1"; #expect(!budget.isValid)
+        let old = Data("{\"id\":\"00000000-0000-0000-0000-000000000001\",\"name\":\"Old trip\",\"include_me\":true,\"companion_ids\":[],\"stops\":[],\"notes\":\"\"}".utf8)
+        #expect(try APIJSON.decoder().decode(OrganizerTrip.self, from: old).budget == nil)
+        var trip = OrganizerTrip(); trip.budget = OrganizerBudget(total: "15000")
+        let roundTrip = try APIJSON.decoder().decode(OrganizerTrip.self, from: APIJSON.encoder().encode(trip))
+        #expect(roundTrip.budget?.total == "15000")
+    }
+
+    @Test func chatMarkdownRendersPlanFormatting() {
+        let blocks = ChatMarkdownBlock.parse("## Tokyo\n\n**Four nights** near the station.\n- **Hotel:** apartment\n2. Take the train\n\n[Details](https://example.com)")
+        #expect(blocks.map(\.kind) == [.heading(2), .paragraph, .bullet, .numbered("2."), .paragraph])
+        #expect(String(blocks[1].attributed.characters) == "Four nights near the station.")
+        #expect(blocks[1].attributed.runs.contains { $0.inlinePresentationIntent?.contains(.stronglyEmphasized) == true })
+        #expect(blocks[2].text == "**Hotel:** apartment")
+        #expect(blocks[4].attributed.runs.contains { $0.link?.absoluteString == "https://example.com" })
+        let unsafe = ChatMarkdownBlock.parse("[Open](pipgogo://auth/logout)")[0]
+        #expect(!unsafe.attributed.runs.contains { $0.link != nil })
+    }
+
+    @MainActor @Test func travelChatTimeoutRetainsOnlyMessageAndExactRetry() async throws {
+        let data = TravelChatData(messages: [TravelChatMessage(id: "1", role: "assistant", text: "Which area?")])
+        let record = APIRecord(id: "me", kind: "travel_chat", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: data)
+        let body = try APIJSON.encoder().encode(record)
+        let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([
+            .init(error: .timedOut), .init(status: 200, body: body), .init(status: 200, body: body)]))
+        let store = TravelChatStore(client: client, authentication: TestTokens())
+        store.loaded = true; store.composer = "Where is a locker?"
+        await store.send()
+        let request = try #require(store.pending)
+        let payload = try #require(JSONSerialization.jsonObject(with: request.body!) as? [String: String])
+        #expect(payload == ["text": "Where is a locker?"])
+        await store.retry()
+        #expect(StubURLProtocol.requests[0].value(forHTTPHeaderField: "Idempotency-Key") == StubURLProtocol.requests[1].value(forHTTPHeaderField: "Idempotency-Key"))
+        #expect(StubURLProtocol.bodies[0] == StubURLProtocol.bodies[1])
+        #expect(store.messages.count == 1 && store.pending == nil && store.composer.isEmpty)
+        store.reset(); #expect(store.messages.isEmpty && !store.loaded && store.version == 0)
+    }
+
+    @MainActor @Test func destinationBindingSurvivesReorderAndRemoval() {
+        let first = OrganizerStop(destination: "Vancouver", arrival: "2026-09-28")
+        let second = OrganizerStop(destination: "Victoria")
+        var trip = OrganizerTrip(name: "Canada", stops: [first, second])
+        let binding = Binding(get: { trip }, set: { trip = $0 }).stop(first)
+        trip.stops.reverse()
+        binding.wrappedValue.hotel = "Vancouver Hotel"
+        #expect(trip.stops[1].hotel == "Vancouver Hotel")
+        #expect(trip.stops[0].hotel.isEmpty)
+        trip.stops.removeAll { $0.id == first.id }
+        // SwiftUI can read the date binding during the outgoing screen transition.
+        #expect(binding.wrappedValue.arrival == "2026-09-28")
+        binding.wrappedValue.arrival = nil
+        #expect(trip.stops == [second])
+        trip.stops.removeAll()
+        #expect(binding.wrappedValue.destination == "Vancouver")
+    }
+
+    @MainActor @Test func organizerRetryFreezesBodyAndResetsSession() async throws {
+        var data = OrganizerData(); data.profile = OrganizerPerson(name: "Ali", age: 35, hometown: "San Diego")
+        let record = APIRecord(id: "me", kind: "organizer", version: 1, revision: 1, updatedAt: Date(), deleted: false, data: data)
+        let body = try APIJSON.encoder().encode(record)
+        let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([
+            .init(error: .timedOut), .init(status: 200, body: body), .init(status: 200, body: body)]))
+        let store = OrganizerStore(client: client, authentication: TestTokens()); store.loaded = true
+        #expect(await store.save(data) == false)
+        let frozen = try #require(store.pending)
+        data.profile?.name = "Changed after timeout"
+        #expect(await store.save(data) == false)
+        #expect(store.pending?.body == frozen.body)
+        #expect(await store.retry())
+        #expect(StubURLProtocol.requests[0].value(forHTTPHeaderField: "Idempotency-Key") == StubURLProtocol.requests[1].value(forHTTPHeaderField: "Idempotency-Key"))
+        #expect(StubURLProtocol.bodies[0] == StubURLProtocol.bodies[1])
+        #expect(store.data.profile?.name == "Ali")
+        store.reset(); #expect(!store.loaded && store.data.profile == nil && store.pending == nil)
+    }
+
+    @MainActor @Test func organizerConflictRequiresExplicitReview() async throws {
+        var latest = OrganizerData(); latest.profile = OrganizerPerson(name: "Saved elsewhere")
+        let current = APIRecord(id: "me", kind: "organizer", version: 2, revision: 2, updatedAt: Date(), deleted: false, data: latest)
+        let json = try JSONSerialization.jsonObject(with: APIJSON.encoder().encode(current))
+        let body = try JSONSerialization.data(withJSONObject: ["error": ["code": "version_conflict", "message": "Review changes", "details": ["current": json]]])
+        let store = OrganizerStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([.init(status: 409, body: body)])), authentication: TestTokens())
+        store.loaded = true
+        var draft = OrganizerData(); draft.profile = OrganizerPerson(name: "My edit")
+        #expect(await store.save(draft) == false)
+        #expect(store.conflict?.version == 2 && store.pending != nil)
+        #expect(await store.retry() == false)
+        store.useLatest()
+        #expect(store.data.profile?.name == "Saved elsewhere" && store.version == 2 && store.pending == nil)
+    }
+
     @Test func doorToDoorRoundTripAndExternalSearch() throws {
         var intake = TripIntake(); intake.destination = "New York"; intake.start_date = "2026-10-10"; intake.end_date = "2026-10-14"
         var travel = DoorToDoorTravel(); travel.mode = "fly"; travel.departure_airport = "SAN"
@@ -478,4 +799,11 @@ private actor TestTokens: AccessTokenProviding {
         if forceRefresh && failRefresh { throw AuthenticationError.sessionExpired }
         return forceRefresh ? "refreshed-token" : "original-token"
     }
+}
+
+private final class AudioSessionChanges: @unchecked Sendable {
+    private let lock = NSLock()
+    private var recorded: [String] = []
+    func append(_ value: String) { lock.lock(); defer { lock.unlock() }; recorded.append(value) }
+    var values: [String] { lock.lock(); defer { lock.unlock() }; return recorded }
 }

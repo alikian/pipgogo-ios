@@ -52,5 +52,10 @@ actor AuthenticationService: AccessTokenProviding {
         if let refreshToken { try await cognito.revoke(refreshToken: refreshToken) }
     }
 
+    func profilePictureURL() async throws -> URL? {
+        let token = try await validAccessToken()
+        return try await cognito.profile(accessToken: token).pictureURL
+    }
+
     func logoutURL() throws -> URL { try cognito.logoutURL() }
 }

@@ -1,3 +1,5 @@
+> Current product scope: [simple travel organizer](simple-travel-organizer.md), selected September 28, 2026. The traveler-intelligence material below is retained history; AI credentials remain configured.
+
 # Pip Traveler Intelligence — Getting to Know You & Adaptive Travel
 
 Source: https://docs.google.com/document/d/164nFTLecPZiQzFRrEpG5t7EdcgccPwT7vpfgf5Kz29o/edit?tab=t.0

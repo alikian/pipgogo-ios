@@ -131,7 +131,10 @@ struct TravelerIntroductionView: View {
                         Text("I'm Pip. I'll learn what matters to you, and you can correct me anytime.")
                         Text("Tell me about a trip or day out you really enjoyed. What made it good?").font(.title3.bold())
                     } else if let message = store.introduction?.data.messages.last(where: { $0.role == "pip" }) {
-                        Text(message.text).font(.title3)
+                        Text(message.text
+                            .replacingOccurrences(of: "We can move on to your trip whenever you’re ready.", with: "")
+                            .replacingOccurrences(of: "We can move on to your trip whenever you're ready.", with: "")
+                            .trimmingCharacters(in: .whitespacesAndNewlines)).font(.title3)
                         ForEach(message.memory_observations ?? [], id: \.self) { value in
                             Button { reviewMemory = value; showMemory = true } label: { Text("Remember this? \(value)") }
                         }

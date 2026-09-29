@@ -34,6 +34,15 @@ struct CognitoClient: Sendable {
         let _: EmptyResponse = try await formRequest(path: "/oauth2/revoke", values: ["client_id": configuration.clientID, "token": refreshToken], allowsEmptyResponse: true)
     }
 
+    func profile(accessToken: String) async throws -> SignedInProfile {
+        var request = URLRequest(url: try endpoint("/oauth2/userInfo"), cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 15)
+        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        let (data, response) = try await urlSession.data(for: request)
+        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else { throw URLError(.badServerResponse) }
+        return try JSONDecoder().decode(SignedInProfile.self, from: data)
+    }
+
     func logoutURL() throws -> URL {
         try endpoint("/logout", queryItems: [.init(name: "client_id", value: configuration.clientID), .init(name: "logout_uri", value: configuration.logoutURL.absoluteString)])
     }

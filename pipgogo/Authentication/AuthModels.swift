@@ -51,3 +51,14 @@ enum AuthenticationError: LocalizedError, Equatable {
         }
     }
 }
+
+/// Display-only attributes fetched from the configured Cognito userInfo endpoint.
+struct SignedInProfile: Decodable, Sendable {
+    let picture: String?
+    var pictureURL: URL? {
+        guard let picture, let url = URL(string: picture), url.scheme == "https",
+              url.user == nil, url.password == nil, let host = url.host?.lowercased(),
+              host == "googleusercontent.com" || host.hasSuffix(".googleusercontent.com") else { return nil }
+        return url
+    }
+}
