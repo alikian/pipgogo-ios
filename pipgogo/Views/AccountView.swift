@@ -2,14 +2,7 @@ import SwiftUI
 
 struct AccountLoadingView: View {
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 16) {
-                ProgressView()
-                Text("Loading your account…")
-                    .foregroundStyle(.secondary)
-            }
-            .navigationTitle("PipPipGo")
-        }
+        StartupLoadingView(message: "Loading your account…")
     }
 }
 

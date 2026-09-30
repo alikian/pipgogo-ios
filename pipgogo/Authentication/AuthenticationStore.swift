@@ -47,6 +47,7 @@ final class AuthenticationStore {
     }
 
     func signIn() async {
+        TalkToPipLaunch.shared.cancel()
         sessionEpoch = UUID()
         profilePictureURL = nil
         intelligence.reset()
@@ -88,6 +89,7 @@ final class AuthenticationStore {
     }
 
     func signOut() async {
+        TalkToPipLaunch.shared.cancel()
         sessionEpoch = UUID()
         profilePictureURL = nil
         intelligence.reset()

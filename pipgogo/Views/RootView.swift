@@ -2,6 +2,8 @@ import SwiftUI
 
 struct RootView: View {
     let store: AuthenticationStore
+    @State private var siriSignInRequired = false
+    @Environment(\.scenePhase) private var scenePhase
     var environment: AppEnvironment = AppConfiguration.live.environment
 
     var body: some View {
@@ -17,7 +19,7 @@ struct RootView: View {
             Group {
                 switch store.state {
                 case .restoring:
-                    ProgressView("Restoring your session…")
+                    StartupLoadingView(message: "Restoring your session…")
                 case .signedOut:
                     WelcomeView(isBusy: false, errorMessage: nil) { Task { await store.signIn() } }
                 case .signingIn:
@@ -37,6 +39,28 @@ struct RootView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .animation(.easeInOut(duration: 0.2), value: store.state)
+        .onChange(of: store.state, initial: true) { _, _ in checkVoiceLaunch(); syncLocationDisplay() }
+        .onChange(of: scenePhase, initial: true) { _, _ in syncLocationDisplay() }
+        .onDisappear { store.chat.locationDisplay.stop() }
+        .onChange(of: TalkToPipLaunch.shared.requestID) { _, _ in checkVoiceLaunch() }
+        .alert("Sign in to talk to Pip", isPresented: $siriSignInRequired) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Sign in to PipPipGo, then ask Siri to start Talk to Pip again.")
+        }
+    }
+    private func syncLocationDisplay() {
+        if case .signedIn = store.state, scenePhase == .active { store.chat.locationDisplay.start() }
+        else { store.chat.locationDisplay.stop() }
+    }
+    private func checkVoiceLaunch() {
+        guard TalkToPipLaunch.shared.requestID != nil else { return }
+        switch store.state {
+        case .restoring, .loadingAccount, .signedIn: break
+        default:
+            TalkToPipLaunch.shared.cancel()
+            siriSignInRequired = true
+        }
     }
 }
 
@@ -71,5 +95,25 @@ struct BuildEnvironmentIndicator: View {
         .accessibilityElement(children: .ignore)
         .accessibilityLabel("Build environment: \(title)")
         .accessibilityIdentifier("app.buildEnvironment")
+    }
+}
+
+/// Matches the system launch screen, then adds progress once SwiftUI is ready.
+struct StartupLoadingView: View {
+    let message: String
+
+    var body: some View {
+        ZStack {
+            Color(uiColor: .systemBackground).ignoresSafeArea()
+            Text("PipPipGo")
+                .font(.largeTitle.bold())
+                .overlay(alignment: .bottom) {
+                    ProgressView(message)
+                        .font(.subheadline)
+                        .foregroundStyle(.secondary)
+                        .fixedSize()
+                        .offset(y: 72)
+                }
+        }
     }
 }

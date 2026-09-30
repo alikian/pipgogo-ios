@@ -66,6 +66,7 @@ final class VoiceAudio: @unchecked Sendable {
     private var stopped = false
     private var tapped = false
     private var queuedFrames = 0
+    @MainActor var hasPendingPlayback: Bool { queuedFrames > 0 }
     private var generation = UUID()
     private let playbackFormat = AVAudioFormat(standardFormatWithSampleRate: 24_000, channels: 1)!
 
@@ -218,8 +219,11 @@ struct VoiceTranscript: Equatable {
 
 @MainActor @Observable
 final class LiveVoiceStore {
+    let locationDisplay: CurrentLocationStore
     private(set) var active = false
     private(set) var connected = false
+    private(set) var conversationContext: ConversationContext?
+    private(set) var capturingLocation = false
     private(set) var microphoneLevel = 0.0
     private(set) var microphoneReceiving = false
     private var lastInputAt: Date?
@@ -230,19 +234,23 @@ final class LiveVoiceStore {
     private var sender: Task<Void, Never>?
     private var watchdog: Task<Void, Never>?
     private var captureWatchdog: Task<Void, Never>?
+    private var navigationTask: Task<Void, Never>?
+    private var lastOutputAt = Date.distantPast
     private var socket: URLSessionWebSocketTask?
     private var session: URLSession?
     private var audio: VoiceAudio?
     private let client: APIClient
     private let authentication: any AccessTokenProviding
 
-    init(client: APIClient, authentication: any AccessTokenProviding) {
+    init(client: APIClient, authentication: any AccessTokenProviding, locationDisplay: CurrentLocationStore? = nil) {
+        self.locationDisplay = locationDisplay ?? CurrentLocationStore()
         self.client = client; self.authentication = authentication
     }
 
     func start() {
         guard !active else { return }
         active = true; error = nil; transcript.clear()
+        conversationContext = nil; capturingLocation = false
         microphoneReceiving = false; microphoneLevel = 0; lastInputAt = nil
         let ticket = UUID(); epoch = ticket
         worker = Task { [weak self] in
@@ -253,7 +261,14 @@ final class LiveVoiceStore {
                 guard allowed else { throw APIClientError.invalidRequest("Allow microphone access in Settings to talk to Pip.") }
                 let token = try await authentication.validAccessToken(forceRefresh: false)
                 guard self.epoch == ticket, !Task.isCancelled else { return }
-                let request = try Self.request(baseURL: client.baseURL, token: token)
+                capturingLocation = true
+                let context: ConversationContext
+                if let recent = locationDisplay.context, recent.hasFreshLocation() { context = recent }
+                else { context = await ConversationContext.capture() }
+                guard self.epoch == ticket, !Task.isCancelled else { return }
+                conversationContext = context; capturingLocation = false
+                var request = try Self.request(baseURL: client.baseURL, token: token)
+                request.setValue(try JSONEncoder().encode(context).base64EncodedString(), forHTTPHeaderField: "X-Pip-Context")
                 let session = URLSession(configuration: .ephemeral, delegate: VoiceSessionDelegate(), delegateQueue: nil)
                 self.session = session
                 let socket = session.webSocketTask(with: request)
@@ -304,7 +319,10 @@ final class LiveVoiceStore {
                                 }
                             } catch { self?.fail("The voice connection was interrupted. Please try again.", ticket: ticket) }
                         }
+                    case "navigation.open":
+                        scheduleNavigation(event, ticket: ticket)
                     case "session.output_audio.delta":
+                        lastOutputAt = Date()
                         if let delta = event["delta"] as? String, let bytes = Data(base64Encoded: delta) { try audio?.play(bytes) }
                     case "session.input_transcript.delta":
                         appendCaption(event, speaker: .user)
@@ -321,6 +339,46 @@ final class LiveVoiceStore {
                     fail(message, ticket: ticket)
                 } else {
                     fail("Live voice could not connect. Check your connection, then try again.", ticket: ticket)
+                }
+            }
+        }
+    }
+
+    static func drivingURL(_ event: [String: Any]) -> URL? {
+        guard let placeID = event["place_id"] as? String, !placeID.isEmpty, placeID.count <= 512,
+              let name = event["name"] as? String, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+              name.count <= 200 else { return nil }
+        var url = URLComponents(string: "https://www.google.com/maps/dir/")!
+        url.queryItems = [URLQueryItem(name: "api", value: "1"),
+                          URLQueryItem(name: "destination", value: name),
+                          URLQueryItem(name: "destination_place_id", value: placeID),
+                          URLQueryItem(name: "travelmode", value: "driving"),
+                          URLQueryItem(name: "dir_action", value: "navigate")]
+        return url.url
+    }
+
+    private func scheduleNavigation(_ event: [String: Any], ticket: UUID) {
+        guard navigationTask == nil, let url = Self.drivingURL(event) else { return }
+        let requestedAt = Date()
+        navigationTask = Task { [weak self] in
+            // Give Pip time to announce the handoff, then drain scheduled audio.
+            while !Task.isCancelled {
+                try? await Task.sleep(for: .milliseconds(200))
+                guard let self, !Task.isCancelled, self.epoch == ticket else { return }
+                let elapsed = Date().timeIntervalSince(requestedAt)
+                let quiet = Date().timeIntervalSince(self.lastOutputAt) >= 2
+                if elapsed >= 15 || (elapsed >= 5 && self.lastOutputAt >= requestedAt && quiet && self.audio?.hasPendingPlayback != true) {
+                    guard UIApplication.shared.applicationState == .active else {
+                        self.fail("Return to PipPipGo and ask for directions again.", ticket: ticket)
+                        return
+                    }
+                    self.stop()
+                    let stoppedEpoch = self.epoch
+                    UIApplication.shared.open(url, options: [:]) { [weak self] opened in
+                        guard let self, self.epoch == stoppedEpoch else { return }
+                        if !opened { self.error = "Google Maps could not open. Please try again." }
+                    }
+                    return
                 }
             }
         }
@@ -363,6 +421,7 @@ final class LiveVoiceStore {
         guard let url = components.url else { throw APIClientError.invalidRequest("Invalid backend URL.") }
         var request = URLRequest(url: url, timeoutInterval: 30)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        request.setValue("1", forHTTPHeaderField: "X-Pip-Navigation")
         return request
     }
 
@@ -372,16 +431,17 @@ final class LiveVoiceStore {
     }
 
     func stop(clearCaptions: Bool = false) {
-        epoch = UUID(); active = false; connected = false
+        epoch = UUID(); active = false; connected = false; capturingLocation = false
         worker?.cancel(); worker = nil; sender?.cancel(); sender = nil; watchdog?.cancel(); watchdog = nil
         captureWatchdog?.cancel(); captureWatchdog = nil
+        navigationTask?.cancel(); navigationTask = nil
         microphoneLevel = 0; microphoneReceiving = false
         audio?.stop(); audio = nil
         let ending = socket; let endingSession = session
         socket = nil; session = nil
         ending?.cancel(with: .normalClosure, reason: nil)
         endingSession?.invalidateAndCancel()
-        if clearCaptions { transcript.clear(); error = nil }
+        if clearCaptions { transcript.clear(); error = nil; conversationContext = nil }
     }
 }
 
@@ -418,11 +478,6 @@ struct LiveVoiceView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("Your voice, chat history, profile, saved companions and trips are shared with OpenAI. Pip’s voice is AI-generated. Live captions are not saved. Once connected, voice continues when your phone locks; tap End voice to stop.")
-                .font(.caption).foregroundStyle(.secondary)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16).padding(.vertical, 12)
-            Divider()
             ScrollViewReader { scroll in
                 ScrollView {
                     LazyVStack(spacing: 14) {
@@ -507,16 +562,26 @@ struct LiveVoiceView: View {
 
 struct VoiceConversationSheet: View {
     let store: LiveVoiceStore
+    var startRequest: UUID? = nil
+    @State private var handledRequest: UUID?
+    @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
             LiveVoiceView(store: store)
+                .onChange(of: scenePhase, initial: true) { _, _ in startRequestedConversation() }
+                .onChange(of: startRequest) { _, _ in startRequestedConversation() }
                 .navigationTitle("Talk to Pip")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
                     Button("Done") { store.stop(clearCaptions: true); dismiss() }
                 }
         }
+    }
+    private func startRequestedConversation() {
+        guard scenePhase == .active, let startRequest, handledRequest != startRequest else { return }
+        handledRequest = startRequest
+        store.start() // Already-active calls are reused by the store.
     }
 }
 

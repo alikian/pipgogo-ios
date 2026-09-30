@@ -140,6 +140,8 @@ struct TravelOrganizerView: View {
     let chat: TravelChatStore
     @State private var showChat = false
     @State private var showVoice = false
+    @State private var voiceStartRequest: UUID?
+    @Environment(\.scenePhase) private var scenePhase
     var profilePictureURL: URL? = nil
     let signOut: () -> Void
     @State private var editor: OrganizerEditorKind?
@@ -180,8 +182,12 @@ struct TravelOrganizerView: View {
                         }
                     }
                     Section {
+                        ConversationLocationView(store: chat.locationDisplay)
+                        .buttonStyle(.borderless)
+                    }
+                    Section {
                         Button("Ask Pip", systemImage: "bubble.left.and.bubble.right") { showChat = true }
-                        Button("Talk to Pip", systemImage: "mic.fill") { showVoice = true }
+                        Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
                             .disabled(chat.busy || chat.pending != nil)
                     }
                     Section("Trips") {
@@ -207,8 +213,22 @@ struct TravelOrganizerView: View {
             .task { if !store.loaded { await store.load() } }
             .sheet(item: $editor) { kind in OrganizerEditor(store: store, kind: kind) }
             .sheet(isPresented: $showChat) { TravelChatView(store: chat, organizer: store, name: store.data.profile?.name) }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: chat.voice) }
+            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: chat.voice, startRequest: voiceStartRequest) }
+            .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
+            .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
+            .onChange(of: showChat) { _, _ in handleVoiceLaunch() }
+            .onChange(of: editor?.id) { _, _ in handleVoiceLaunch() }
+            .onChange(of: chat.busy) { _, _ in handleVoiceLaunch() }
+            .onChange(of: chat.pending == nil) { _, _ in handleVoiceLaunch() }
         }
+    }
+    private func handleVoiceLaunch() {
+        guard let request = TalkToPipLaunch.shared.take(
+            isActive: scenePhase == .active,
+            blocked: showChat || editor != nil || chat.busy || chat.pending != nil
+        ) else { return }
+        voiceStartRequest = request
+        showVoice = true
     }
 }
 enum OrganizerEditorKind: Identifiable {
@@ -479,11 +499,15 @@ struct TravelChatMessage: Codable, Identifiable, Sendable {
     var trip_draft: OrganizerTrip? = nil
 }
 struct TravelChatData: Codable, Sendable { var messages: [TravelChatMessage] = [] }
-struct TravelChatRequest: Codable, Sendable { var text: String }
+struct TravelChatRequest: Codable, Sendable {
+    var text: String
+    var conversation_context: ConversationContext = .snapshot()
+}
 
 @MainActor @Observable
 final class TravelChatStore {
     let voice: LiveVoiceStore
+    let locationDisplay: CurrentLocationStore
     var messages: [TravelChatMessage] = []
     var composer = ""
     var version = 0
@@ -495,12 +519,20 @@ final class TravelChatStore {
     private var epoch = UUID()
     private let client: APIClient
     private let authentication: any AccessTokenProviding
-    init(client: APIClient, authentication: any AccessTokenProviding) {
+    private(set) var conversationContext: ConversationContext?
+    private(set) var capturingLocation = false
+    private let captureContext: @MainActor () async -> ConversationContext
+    init(client: APIClient, authentication: any AccessTokenProviding, captureContext: @escaping @MainActor () async -> ConversationContext = { await ConversationContext.capture() }) {
+        self.captureContext = captureContext
         self.client = client; self.authentication = authentication
-        self.voice = LiveVoiceStore(client: client, authentication: authentication)
+        let display = CurrentLocationStore(capture: captureContext)
+        self.locationDisplay = display
+        self.voice = LiveVoiceStore(client: client, authentication: authentication, locationDisplay: display)
     }
     func reset() {
         voice.stop(clearCaptions: true)
+        locationDisplay.reset()
+        conversationContext = nil; capturingLocation = false
         epoch = UUID(); messages = []; composer = ""; version = 0; loaded = false
         busy = false; error = nil; conflict = nil; pending = nil
     }
@@ -512,12 +544,30 @@ final class TravelChatStore {
             let result: APIRecord<TravelChatData> = try await client.send(.get(.travelChat), using: authentication)
             guard ticket == epoch else { return }
             messages = result.data.messages; version = result.version; loaded = true; error = nil
+            conversationContext = nil
         } catch { if ticket == epoch { self.error = error.localizedDescription } }
     }
     func send() async {
         guard loaded, !busy, !voice.active, pending == nil, !composer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else { return }
+        let ticket = epoch
+        let text = composer
+        busy = true
+        let context: ConversationContext
+        if let existing = locationDisplay.context, existing.hasFreshLocation() { context = existing }
+        else if let existing = conversationContext, existing.hasFreshLocation() { context = existing }
+        else {
+            capturingLocation = true
+            context = await captureContext()
+        }
+        guard ticket == epoch, !Task.isCancelled else {
+            if ticket == epoch { busy = false; capturingLocation = false }
+            return
+        }
+        conversationContext = context
+        capturingLocation = false
+        busy = false
         do {
-            pending = try .put(.travelChat, body: TravelChatRequest(text: composer), expectedVersion: version)
+            pending = try .put(.travelChat, body: TravelChatRequest(text: text, conversation_context: context), expectedVersion: version)
             await retry()
         } catch { self.error = error.localizedDescription }
     }
@@ -556,6 +606,8 @@ struct TravelChatView: View {
     @State private var reviewingTrip: OrganizerTrip?
     @State private var savedTripName: String?
     @State private var showVoice = false
+    @State private var voiceStartRequest: UUID?
+    @Environment(\.scenePhase) private var scenePhase
     var name: String? = nil
     @Environment(\.dismiss) private var dismiss
     private let suggestions = [
@@ -622,10 +674,11 @@ struct TravelChatView: View {
                     }
                 }
                 VStack(spacing: 8) {
-                    Button("Talk to Pip", systemImage: "mic.fill") { showVoice = true }
+                    ConversationLocationView(store: store.locationDisplay)
+                    Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
                         .buttonStyle(.bordered)
                         .disabled(store.busy || store.pending != nil)
-                    Text("Your chat and profile are shared with OpenAI. Saved trips and companions stay separate.")
+                    Text("Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps.")
                         .font(.caption2).foregroundStyle(.secondary)
                     HStack(alignment: .bottom) {
                         TextField("Ask about your trip…", text: $store.composer, axis: .vertical)
@@ -646,13 +699,26 @@ struct TravelChatView: View {
                 Button("Done") { dismiss() }
             }
             .task { if !store.loaded { await store.load() } }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: store.voice) }
+            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: store.voice, startRequest: voiceStartRequest) }
+            .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
+            .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
+            .onChange(of: reviewingTrip?.id) { _, _ in handleVoiceLaunch() }
+            .onChange(of: store.busy) { _, _ in handleVoiceLaunch() }
+            .onChange(of: store.pending == nil) { _, _ in handleVoiceLaunch() }
             .sheet(item: $reviewingTrip) { draft in
                 OrganizerEditor(store: organizer, kind: .trip(draft.id), initialTrip: draft) { _ in
                     savedTripName = organizer.data.trips.first { $0.id == draft.id }?.name
                 }
             }
         }
+    }
+    private func handleVoiceLaunch() {
+        guard let request = TalkToPipLaunch.shared.take(
+            isActive: scenePhase == .active,
+            blocked: reviewingTrip != nil || store.busy || store.pending != nil
+        ) else { return }
+        voiceStartRequest = request
+        showVoice = true
     }
 }
 
@@ -834,4 +900,5 @@ struct BudgetAmountField: View {
                 .accessibilityLabel(title)
         }
     }
+
 }

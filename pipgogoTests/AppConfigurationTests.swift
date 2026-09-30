@@ -81,3 +81,61 @@ struct AppConfigurationTests {
         }
     }
 }
+
+
+@MainActor
+struct TalkToPipLaunchTests {
+    @Test func coldStartWaitsForActiveSceneAndConsumesOnce() {
+        let launch = TalkToPipLaunch()
+        launch.request()
+        let request = launch.requestID
+        #expect(launch.take(isActive: false, blocked: false) == nil)
+        #expect(launch.requestID == request)
+        #expect(launch.take(isActive: true, blocked: false) == request)
+        #expect(launch.take(isActive: true, blocked: false) == nil)
+    }
+
+    @Test func editorAndPendingChatDoNotLoseLaunchOrEdits() {
+        let launch = TalkToPipLaunch()
+        launch.request()
+        #expect(launch.take(isActive: true, blocked: true) == nil)
+        #expect(launch.take(isActive: true, blocked: false) != nil)
+    }
+
+    @Test func cancelledAccountRequestCannotStartLater() {
+        let launch = TalkToPipLaunch()
+        launch.request()
+        launch.cancel()
+        #expect(launch.take(isActive: true, blocked: false) == nil)
+    }
+
+    @Test func staleLaunchExpiresAndRepeatedRequestsCoalesce() {
+        let launch = TalkToPipLaunch()
+        let now = Date(timeIntervalSince1970: 100)
+        launch.request(now: now)
+        launch.request(now: now)
+        let latest = launch.requestID
+        #expect(launch.take(isActive: true, blocked: false, now: now) == latest)
+        #expect(launch.take(isActive: true, blocked: false, now: now) == nil)
+        launch.request(now: now)
+        #expect(launch.take(isActive: true, blocked: false, now: now.addingTimeInterval(60)) == nil)
+        #expect(launch.requestID == nil)
+    }
+}
+
+@MainActor struct VoiceNavigationTests {
+    @Test func directionsUseFixedGoogleHostAndEncodeDestination() throws {
+        let url = try #require(LiveVoiceStore.drivingURL(["place_id": "id&other=bad", "name": "Shell & Cafe"]))
+        let parts = try #require(URLComponents(url: url, resolvingAgainstBaseURL: false))
+        #expect(parts.scheme == "https")
+        #expect(parts.host == "www.google.com")
+        #expect(parts.queryItems?.first(where: { $0.name == "destination_place_id" })?.value == "id&other=bad")
+        #expect(parts.queryItems?.first(where: { $0.name == "travelmode" })?.value == "driving")
+        #expect(parts.queryItems?.contains(where: { $0.name == "origin" }) == false)
+    }
+    @Test func malformedDestinationDoesNotOpen() {
+        #expect(LiveVoiceStore.drivingURL(["place_id": "", "name": "Shell"]) == nil)
+        #expect(LiveVoiceStore.drivingURL(["place_id": "id", "name": " "]) == nil)
+        #expect(LiveVoiceStore.drivingURL(["url": "https://evil.invalid"]) == nil)
+    }
+}

@@ -260,12 +260,13 @@ struct APIClientTests {
         let body = try APIJSON.encoder().encode(record)
         let client = APIClient(baseURL: URL(string: "https://example.invalid")!, urlSession: queuedSession([
             .init(error: .timedOut), .init(status: 200, body: body), .init(status: 200, body: body)]))
-        let store = TravelChatStore(client: client, authentication: TestTokens())
+        let store = TravelChatStore(client: client, authentication: TestTokens(), captureContext: { .snapshot() })
         store.loaded = true; store.composer = "Where is a locker?"
         await store.send()
         let request = try #require(store.pending)
-        let payload = try #require(JSONSerialization.jsonObject(with: request.body!) as? [String: String])
-        #expect(payload == ["text": "Where is a locker?"])
+        let payload = try #require(JSONSerialization.jsonObject(with: request.body!) as? [String: Any])
+        #expect(payload["text"] as? String == "Where is a locker?")
+        #expect(payload["conversation_context"] is [String: Any])
         await store.retry()
         #expect(StubURLProtocol.requests[0].value(forHTTPHeaderField: "Idempotency-Key") == StubURLProtocol.requests[1].value(forHTTPHeaderField: "Idempotency-Key"))
         #expect(StubURLProtocol.bodies[0] == StubURLProtocol.bodies[1])

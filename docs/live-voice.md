@@ -191,3 +191,130 @@ closed at 18.8 seconds from session start with no provider errors. This does not
 establish acceptance of the user’s exact failed utterance; device recheck remains.
 
 Goodbye recognition fix: `07905fc` deployed successfully through [run 36546544327](https://github.com/alikian/pippipgo-backend/actions/runs/36546544327), ECS revision 22 steady and health/readiness 200. 157 tests (one skipped), Ruff and real-provider natural sign-off closure passed. User-specific phone recheck remains pending.
+
+## Siri: Start Talk to Pip — September 29, 2026
+
+Implemented the foreground Siri/Shortcuts action **Start Talk to Pip**. Say
+“Hey Siri, talk to Pip in PipPipGo” or “Hey Siri, start Talk to Pip in PipPipGo”.
+For the shorter “Hey Siri, start Pip”, create a personal shortcut in Shortcuts,
+add PipPipGo’s **Start Talk to Pip** action, and name the shortcut **Start Pip**.
+Open the updated app once and sign in before trying Siri. Grant microphone access
+when prompted. This release targets an unlocked phone; new calls from a locked
+phone still require foreground access. Existing connected background audio is unchanged.
+
+An in-memory request survives cold-launch session restoration and is consumed only
+when a signed-in view is active. It opens the existing voice sheet and starts voice
+automatically, including from Ask Pip. Active calls are reused. Requests wait for an
+open editor or pending typed-chat operation, expire after 60 seconds, and are cleared
+on sign-in/sign-out so they cannot carry over to another account. Manual voice buttons
+retain their existing behavior. No backend API, model, credential or context changes.
+
+Validation: 66 simulator tests passed (four new launch lifecycle regressions), signed
+Dev iPhone build and codesign verification passed, and generated App Intents metadata
+contains the action and all three supported phrases. No new live provider check was
+performed. Physical Siri recognition, cold/warm launch, microphone handoff, AirPods,
+repeat invocation, signed-out behavior and launch while editing remain acceptance checks.
+
+Apple references: [App Shortcuts](https://developer.apple.com/documentation/appintents/app-shortcuts)
+and [running shortcuts with Siri](https://support.apple.com/en-ie/guide/shortcuts/apd07c25bb38/ios).
+
+Siri rollout: signed Dev app installed and launched on Akiphone (iPhone 16 Pro Max). Spoken Siri invocation and conversation acceptance remain pending.
+
+Siri acceptance follow-up: user confirms tapping the Start Pip shortcut’s play button works. Spoken invocation still fails to resolve correctly (earlier Siri response treated Pip as a contact). Shortcut execution is user-confirmed; Siri phrase recognition remains unaccepted.
+
+## Conversation-start context — September 29, 2026
+
+Typed Ask Pip captures device time, IANA timezone and optional approximate location on the first send after opening the conversation; voice captures them before its session connects. Coordinates are rounded to two decimals. iOS asks for When In Use permission, waits at most eight seconds and proceeds without location on denial, timeout or failure. Fixes older than five minutes are omitted on device; the backend rejects fixes more than ten minutes from current time. Account reset fences late capture results; typed retries retain the exact serialized body/key/version.
+
+The user explicitly authorized sending this context to OpenAI. Context is request/session data, not a new organizer record or stored chat-history field. Model-generated replies can still mention contextual facts. Existing model selection, ownership and saved-data permissions remain unchanged. The app disclosures and iOS permission text describe location sharing.
+
+The backend accepts optional `conversation_context` on `/v1/travel-chat`; voice uses a bounded base64 JSON `X-Pip-Context` header. Older clients remain supported. Device `captured_at` and location `captured_at` require an offset; `timezone` must resolve in IANA tzdata. The backend supplies an ISO local time with UTC offset.
+
+Weather is explicitly unavailable in this implementation pending the separately requested authorization to send approximate coordinates to Open-Meteo. No weather provider is contacted. Never infer present position from hometown or saved trips, and never invent weather.
+
+Rollout: deploy the backend before installing this app version (the earlier typed endpoint rejects unknown fields). Backend deployment, device installation, real-provider context recall, and physical permission/denial testing remain pending. No IAM or AI model changes.
+
+Context validation: 170 backend tests passed (one skipped), Ruff lint/format passed, 68 simulator tests passed, and the signed Dev build plus strict signature verification passed. Tests use mocked context/provider behavior; these are not live weather or physical-device acceptance.
+
+Location diagnosis (September 29 Pacific / September 30 UTC): AWS readback confirms ECS revision 23 is running image tagged `sha-b4104fd932150d8bb303e06ce5201c1e5e2a39db`, deployed before the local conversation-context implementation. That commit supplies UTC/profile/saved-trip context but no current device location. The new context code remains uncommitted and the context build was not installed in the preceding session. The exact last voice exchange cannot be replayed because audio/transcripts are transient. This is a rollout gap; location behavior on a deployed updated app remains unverified.
+
+Conversation-context backend deployed: `015fb65` through [run 36649006631](https://github.com/alikian/pippipgo-backend/actions/runs/36649006631). CI and CloudFormation completed successfully; ECS revision 24 is stable. Public health/readiness returned 200 and unauthenticated account/chat endpoints returned 401. 170 backend tests (one skipped), Ruff, CloudFormation validation and container smoke checks passed. No IAM/model changes. Updated iPhone app installation and physical location-context acceptance remain pending; weather remains unavailable pending provider authorization.
+
+
+## Admin viewer capture — September 29 request
+
+The user explicitly authorized backend retention of future voice transcripts and LLM context for the read-only admin viewer at `https://admin-dev.pippipgo.com`. This supersedes earlier transient-caption/context statements for new sessions. Audio remains transient and is never recorded. The backend captures exact session configuration, appended instructions and bounded transcript deltas, checkpoints every ten seconds and finalizes at close. Provider-internal delegation context is unavailable. Account deletion purges captures and fences late writes. Earlier sessions cannot be reconstructed. See backend `docs/admin-viewer.md` for access controls, retention, limitations and deployment evidence.
+
+### Precise location context (September 30 UTC)
+
+The user's precise-location request supersedes the earlier approximate-coordinate policy. iOS now requests `kCLLocationAccuracyBest`, preserves coordinates without rounding, and sends `horizontal_accuracy_meters` with the fix timestamp. The device omits invalid fixes and fixes older than 60 seconds. The existing one-shot capture timing, eight-second timeout, optional permission, cancellation and account-switch fences remain. This is a context snapshot, not continuous tracking; typed retries keep their original body and location.
+
+The backend accepts optional nonnegative finite accuracy for compatibility with older clients and passes it to both typed and voice model context. The prompt instructs Pip to respect measured accuracy and freshness and not infer a building/street from coarse data. Precise permission does not guarantee a precise GPS fix: iOS can return reduced accuracy when Precise Location is off, and the measured radius is reported honestly. See [Apple desiredAccuracy](https://developer.apple.com/documentation/CoreLocation/CLLocationManager/desiredAccuracy). Disclosures and permission descriptions now describe precise coordinates when permitted. Captured model context, including these coordinates, follows the existing administrator-review retention policy.
+
+Precise-location rollout: backend `0c3576f` deployed through successful [run 36654620576](https://github.com/alikian/pippipgo-backend/actions/runs/36654620576); ECS revision 28 stable, one running task, zero pending, health OK. 207 backend tests (one skipped), Ruff, 69 simulator tests and signed Dev build/strict signature verification passed. The signed app contains the revised precise-location permission text. The updated iPhone build is not installed; physical GPS/permission acceptance remains unverified.
+
+### Location acquisition repair
+
+The user's latest September 30 01:39 UTC voice request had device time/timezone but no location. This confirms missing capture, not dropped context transport; the old client supplied no failure reason. The precise-location collector's one-shot/eight-second path could terminate on a stale fix or temporary Core Location error.
+
+The collector now listens for updates for up to 15 seconds after authorization, ignores stale/invalid fixes and temporary `locationUnknown`, finishes early at 25 meters or better, and otherwise sends the best fresh fix with its actual accuracy. Reduced-accuracy permission remains respected. The permission prompt has its own bounded wait rather than consuming the acquisition window. Every completion stops updates and respects cancellation. Typed new messages recapture missing/stale context; an existing pending retry still uses exactly its original body/key/version.
+
+Optional `location_status` reports `available`, `approximate`, `permission_denied`, `permission_restricted`, `permission_pending`, `timed_out`, `stale`, `unavailable` or `cancelled` in the saved model context. Historical missing locations cannot be reconstructed. The device acceptance test is opt-in with `PIPPIPGO_LOCATION_DIAGNOSTIC=1` and logs status/accuracy only, never coordinates.
+
+The app now displays a Current location card in typed chat and live voice: coordinate snapshot, accuracy radius and capture time, with explicit missing-location reasons. Typed chat has an Update button that respects pending retries and account changes. Denied/reduced permission offers Open location settings. Voice displays its session-start snapshot. This does not add ongoing background tracking.
+
+Automated validation: 212 backend tests passed (one existing skipped); Ruff passed. The simulator suite passed 74 automated tests with the opt-in physical diagnostic skipped. Signed device build and strict signature verification passed. The diagnostic logs status and accuracy only.
+
+Deployment evidence: backend `c1940b3` through successful run 36656492499, ECS revision 29 stable with one running task and zero pending. Signed repaired app with the Current location field installed on Akiphone using devicectl. The opt-in physical diagnostic could not launch because the phone was locked; it was stopped, so no live GPS/permission result is claimed. Final focused simulator run passed all eight location/context tests after the last cleanup change.
+
+Automatic nearby-address display: at the user’s request, home/chat/voice cards now show an Apple-resolved nearby address and update time, without coordinates, accuracy readouts or a manual Update button. One shared account-scoped display store starts on signed-in foreground activation, refreshes after roughly one minute, and cancels on background/sign-out. Address lookup uses native MapKit reverse geocoding on iOS 26+ and Core Location on older supported versions, with a ten-second lookup timeout. Results within 50 meters are reused for up to five minutes; lookups are limited to at most one per minute. Coarse fixes request a city/region rather than a street address. Lookup failure is explicit and never falls back to displaying coordinates. Automatic display updates do not modify pending chat retries or active voice-session context; fresh fixes can be reused for new requests.
+
+Validation: 78 automated simulator tests passed, with one opt-in physical diagnostic skipped; signed Dev build and strict signature verification passed. New tests cover caching, request throttling, coarse lookup, late account-reset responses and single automatic worker/cancellation. Installed on Akiphone; live Apple address resolution on the phone was not independently observed. No backend API deployment was needed.
+
+## Inactivity sign-off
+
+After 30 seconds without conversational activity, Pip asks “Are you still there?”
+and waits 15 seconds after finishing the check-in. If there is no reply, it now
+says “I’ll end our call for now. Goodbye!” before ending the session. The relay
+allows the sign-off audio to finish and the playback queue to drain; a 12-second
+upper bound prevents a stuck provider from leaving a silent call open. New speech
+cancels the pending inactivity closure. Manual hang-up and security termination
+remain immediate.
+
+230 backend tests passed (one skipped), including sign-off ordering, delayed audio,
+resumed speech, bounded provider silence and both socket closures. A live synthetic
+silence test heard the greeting, check-in and goodbye in order, then closed after
+58.3 seconds with no provider errors. Physical-device acceptance remains pending.
+
+Deployed `7c17bef` as ECS revision 32 through successful [run 36664788740](https://github.com/alikian/pippipgo-backend/actions/runs/36664788740). CloudFormation completed; public health/readiness returned 200 and unauthenticated `/v1/me` returned 401. No iOS update is required; start a new voice session.
+
+### Voice driving-directions handoff (September 29, 2026)
+
+The iOS client advertises `X-Pip-Navigation: 1`. Only those sessions expose
+`open_driving_directions`; typed chat and older clients keep their existing tool set.
+On an explicit navigation request (for example, “Take me there”), the model selects a
+place ID returned by a Places/road-distance tool during this voice session. Unknown IDs
+require a search; ambiguous references must be clarified. Search alone does not navigate.
+The backend rechecks account access before emitting `navigation.open`, containing only
+the verified destination name and ID. Duplicate tool calls cannot emit a second event.
+
+The app constructs a fixed HTTPS Google Maps directions URL, with the destination place
+ID, driving mode and navigation action. No credentials or origin coordinates are embedded.
+Maps obtains the starting location itself. The app allows Pip to announce the handoff,
+waits for playback to drain (with a 15-second cap), stops voice and opens Maps only while
+foregrounded. Ending voice or resetting the account cancels a pending handoff. Opening
+failure is shown in voice UI. Maps may present route preview instead of navigation;
+the universal URL supports the installed app or browser fallback.
+
+Validation: 249 backend tests passed (one skipped), Ruff passed, nine configuration/navigation
+simulator tests passed, and signed Dev build/signature verification passed. Live provider
+and deployment evidence follows separately; these checks do not prove physical-device Maps
+handoff or measured audio completion.
+
+Live provider check: generated speech asked for the nearest gas station and then requested
+driving directions. Real Google road lookup succeeded; the relay emitted exactly one
+`navigation.open` for the returned Shell place ID, and GPT-Live spoke “Opening driving
+directions to Shell. Have a good trip.” (676 audio chunks). This used public test coordinates
+and an in-process backend relay; it does not prove the physical phone opened Maps.
+
+Rollout: `fc34457` deployed to stable ECS revision 34 through successful [run 36670302146](https://github.com/alikian/pippipgo-backend/actions/runs/36670302146). Health/readiness returned 200 and unauthenticated account access returned 401. Signed Dev app installed on Akiphone after one transient device-connection retry. Physical-device Maps-opening acceptance remains pending.

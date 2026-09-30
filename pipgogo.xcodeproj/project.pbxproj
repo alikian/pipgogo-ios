@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		EEFF00112233445566778800 = {isa = PBXBuildFile; fileRef = EEFF00112233445566778801; };
+		DDEE00112233445566778800 = {isa = PBXBuildFile; fileRef = DDEE00112233445566778801; };
+		A4E59977254D493A953F2190 = {isa = PBXBuildFile; fileRef = A4E59977254D493A953F2191; };
+		CCDDEE001122334455667700 = {isa = PBXBuildFile; fileRef = CCDDEE001122334455667701; };
 		BBCC00112233445566778800 = {isa = PBXBuildFile; fileRef = BBCC00112233445566778801; };
 		AABB00112233445566778800 = {isa = PBXBuildFile; fileRef = AABB00112233445566778801; };
 		079A596F004B80CE9ACD0DFB /* pipgogo/Views/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCE157C7AAA02B8867AD4C2 /* pipgogo/Views/WelcomeView.swift */; };
@@ -32,6 +36,7 @@
 		FE92C7C39C5007460E9702EA /* pipgogo/Intelligence/TravelerIntelligence.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7432E3FE07086621256F7BE; };
 		85D01F5FA58F3D44F3EEC2EB /* pipgogo/Intelligence/PipHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82F117ED44547F48A25264E3; };
 		C12345678901234567890123B /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = C12345678901234567890123A; };
+		E33000000000000000000001 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E33000000000000000000002; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +50,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		EEFF00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogoTests/ConversationContextTests.swift; sourceTree = SOURCE_ROOT; };
+		DDEE00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/ConversationContext.swift; sourceTree = SOURCE_ROOT; };
+		A4E59977254D493A953F2191 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/CurrentLocationStore.swift; sourceTree = SOURCE_ROOT; };
+		CCDDEE001122334455667701 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/App/TalkToPipIntent.swift; sourceTree = SOURCE_ROOT; };
 		BBCC00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/LiveVoice.swift; sourceTree = SOURCE_ROOT; };
 		AABB00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/TravelOrganizer.swift; sourceTree = SOURCE_ROOT; };
 		04B5A7AB86A3EEBC6072BDB7 /* pipgogo/Authentication/CognitoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Authentication/CognitoClient.swift; sourceTree = SOURCE_ROOT; };
@@ -78,6 +87,7 @@
 		F7432E3FE07086621256F7BE /* pipgogo/Intelligence/TravelerIntelligence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/TravelerIntelligence.swift; sourceTree = SOURCE_ROOT; };
 		82F117ED44547F48A25264E3 /* pipgogo/Intelligence/PipHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/PipHomeView.swift; sourceTree = SOURCE_ROOT; };
 		C12345678901234567890123A /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = pipgogo/Resources/Localizable.xcstrings; sourceTree = SOURCE_ROOT; };
+		E33000000000000000000002 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +113,9 @@
 			children = (
 				82F117ED44547F48A25264E3 /* pipgogo/Intelligence/PipHomeView.swift */,
                 AABB00112233445566778801,
+                CCDDEE001122334455667701,
+				DDEE00112233445566778801,
+				A4E59977254D493A953F2191,
                 BBCC00112233445566778801,
 				F7432E3FE07086621256F7BE /* pipgogo/Intelligence/TravelerIntelligence.swift */,
 				56969A1272136C594F4850CE /* pipgogo/App/AppConfiguration.swift */,
@@ -144,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				BCC6E64B306792BD007721AD /* Assets.xcassets */,
+				E33000000000000000000002 /* LaunchScreen.storyboard */,
 				C12345678901234567890123A /* Localizable.xcstrings */,
 			);
 			path = Resources;
@@ -153,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				09AAADA0DD1E499C8E85EA37 /* pipgogoTests/AppConfigurationTests.swift */,
+				EEFF00112233445566778801,
 				0DCF3D26A0C5089D31AC26BA /* pipgogoTests/APIClientTests.swift */,
 				29707B315ECB0F7B45832291 /* pipgogoTests/OAuthCallbackTests.swift */,
 				B54AE6BF7A17282BD9447BE2 /* pipgogoTests/TokenSetTests.swift */,
@@ -251,6 +266,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BCC6E64C306792BD007721AD /* Assets.xcassets in Resources */,
+				E33000000000000000000001 /* LaunchScreen.storyboard in Resources */,
 				C12345678901234567890123B /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -271,6 +287,9 @@
 			files = (
 				85D01F5FA58F3D44F3EEC2EB /* pipgogo/Intelligence/PipHomeView.swift in Sources */,
                 AABB00112233445566778800,
+                CCDDEE001122334455667700,
+				DDEE00112233445566778800,
+				A4E59977254D493A953F2190,
                 BBCC00112233445566778800,
 				FE92C7C39C5007460E9702EA /* pipgogo/Intelligence/TravelerIntelligence.swift in Sources */,
 				BBB91D69F28837490217694D /* pipgogo/App/AppConfiguration.swift in Sources */,
@@ -296,6 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				AED50F1272344B44A096F419 /* pipgogoTests/AppConfigurationTests.swift */,
+				EEFF00112233445566778800,
 				61CD483D2A54398A61F34769 /* pipgogoTests/APIClientTests.swift in Sources */,
 				13942DEE7CC5ED9161D3E70E /* pipgogoTests/OAuthCallbackTests.swift in Sources */,
 				9CE9C45DDE146537EF2B33C5 /* pipgogoTests/TokenSetTests.swift in Sources */,

@@ -11,7 +11,7 @@ OpenAI API key from Secrets Manager or the local environment; no provider creden
 a model without user instruction. Record model agreement/access, IAM deployment, live inference,
 mocked tests and physical-device acceptance separately.
 
-Live voice was requested September 28, 2026: use `gpt-live-1` for Talk to Pip, with GPT-6 Luna for Responses delegation and typed chat. Keep voice credentials on the backend; audio and captions are transient. Live voice includes saved trips and companions as read-only context (requested September 29, 2026), including each trip’s selected companions. See `docs/live-voice.md` for rollout and acceptance evidence.
+Live voice was requested September 28, 2026: use `gpt-live-1` for Talk to Pip, with GPT-6 Luna for Responses delegation and typed chat. Keep voice credentials on the backend; audio is transient. At the September 29 admin-viewer request, the backend now retains future typed/voice transcripts and exact available LLM context for the read-only admin viewer; previous voice sessions cannot be recovered. Live voice includes saved trips and companions as read-only context (requested September 29, 2026), including each trip’s selected companions. See `docs/live-voice.md` for rollout and acceptance evidence.
 
 ## Project time tracking
 

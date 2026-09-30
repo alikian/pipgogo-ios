@@ -2289,6 +2289,7 @@
       }
     },
     "Loading your account…" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -3563,6 +3564,9 @@
         }
       }
     },
+    "Sign in to PipPipGo, then ask Siri to start Talk to Pip again." : {
+
+    },
     "Sign out" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -4324,6 +4328,9 @@
         }
       }
     },
+    "Updated %@ · automatic" : {
+
+    },
     "Updated transfer windows are recalculated on save. Existing activities stay unchanged until you accept new suggestions; confirmed reservations are protected." : {
 
     },
@@ -4632,7 +4639,7 @@
         }
       }
     },
-    "Your chat and profile are shared with OpenAI. Saved trips and companions stay separate." : {
+    "Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps." : {
 
     },
     "Your conversation will appear here as you speak." : {
@@ -4707,9 +4714,6 @@
           }
         }
       }
-    },
-    "Your voice, chat history, profile, saved companions and trips are shared with OpenAI. Pip’s voice is AI-generated. Live captions are not saved. Once connected, voice continues when your phone locks; tap End voice to stop." : {
-
     },
     "فارسی" : {
 

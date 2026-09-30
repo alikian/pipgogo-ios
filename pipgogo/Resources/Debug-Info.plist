@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>PipPipGo uses your location, including precise coordinates when allowed, for nearby travel suggestions and conversation context shared with OpenAI.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -41,8 +43,8 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>UILaunchScreen</key>
-	<dict/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Connect to the PipPipGo development backend on your Mac.</string>
 	<key>AppEnvironment</key>

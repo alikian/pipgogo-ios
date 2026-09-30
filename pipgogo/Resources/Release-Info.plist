@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>PipPipGo uses your location, including precise coordinates when allowed, for nearby travel suggestions and conversation context shared with OpenAI.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
@@ -25,8 +27,8 @@
 	</array>
 	<key>BackendBaseURL</key>
 	<string>$(PIPGOGO_BACKEND_BASE_URL)</string>
-	<key>UILaunchScreen</key>
-	<dict/>
+	<key>UILaunchStoryboardName</key>
+	<string>LaunchScreen</string>
 	<key>AppEnvironment</key>
 	<string>$(PIPGOGO_APP_ENVIRONMENT)</string>
 	<key>CognitoDomain</key>
