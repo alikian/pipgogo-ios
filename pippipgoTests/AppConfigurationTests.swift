@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import pipgogo
+@testable import pippipgo
 
 struct AppConfigurationTests {
     private func info(_ environment: String = "local", url: String = "http://localhost:8765") -> [String: Any] {
@@ -13,7 +13,7 @@ struct AppConfigurationTests {
             let config = try AppConfiguration.from(info: info(url: "http://\(host):8765"))
             #expect(config.environment == .local)
             #expect(config.backendBaseURL.host == host)
-            #expect(config.callbackURL.absoluteString == "pipgogo://auth/callback")
+            #expect(config.callbackURL.absoluteString == "pippipgo://auth/callback")
         }
     }
 
@@ -69,8 +69,8 @@ struct AppConfigurationTests {
         #expect(throws: AppConfigurationError.invalidValue("CognitoClientID")) { try AppConfiguration.from(info: values) }
     }
 
-    @Test func tokenNamespacesAreDistinctAndPreserveLocalSession() {
-        #expect(AppEnvironment.local.keychainService == "com.pipgogo.ios.authentication")
+    @Test func tokenNamespacesAreDistinctForRenamedApp() {
+        #expect(AppEnvironment.local.keychainService == "com.pippipgo.ios.authentication")
         #expect(Set([AppEnvironment.local, .dev, .prod].map(\.keychainService)).count == 3)
     }
 
@@ -82,7 +82,7 @@ struct AppConfigurationTests {
             #expect(config.backendBaseURL.host == "localhost")
             let domains = try #require(ats?["NSExceptionDomains"] as? [String: Any])
             #expect(domains["localhost"] != nil)
-            #expect(domains["$(PIPGOGO_LAN_HOST)"] == nil)
+            #expect(domains["$(PIPPIPGO_LAN_HOST)"] == nil)
             #expect(domains["192.168.0.156"] != nil)
             #expect(info["CFBundleDisplayName"] as? String == "PipPipGo Local")
         } else {

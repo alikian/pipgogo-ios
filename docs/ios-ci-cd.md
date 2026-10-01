@@ -1,5 +1,8 @@
 # PipPipGo iOS CI/CD with Xcode Cloud
 
+The user-requested rename changes the project and bundle ID. Complete the
+[rename rollout](ios-rename.md) before reconnecting the workflow or distributing.
+
 ## Delivery policy
 
 Use Xcode Cloud's included 25 compute hours per month initially. No paid plan was
@@ -9,8 +12,8 @@ TestFlight group. Submit a tested build for App Review deliberately and choose
 manual public release. Uploading a build is not an App Store release.
 
 Repository: `https://github.com/alikian/pippipgo-ios`
-Project: `pipgogo.xcodeproj`; app target: `pipgogo`
-Bundle ID: `com.pipgogo.ios`; signing team: `U47SMLD234`.
+Project: `pippipgo.xcodeproj`; app target: `pippipgo`
+Bundle ID: `com.pippipgo.ios`; signing team: `U47SMLD234`.
 
 ## Versioning
 
@@ -38,9 +41,9 @@ distribution certificates, App Store Connect API keys or AWS access keys are nee
 in these scripts.
 
 1. Sign in to Xcode with the Apple Developer account for team `U47SMLD234`.
-   Confirm the App Store Connect app record uses `com.pipgogo.ios`.
+   Confirm the App Store Connect app record uses `com.pippipgo.ios`.
 2. Publish/merge the CI changes into the branches being built. Open
-   `pipgogo.xcodeproj`, select `Prod`, and choose Product → Xcode Cloud →
+   `pippipgo.xcodeproj`, select `Prod`, and choose Product → Xcode Cloud →
    Create Workflow. Confirm the product/team and authorize access to the
    `alikian/pippipgo-ios` GitHub repository when Apple requests it.
 3. Configure the two workflows below. Choose an available supported Xcode version
@@ -99,11 +102,11 @@ must keep the workflow failed and prevent TestFlight distribution.
 
 ```sh
 python3 scripts/test_ci.py
-xcodebuild test -project pipgogo.xcodeproj -scheme Prod \
+xcodebuild test -project pippipgo.xcodeproj -scheme Prod \
   -destination 'platform=iOS Simulator,name=iPhone 16' ENABLE_TESTABILITY=YES
-xcodebuild archive -project pipgogo.xcodeproj -scheme Prod \
+xcodebuild archive -project pippipgo.xcodeproj -scheme Prod \
   -destination 'generic/platform=iOS' -archivePath /tmp/PipPipGo-Prod.xcarchive
-scripts/verify_release.sh /tmp/PipPipGo-Prod.xcarchive/Products/Applications/pipgogo.app 1 1.0
+scripts/verify_release.sh /tmp/PipPipGo-Prod.xcarchive/Products/Applications/pippipgo.app 1 1.0
 ```
 
 Use an installed simulator and an unused output path. For local production builds,
@@ -111,7 +114,10 @@ generate the public identity from backend `scripts/export_prod_ios_config.py` fi
 The cloud hooks are intended for a disposable checkout; do not run them in your
 normal checkout because they write ignored cloud-only configuration.
 
-## Evidence — September 30, 2026
+## Historical CI preparation evidence — before the iOS identity rename
+
+The signed archive below used the former `com.pipgogo.ios` identity. It does not
+prove signing or App Store availability for `com.pippipgo.ios`.
 
 - Ten isolated hook tests passed, including missing/Dev identity, malformed build
   numbers, fresh checkout, test-to-archive testability reset, invalid archive

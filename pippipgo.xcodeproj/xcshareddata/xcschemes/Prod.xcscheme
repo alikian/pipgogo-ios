@@ -15,15 +15,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "7D1043473D55BFA90E8530D3"
-               BuildableName = "pipgogo.app"
-               BlueprintName = "pipgogo"
-               ReferencedContainer = "container:pipgogo.xcodeproj">
+               BuildableName = "pippipgo.app"
+               BlueprintName = "pippipgo"
+               ReferencedContainer = "container:pippipgo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Dev"
+      buildConfiguration = "Prod"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
@@ -33,15 +33,15 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A94A8FE5CCB19BA61C4C0873"
-               BuildableName = "pipgogoTests.xctest"
-               BlueprintName = "pipgogoTests"
-               ReferencedContainer = "container:pipgogo.xcodeproj">
+               BuildableName = "pippipgoTests.xctest"
+               BlueprintName = "pippipgoTests"
+               ReferencedContainer = "container:pippipgo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
-      buildConfiguration = "Dev"
+      buildConfiguration = "Prod"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       launchStyle = "0"
@@ -55,14 +55,14 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7D1043473D55BFA90E8530D3"
-            BuildableName = "pipgogo.app"
-            BlueprintName = "pipgogo"
-            ReferencedContainer = "container:pipgogo.xcodeproj">
+            BuildableName = "pippipgo.app"
+            BlueprintName = "pippipgo"
+            ReferencedContainer = "container:pippipgo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
-      buildConfiguration = "Dev"
+      buildConfiguration = "Prod"
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
@@ -72,17 +72,17 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "7D1043473D55BFA90E8530D3"
-            BuildableName = "pipgogo.app"
-            BlueprintName = "pipgogo"
-            ReferencedContainer = "container:pipgogo.xcodeproj">
+            BuildableName = "pippipgo.app"
+            BlueprintName = "pippipgo"
+            ReferencedContainer = "container:pippipgo.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
-      buildConfiguration = "Dev">
+      buildConfiguration = "Prod">
    </AnalyzeAction>
    <ArchiveAction
-      buildConfiguration = "Dev"
+      buildConfiguration = "Prod"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

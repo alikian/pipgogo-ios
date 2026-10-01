@@ -10,7 +10,7 @@ private final class VoiceSessionDelegate: NSObject, URLSessionTaskDelegate, @unc
 /// Serializes the process-wide session without blocking the UI on supported iOS versions.
 final class VoiceAudioSession: @unchecked Sendable {
     static let shared = VoiceAudioSession()
-    private let queue = DispatchQueue(label: "com.pipgogo.voice.audio-session", qos: .userInitiated)
+    private let queue = DispatchQueue(label: "com.pippipgo.voice.audio-session", qos: .userInitiated)
     private var owner: UUID?
     private let activateSession: @Sendable () throws -> Void
     private let deactivateSession: @Sendable () -> Void

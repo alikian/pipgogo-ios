@@ -4,8 +4,8 @@ enum AppEnvironment: String, Sendable {
     case local, dev, prod
 
     var keychainService: String {
-        // Preserve the installed local app's session; hosted builds get separate token stores.
-        let original = "com.pipgogo.ios.authentication"
+        // The renamed app has a new sandbox; environments keep separate token stores.
+        let original = "com.pippipgo.ios.authentication"
         return self == .local ? original : "\(original).\(rawValue)"
     }
 }
@@ -65,8 +65,8 @@ struct AppConfiguration: Sendable {
         return AppConfiguration(
             cognitoDomain: domain,
             clientID: clientID,
-            callbackURL: URL(string: "pipgogo://auth/callback")!,
-            logoutURL: URL(string: "pipgogo://auth/logout")!,
+            callbackURL: URL(string: "pippipgo://auth/callback")!,
+            logoutURL: URL(string: "pippipgo://auth/logout")!,
             backendBaseURL: backend,
             environment: environment
         )

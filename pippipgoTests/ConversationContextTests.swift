@@ -1,7 +1,7 @@
 import CoreLocation
 import Foundation
 import Testing
-@testable import pipgogo
+@testable import pippipgo
 
 struct ConversationContextTests {
     @Test func preciseLocationAccuracyAndStaleFix() {

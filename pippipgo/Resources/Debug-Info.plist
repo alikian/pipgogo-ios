@@ -13,20 +13,20 @@
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Turn your spoken trip plans into text for you to review before sending to Pip.</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(PIPGOGO_DISPLAY_NAME)</string>
+	<string>$(PIPPIPGO_DISPLAY_NAME)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
 			<key>CFBundleURLName</key>
-			<string>com.pipgogo.ios.oauth</string>
+			<string>com.pippipgo.ios.oauth</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>pipgogo</string>
+				<string>pippipgo</string>
 			</array>
 		</dict>
 	</array>
 	<key>BackendBaseURL</key>
-	<string>$(PIPGOGO_BACKEND_BASE_URL)</string>
+	<string>$(PIPPIPGO_BACKEND_BASE_URL)</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -48,10 +48,24 @@
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Connect to the PipPipGo development backend on your Mac.</string>
 	<key>AppEnvironment</key>
-	<string>$(PIPGOGO_APP_ENVIRONMENT)</string>
+	<string>$(PIPPIPGO_APP_ENVIRONMENT)</string>
 	<key>CognitoDomain</key>
-	<string>$(PIPGOGO_COGNITO_DOMAIN)</string>
+	<string>$(PIPPIPGO_COGNITO_DOMAIN)</string>
 	<key>CognitoClientID</key>
-	<string>$(PIPGOGO_COGNITO_CLIENT_ID)</string>
+	<string>$(PIPPIPGO_COGNITO_CLIENT_ID)</string>
+	<key>UISupportedInterfaceOrientations</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
+	<key>UISupportedInterfaceOrientations~ipad</key>
+	<array>
+		<string>UIInterfaceOrientationPortrait</string>
+		<string>UIInterfaceOrientationPortraitUpsideDown</string>
+		<string>UIInterfaceOrientationLandscapeLeft</string>
+		<string>UIInterfaceOrientationLandscapeRight</string>
+	</array>
 </dict>
 </plist>

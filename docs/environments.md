@@ -6,8 +6,8 @@ Choose **Local**, **Dev** or **Prod** in Xcode's scheme picker, choose a device,
 then Run. A compact badge at the top of the app shows **Build: Local**, **Build: Dev** or **Build: Prod**,
 including before sign-in. The label describes the build, not server availability. Each scheme uses its matching configuration for Run, Test, Profile,
 Analyze and Archive. This is a build-time choice; switching requires rebuilding
-and installing. The old `pipgogo` scheme and Debug/Release configuration names
-have been replaced. The project, target and Swift module remain `pipgogo`.
+and installing. The old `pippipgo` scheme and Debug/Release configuration names
+have been replaced. The project, target and Swift module remain `pippipgo`.
 
 | Scheme | Home-screen name | API base URL | Status |
 | --- | --- | --- | --- |
@@ -15,17 +15,17 @@ have been replaced. The project, target and Swift module remain `pipgogo`.
 | Dev | PipPipGo Dev | `https://api-dev.pippipgo.com` | Hosted Dev API deployed |
 | Prod | PipPipGo | `https://api.pippipgo.com` | Hosted Prod deployed; generated identity configured |
 
-All three retain bundle ID `com.pipgogo.ios` and the existing native OAuth URLs.
+All three now use bundle ID `com.pippipgo.ios` and native URLs `pippipgo://auth/callback` and `pippipgo://auth/logout`. Callback deployment and Apple registration/App Store provisioning are verified; see [rename rollout](ios-rename.md).
 They **replace one another** on a device, rather than installing side by side.
-Local keeps the existing Keychain session. Dev and Prod use separate Keychain
+The new bundle ID installs separately from the old app and requires a fresh sign-in. Dev and Prod use separate Keychain
 service names, so an installed build does not restore another environment's token
 set. Browser Google sessions can still be shared.
 
 ## Configuration files
 
-- `Configurations/Local.xcconfig`: edit `PIPGOGO_LAN_HOST` when the Mac address
+- `Configurations/Local.xcconfig`: edit `PIPPIPGO_LAN_HOST` when the Mac address
   changes, and update the matching `NSExceptionDomains` key in
-  `pipgogo/Resources/Debug-Info.plist`. Xcode expands values but not plist dictionary
+  `pippipgo/Resources/Debug-Info.plist`. Xcode expands values but not plist dictionary
   keys. The simulator override continues to use localhost.
 - `Configurations/Dev.xcconfig`: development API origin and app label.
 - `Configurations/Prod.xcconfig`: production API origin and app label.
@@ -47,11 +47,11 @@ an unconfigured Prod build. Historical build evidence below predates this separa
 ## Run and verify
 
 ```sh
-xcodebuild test -project pipgogo.xcodeproj -scheme Local \
+xcodebuild test -project pippipgo.xcodeproj -scheme Local \
   -destination 'platform=iOS Simulator,name=iPhone 16 Pro'
-xcodebuild build -project pipgogo.xcodeproj -scheme Dev \
+xcodebuild build -project pippipgo.xcodeproj -scheme Dev \
   -destination 'generic/platform=iOS'
-xcodebuild archive -project pipgogo.xcodeproj -scheme Prod \
+xcodebuild archive -project pippipgo.xcodeproj -scheme Prod \
   -destination 'generic/platform=iOS' -archivePath /tmp/PipPipGo-Prod.xcarchive
 ```
 
