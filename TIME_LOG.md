@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 14 hours 26 minutes 32 seconds** — 6 hours estimated + 8 hours 26 minutes 32 seconds recorded.
+**Total logged time: 15 hours 58 minutes 45 seconds** — 6 hours estimated + 9 hours 58 minutes 45 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 8 hours 26 minutes 32 seconds (Codex and Claude; overlapping sessions counted once) |
+| Recorded session time | 9 hours 58 minutes 45 seconds (Codex and Claude; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **14 hours 26 minutes 32 seconds (includes 6 hours estimated)** |
+| Total time spent | **15 hours 58 minutes 45 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -175,6 +175,10 @@ an approximation supplied later. Contributor should identify who did the work, s
 
 | 2026-09-30-04 | September 30, 2026 | Codex | Commit translation changes | Reviewed backend/iOS changes, whitespace, credential patterns and remote divergence; preparing requested commits/pushes using previously recorded validation | October 1 00:38:46–00:39:13 UTC; no excluded pauses; bookkeeping and commit/push operations excluded | 27 seconds | Recorded segment |
 
+| 2026-09-30-05 | September 30, 2026 | Codex | Development auth/API domain migration | Deployed auth-dev/api-dev through CloudFormation; Google redirect and live sign-in/PKCE/hosted API/refresh/revocation/logout passed; API HTTP/WebSocket checks and admin job 9 live assets/CSP verified; scoped IAM cleanup complete; 276 backend tests (one skipped), Ruff, 68 simulator tests, signed Local/Dev builds/signatures and 16 admin tests/build/audit passed; normal LAN server restored; physical-device acceptance pending | October 1 02:33:45–03:08:54 UTC; AWS propagation and approval/tool time included; no excluded pauses; final bookkeeping excluded | 2109 seconds | Recorded |
+| 2026-09-30-06 | September 30, 2026 | Codex | 5.2 · Dev/Prod isolation preparation | Added environment-specific resources/domains, identity/data/secret and IAM guards, admin artifact validation and iOS Prod configuration export; 303 backend tests (1 skipped), 54 simulator tests, 26 admin tests plus 3 deploy tests, signed Dev/Prod builds, lint and AWS template validation passed; live Dev preflight passed; Prod remains unprovisioned | 20:09:13–20:23:06, UTC−07:00; no excluded pauses | 13.88 minutes (833 seconds) | Recorded |
+| 2026-09-30-07 | September 30, 2026 | Codex | 5.2 · Prod provisioning | Created isolated Prod foundation/auth, approved IAM/ECR/secrets, Fargate API and Amplify admin; deployed Dev deny/tag guards; real Google sign-in, refresh/logout/revocation, API/admin/CORS and bidirectional token isolation passed; 303 backend tests (1 skipped), 26 admin plus 3 guard tests, signed Prod build and 8 Prod simulator checks passed; Google public publishing/provider keys/device acceptance remain separate | 21:37:51–22:01:30, UTC−07:00; no excluded pauses (includes AWS waits and concurrent work during IAM approval) | 23.65 minutes (1419 seconds) | Recorded |
+
 ## Earlier work — user-supplied estimates
 
 The user assigned **1 hour to each of the six rows** on September 26, 2026. These are
@@ -214,3 +218,9 @@ The roadmap checkpoint segment excludes subsequent time-log bookkeeping and comm
 The door-to-door/conversational session excludes subsequent time-log bookkeeping and documentation commit/push operations.
 
 The master-prompt session excludes subsequent time-log bookkeeping and documentation commit/push operations.
+
+| 2026-09-30-08 | September 30, 2026 | Codex | 5.2 · Prod translation recovery | Diagnosed empty provider secret, created approved dedicated restricted key, verified live translation audio and GPT-6 Luna, deployed clearer setup errors through CloudFormation; 307 tests (1 skipped), Ruff/container checks passed; Prod revision 2 stable, device acceptance pending | October 1 05:04:39–05:18:16 UTC; no excluded pauses; bookkeeping excluded | 817 seconds | Recorded |
+
+| 2026-09-30-09 | September 30, 2026 | Codex | Cross-repository commits | Reviewed all pending backend/iOS/admin changes, credential-pattern and whitespace scans passed; prepared commits of validated environment isolation and Prod rollout work | October 1 05:20:18–05:21:01 UTC; no excluded pauses; commit bookkeeping excluded | 43 seconds | Recorded |
+
+| 2026-09-30-10 | September 30, 2026 | Codex | iOS CI/CD preparation | Added Xcode Cloud version/identity hooks, production archive verification and activation guide; 10 hook tests, 88 Prod tests, 8 cloud-configuration tests and signed archive/signature passed; hosted activation pending | October 1 05:21:54–05:27:06 UTC; includes build/tool time; brief conversational pause not separately measured; bookkeeping and publication excluded | 312 seconds | Recorded |

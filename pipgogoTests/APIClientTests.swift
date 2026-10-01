@@ -196,8 +196,8 @@ struct APIClientTests {
     }
 
     @MainActor @Test func liveVoiceUsesBackendAuthorizationWithoutURLTokens() throws {
-        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://dev.pippipgo.com?discard=1#fragment")!, token: "test-access-token")
-        #expect(request.url?.absoluteString == "wss://dev.pippipgo.com/v1/travel-chat/live")
+        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://api-dev.pippipgo.com?discard=1#fragment")!, token: "test-access-token")
+        #expect(request.url?.absoluteString == "wss://api-dev.pippipgo.com/v1/travel-chat/live")
         #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer test-access-token")
         #expect(throws: (any Error).self) {
             try LiveVoiceStore.request(baseURL: URL(string: "https://name:password@example.com")!, token: "token")
@@ -670,7 +670,7 @@ struct APIClientTests {
     }
 
     private var configuration: AppConfiguration {
-        AppConfiguration(cognitoDomain: URL(string: "https://auth.pippipgo.com")!, clientID: "test-client", callbackURL: URL(string: "pipgogo://auth/callback")!, logoutURL: URL(string: "pipgogo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
+        AppConfiguration(cognitoDomain: URL(string: "https://auth-dev.pippipgo.com")!, clientID: "test-client", callbackURL: URL(string: "pipgogo://auth/callback")!, logoutURL: URL(string: "pipgogo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
     }
 
     @Test func authorizationUsesPKCEAndState() throws {
@@ -678,7 +678,7 @@ struct APIClientTests {
         let url = try client.authorizationURL(state: "random-state", challenge: "challenge")
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!
         let values = Dictionary(uniqueKeysWithValues: items.map { ($0.name, $0.value ?? "") })
-        #expect(url.host == "auth.pippipgo.com")
+        #expect(url.host == "auth-dev.pippipgo.com")
         #expect(values["code_challenge_method"] == "S256")
         #expect(values["state"] == "random-state")
         #expect(values["redirect_uri"] == "pipgogo://auth/callback")

@@ -9,6 +9,7 @@ suggest a light plan, learn during the journey, and propose useful changes. **Ne
 - [Roadmap and delivery boundary](ROADMAP.md)
 - [Implementation, model access and acceptance](docs/traveler-intelligence.md)
 - [Project-wide time log](TIME_LOG.md)
+- [iOS CI/CD, versioning and TestFlight setup](docs/ios-ci-cd.md)
 
 The rebuild retains Google/Cognito authentication and the ECS/DynamoDB foundation. The hosted
 Dev API now serves the rebuilt journey endpoints. The selected model is GPT-6 Astra via the direct OpenAI API.

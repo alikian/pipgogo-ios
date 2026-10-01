@@ -47,15 +47,24 @@ struct AppConfiguration: Sendable {
         let backend = try baseURL("BackendBaseURL", allowHTTP: environment == .local)
         let expectedHost: String? = switch environment {
         case .local: nil
-        case .dev: "dev.pippipgo.com"
-        case .prod: "pippipgo.com"
+        case .dev: "api-dev.pippipgo.com"
+        case .prod: "api.pippipgo.com"
         }
         if let expectedHost, backend.host != expectedHost || backend.port != nil {
             throw AppConfigurationError.invalidValue("BackendBaseURL")
         }
+        let domain = try baseURL("CognitoDomain")
+        let clientID = try value("CognitoClientID")
+        let expectedAuth = environment == .prod ? "auth.pippipgo.com" : "auth-dev.pippipgo.com"
+        guard domain.host == expectedAuth, domain.port == nil else {
+            throw AppConfigurationError.invalidValue("CognitoDomain")
+        }
+        if environment == .prod, clientID == "5ungc4grbiid7de7rjbh0jn2ff" {
+            throw AppConfigurationError.invalidValue("CognitoClientID")
+        }
         return AppConfiguration(
-            cognitoDomain: try baseURL("CognitoDomain"),
-            clientID: try value("CognitoClientID"),
+            cognitoDomain: domain,
+            clientID: clientID,
             callbackURL: URL(string: "pipgogo://auth/callback")!,
             logoutURL: URL(string: "pipgogo://auth/logout")!,
             backendBaseURL: backend,

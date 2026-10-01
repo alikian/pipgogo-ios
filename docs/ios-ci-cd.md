@@ -1,0 +1,138 @@
+# PipPipGo iOS CI/CD with Xcode Cloud
+
+## Delivery policy
+
+Use Xcode Cloud's included 25 compute hours per month initially. No paid plan was
+purchased. Pull requests run simulator tests. Production releases archive the
+`Prod` scheme, upload to App Store Connect, and distribute to an internal
+TestFlight group. Submit a tested build for App Review deliberately and choose
+manual public release. Uploading a build is not an App Store release.
+
+Repository: `https://github.com/alikian/pippipgo-ios`
+Project: `pipgogo.xcodeproj`; app target: `pipgogo`
+Bundle ID: `com.pipgogo.ios`; signing team: `U47SMLD234`.
+
+## Versioning
+
+`Configurations/Version.xcconfig` is the single marketing-version source for
+Local, Dev and Prod. It initially preserves `1.0`; change it intentionally for a
+new release. `CURRENT_PROJECT_VERSION = 1` is the local fallback.
+
+Xcode Cloud owns the increasing build counter. `ci_post_clone.sh` writes its
+`CI_BUILD_NUMBER` into ignored `Configurations/CIOverrides.xcconfig`, so test
+and archive builds use the same number. Nothing is committed by the build.
+For example, cloud builds 42 and 43 produce `1.0 (42)` and `1.0 (43)`.
+Local Xcode builds do not increment a counter. Let cloud builds own distributed
+build numbers; do not upload a local build with a number already used by Cloud.
+
+Before the first upload, inspect existing builds in App Store Connect. Under
+Xcode Cloud → Settings → Build Number, set Next Build Number above the highest
+already uploaded number for the current version. This account state has not been
+inspected. Do not assume `1` is still available.
+
+## One-time activation in Xcode
+
+The files in this repository are build hooks, not an activated hosted workflow.
+Apple's initial Xcode Cloud enrollment is done through Xcode. No Apple credentials,
+distribution certificates, App Store Connect API keys or AWS access keys are needed
+in these scripts.
+
+1. Sign in to Xcode with the Apple Developer account for team `U47SMLD234`.
+   Confirm the App Store Connect app record uses `com.pipgogo.ios`.
+2. Publish/merge the CI changes into the branches being built. Open
+   `pipgogo.xcodeproj`, select `Prod`, and choose Product → Xcode Cloud →
+   Create Workflow. Confirm the product/team and authorize access to the
+   `alikian/pippipgo-ios` GitHub repository when Apple requests it.
+3. Configure the two workflows below. Choose an available supported Xcode version
+   and an iPhone simulator runtime compatible with the app's iOS 17 minimum.
+   Record the chosen versions with the first successful cloud run; local validation
+   used Xcode 27.0 (27A266a) and iOS 18.5.
+4. Keep subscription usage at the included tier. Start with one simulator target
+   per workflow and enable automatic cancellation of superseded builds if offered.
+5. Run each workflow manually once. Verify test results, the signed archive,
+   successful App Store Connect processing, and the installed TestFlight build.
+
+### Workflow: Pull request checks
+
+- Start condition: pull requests targeting `develop` or `main`.
+- Scheme: `Dev`.
+- Actions: Test on one available iPhone simulator, using scheme configuration.
+- No archive or TestFlight post-action. No production identity variable needed.
+- Existing unit tests use mocks; this does not prove live backend/device acceptance.
+
+### Workflow: Production TestFlight
+
+- Start condition: changes to `main`, plus manual runs. `develop` stays development.
+- Scheme: `Prod` for both Test and Archive; configuration: use scheme settings.
+- Workflow environment variable (public, not a secret):
+  `PIPPIPGO_PROD_COGNITO_CLIENT_ID=23sk8qfmpotjj40jbnl9tn33em`.
+- Actions: Test on one iPhone simulator; Archive for iOS with distribution set to
+  **TestFlight and App Store** so the tested build remains eligible for App Review.
+  Do not select an internal-testing-only distribution option for release candidates.
+- Post-action: TestFlight Internal Testing, select the intended internal tester
+  group, and run distribution only when all required actions succeed.
+- Keep public release manual in App Store Connect. Do not add automatic App Review
+  submission as part of this initial workflow.
+
+The generated, ignored `ProdIdentity.xcconfig` contains only the verified public
+Cognito client ID. A missing, development or unexpected identity stops the build.
+The hooks reject cloud archives of Local/Dev. Production unit-test actions enable
+`@testable` support; archive actions explicitly disable it. The post-archive hook
+checks the actual app plist for the Prod API, Prod authentication identity, bundle
+ID, display name, version/build and absence of transport exceptions. A failure
+must keep the workflow failed and prevent TestFlight distribution.
+
+## First-release acceptance
+
+- Verify cloud build numbers increase and the TestFlight version/build match.
+- Verify the Prod archive targets `https://api.pippipgo.com` and
+  `https://auth.pippipgo.com`, never development identity or storage.
+- Complete the physical-device scenario in `docs/simple-travel-organizer.md`,
+  including sign-in, account isolation, organizer operations and conflict handling.
+- Follow backend `infra/prod-deployment.md` for launch limitations: Google consent
+  is still Testing, the Prod Places key is not configured, and production phone
+  acceptance is separate from mocked tests and provider inference checks.
+- Complete store metadata, screenshots, privacy disclosures, review access and
+  export-compliance answers before submitting for App Review.
+
+## Local verification
+
+```sh
+python3 scripts/test_ci.py
+xcodebuild test -project pipgogo.xcodeproj -scheme Prod \
+  -destination 'platform=iOS Simulator,name=iPhone 16' ENABLE_TESTABILITY=YES
+xcodebuild archive -project pipgogo.xcodeproj -scheme Prod \
+  -destination 'generic/platform=iOS' -archivePath /tmp/PipPipGo-Prod.xcarchive
+scripts/verify_release.sh /tmp/PipPipGo-Prod.xcarchive/Products/Applications/pipgogo.app 1 1.0
+```
+
+Use an installed simulator and an unused output path. For local production builds,
+generate the public identity from backend `scripts/export_prod_ios_config.py` first.
+The cloud hooks are intended for a disposable checkout; do not run them in your
+normal checkout because they write ignored cloud-only configuration.
+
+## Evidence — September 30, 2026
+
+- Ten isolated hook tests passed, including missing/Dev identity, malformed build
+  numbers, fresh checkout, test-to-archive testability reset, invalid archive
+  metadata and failed-build handling.
+- All 88 Prod simulator tests passed with explicit testability enabled.
+- Eight configuration tests also passed in a fresh checkout using only the cloud
+  hooks to enable testability, with the next build number `43`.
+- Signed archive from a fresh temporary checkout passed: `1.0 (42)`, Prod API
+  and Cognito identity verified, `ENABLE_TESTABILITY=NO`, and strict code-signature
+  validation passed. This is a local Apple Development signature; cloud distribution
+  signing and App Store validation remain unverified.
+- Hosted workflow enrollment, cloud signing/upload, TestFlight delivery, existing
+  App Store build-number inspection and physical-device acceptance remain pending.
+  The computer-use runtime could not start because the configured workspace path
+  `/Users/alikianzadeh/git/pipgogo-ios` is a symlink; the real checkout is
+  `/Users/alikianzadeh/git/pippipgo-ios`. No Apple account setting was changed.
+
+## Apple references
+
+- [Configure the first workflow](https://developer.apple.com/documentation/xcode/configuring-your-first-xcode-cloud-workflow)
+- [Custom build hooks](https://developer.apple.com/documentation/xcode/writing-custom-build-scripts)
+- [Cloud environment variables](https://developer.apple.com/documentation/xcode/environment-variable-reference)
+- [Cloud build numbering](https://developer.apple.com/documentation/xcode/setting-the-next-build-number-for-xcode-cloud-builds)
+- [Distribution workflow](https://developer.apple.com/documentation/xcode/creating-a-workflow-that-builds-your-app-for-distribution)
