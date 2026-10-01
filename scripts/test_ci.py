@@ -92,10 +92,15 @@ class CloudHookTests(unittest.TestCase):
                         AppEnvironment="prod", BackendBaseURL="https://api.pippipgo.com",
                         CognitoDomain="https://auth.pippipgo.com", CognitoClientID=PROD_CLIENT,
                         CFBundleVersion="42", CFBundleShortVersionString=VERSION,
+                        UISupportedInterfaceOrientations=[
+                            "UIInterfaceOrientationPortrait", "UIInterfaceOrientationPortraitUpsideDown",
+                            "UIInterfaceOrientationLandscapeLeft", "UIInterfaceOrientationLandscapeRight"],
                         CFBundleURLTypes=[{"CFBundleURLSchemes": ["pippipgo"]}])
         plist.write_bytes(plistlib.dumps(expected))
         self.run_hook("ci_post_xcodebuild.sh")
         for field, value in dict(CFBundleURLTypes=[{"CFBundleURLSchemes": ["pipgogo"]}],
+                                 UISupportedInterfaceOrientations=[],
+                                 **{"UISupportedInterfaceOrientations~ipad": ["UIInterfaceOrientationPortrait"]},
                                  BackendBaseURL="https://api-dev.pippipgo.com",
                                  CognitoClientID="5ungc4grbiid7de7rjbh0jn2ff",
                                  CFBundleVersion="1", CFBundleShortVersionString=VERSION + ".99",

@@ -23,4 +23,19 @@ if /usr/libexec/PlistBuddy -c 'Print :NSAppTransportSecurity' "$plist" >/dev/nul
     echo "Release validation failed: unexpected transport exceptions." >&2
     exit 1
 fi
+# Check the built plist so missing orientation metadata fails before distribution.
+python3 - "$plist" <<'PYTHON'
+import plistlib
+import sys
+with open(sys.argv[1], "rb") as source:
+    info = plistlib.load(source)
+required = {
+    "UIInterfaceOrientationPortrait", "UIInterfaceOrientationPortraitUpsideDown",
+    "UIInterfaceOrientationLandscapeLeft", "UIInterfaceOrientationLandscapeRight",
+}
+phone = info.get("UISupportedInterfaceOrientations", [])
+ipad = info.get("UISupportedInterfaceOrientations~ipad", phone)
+if not phone or not required.issubset(ipad):
+    sys.exit("Release validation failed: missing supported orientations for iPad multitasking.")
+PYTHON
 echo "Verified PipPipGo $3 ($2), production API and isolated production identity."
