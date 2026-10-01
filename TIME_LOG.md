@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 15 hours 53 minutes 33 seconds** — 6 hours estimated + 9 hours 53 minutes 33 seconds recorded.
+**Total logged time: 15 hours 58 minutes 45 seconds** — 6 hours estimated + 9 hours 58 minutes 45 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 9 hours 53 minutes 33 seconds (Codex and Claude; overlapping sessions counted once) |
+| Recorded session time | 9 hours 58 minutes 45 seconds (Codex and Claude; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **15 hours 53 minutes 33 seconds (includes 6 hours estimated)** |
+| Total time spent | **15 hours 58 minutes 45 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -222,3 +222,5 @@ The master-prompt session excludes subsequent time-log bookkeeping and documenta
 | 2026-09-30-08 | September 30, 2026 | Codex | 5.2 · Prod translation recovery | Diagnosed empty provider secret, created approved dedicated restricted key, verified live translation audio and GPT-6 Luna, deployed clearer setup errors through CloudFormation; 307 tests (1 skipped), Ruff/container checks passed; Prod revision 2 stable, device acceptance pending | October 1 05:04:39–05:18:16 UTC; no excluded pauses; bookkeeping excluded | 817 seconds | Recorded |
 
 | 2026-09-30-09 | September 30, 2026 | Codex | Cross-repository commits | Reviewed all pending backend/iOS/admin changes, credential-pattern and whitespace scans passed; prepared commits of validated environment isolation and Prod rollout work | October 1 05:20:18–05:21:01 UTC; no excluded pauses; commit bookkeeping excluded | 43 seconds | Recorded |
+
+| 2026-09-30-10 | September 30, 2026 | Codex | iOS CI/CD preparation | Added Xcode Cloud version/identity hooks, production archive verification and activation guide; 10 hook tests, 88 Prod tests, 8 cloud-configuration tests and signed archive/signature passed; hosted activation pending | October 1 05:21:54–05:27:06 UTC; includes build/tool time; brief conversational pause not separately measured; bookkeeping and publication excluded | 312 seconds | Recorded |

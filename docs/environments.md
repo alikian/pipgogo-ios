@@ -29,7 +29,7 @@ set. Browser Google sessions can still be shared.
   keys. The simulator override continues to use localhost.
 - `Configurations/Dev.xcconfig`: development API origin and app label.
 - `Configurations/Prod.xcconfig`: production API origin and app label.
-- `Configurations/Common.xcconfig`: shared URL syntax only; no authentication identity.
+- `Configurations/Common.xcconfig`: shared URL syntax and version includes; no authentication identity.
 - `Configurations/DevIdentity.xcconfig`: retained Dev Cognito identity, included by Local and Dev.
 - `Configurations/ProdIdentity.xcconfig`: ignored/generated public Prod client ID. Generate it using backend `scripts/export_prod_ios_config.py` after provisioning the isolated Prod foundation. Never put secrets in these files.
 
@@ -103,3 +103,5 @@ and matching Cognito settings before release. Both repositories default to `deve
 
 
 Production was provisioned September 30. Generated public client `23sk8qfmpotjj40jbnl9tn33em` is configured locally; the signed Prod build and eight Prod simulator configuration tests pass. See backend `infra/prod-deployment.md`. No physical installation was performed. Independent Prod provider secrets still require keys.
+
+Xcode Cloud setup, automatic build numbers and Prod identity generation in fresh checkouts are documented in [iOS CI/CD](ios-ci-cd.md).
