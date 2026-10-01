@@ -108,7 +108,7 @@ struct StartupLoadingView: View {
             Text("PipPipGo")
                 .font(.largeTitle.bold())
                 .overlay(alignment: .bottom) {
-                    ProgressView(message)
+                    ProgressView(LocalizedStringKey(message))
                         .font(.subheadline)
                         .foregroundStyle(.secondary)
                         .fixedSize()

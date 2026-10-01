@@ -150,3 +150,23 @@ struct TalkToPipLaunchTests {
         #expect(LiveVoiceStore.drivingURL(["url": "https://evil.invalid"]) == nil)
     }
 }
+
+struct AppLanguageTests {
+    @Test func unsupportedPreferenceFallsBackToEnglish() {
+        #expect(AppLanguage.selected("unsupported") == .english)
+        #expect(AppLanguage.selected("fa") == .persian)
+        #expect(AppLanguage.selected("ja") == .japanese)
+        #expect(AppLanguage.selected("es") == .spanish)
+        #expect(AppLanguage.selected("fr") == .french)
+        #expect(AppLanguage.selected("it") == .italian)
+        #expect(AppLanguage.selected("zh-Hans") == .simplifiedChinese)
+    }
+
+    @Test(arguments: ["fa", "ja", "es", "fr", "it", "zh-Hans"]) func packagedTranslationsAreAvailable(language: String) throws {
+        let path = try #require(Bundle.main.path(forResource: language, ofType: "lproj"))
+        let bundle = try #require(Bundle(path: path))
+        for key in ["Language", "My Profile", "Trips", "Ask Pip", "Talk to Pip", "Save", "Cancel"] {
+            #expect(bundle.localizedString(forKey: key, value: nil, table: "Localizable") != key)
+        }
+    }
+}

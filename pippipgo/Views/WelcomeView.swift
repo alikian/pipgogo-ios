@@ -51,5 +51,8 @@ struct WelcomeView: View {
             }
             .padding(28)
         }
+        .overlay(alignment: .topTrailing) {
+            AppLanguageMenu().padding()
+        }
     }
 }

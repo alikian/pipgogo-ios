@@ -136,6 +136,7 @@ final class OrganizerStore {
 }
 
 struct TravelOrganizerView: View {
+    @Environment(\.locale) private var locale
     @Bindable var store: OrganizerStore
     let chat: TravelChatStore
     @State private var showChat = false
@@ -173,8 +174,14 @@ struct TravelOrganizerView: View {
                                 .clipShape(Circle())
                                 .accessibilityHidden(true)
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(store.data.profile?.name ?? "Add your profile")
-                                    Label(companionSummary, systemImage: "person.2")
+                                    Group {
+                                        if let name = store.data.profile?.name { Text(verbatim: name) }
+                                        else { Text("Add your profile") }
+                                    }
+                                    Label {
+                                        if store.data.companions.isEmpty { Text("Add travel companions") }
+                                        else { Text(verbatim: companionSummary) }
+                                    } icon: { Image(systemName: "person.2") }
                                         .font(.caption).foregroundStyle(.secondary).lineLimit(1)
                                 }
                                 Spacer()
@@ -198,7 +205,10 @@ struct TravelOrganizerView: View {
                             Button { editor = .trip(trip.id) } label: {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(trip.name).font(.headline)
-                                    Text(trip.stops.isEmpty ? "Add destinations when you're ready" : trip.stops.map(\.destination).joined(separator: " → "))
+                                    Group {
+                                        if trip.stops.isEmpty { Text("Add destinations when you're ready") }
+                                        else { Text(verbatim: trip.stops.map(\.destination).joined(separator: " → ")) }
+                                    }
                                         .font(.subheadline).foregroundStyle(.secondary)
                                 }
                             }
@@ -207,16 +217,25 @@ struct TravelOrganizerView: View {
                     }
                 }
             }
+            // List uses cached UIKit cells. Recreate its presentation on locale changes
+            // so an RTL -> LTR switch cannot retain mirrored row transforms.
+            // Organizer, chat and editor state remain owned by this stable parent.
+            .id(locale.identifier)
             .refreshable { await store.load() }
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) { Text("PipPipGo").font(.headline) }
+                ToolbarItem(placement: .topBarLeading) { AppLanguageMenu() }
                 ToolbarItem(placement: .topBarTrailing) { Button("Sign out", action: signOut) }
             }
             .task { if !store.loaded { await store.load() } }
             .sheet(item: $editor) { kind in OrganizerEditor(store: store, kind: kind) }
             .sheet(isPresented: $showChat) { TravelChatView(store: chat, organizer: store, name: store.data.profile?.name) }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: chat.voice, startRequest: voiceStartRequest) }
+            .sheet(isPresented: $showVoice, onDismiss: { Task { await chat.load() } }) { VoiceConversationSheet(store: chat.voice, startRequest: voiceStartRequest, newTalk: {
+                await chat.load()
+                let started = await chat.newConversation()
+                if !started { chat.voice.error = chat.error }
+                return started
+            }, canCreateTalk: !chat.busy && chat.pending == nil && !chat.translator.active && chat.composer.isEmpty) }
             .sheet(isPresented: $showTranslate) { TranslationSheet(store: chat.translator) }
             .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
             .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
@@ -296,7 +315,7 @@ struct OrganizerEditor: View {
             .navigationDestination(item: $editingStop) { stop in
                 OrganizerStopEditor(stop: $trip.stop(stop), previous: previousStop(stop.id))
             }
-            .navigationTitle(isTrip ? "Trip" : isProfile ? "My Profile" : "Companion")
+            .navigationTitle(LocalizedStringKey(isTrip ? "Trip" : isProfile ? "My Profile" : "Companion"))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.disabled(store.pending != nil || store.busy) }
                 ToolbarItem(placement: .confirmationAction) {
@@ -312,7 +331,7 @@ struct OrganizerEditor: View {
                 }
             }
             .interactiveDismissDisabled(store.pending != nil || store.busy)
-            .confirmationDialog("Delete this \(isTrip ? "trip" : "companion")?", isPresented: $confirmDelete) {
+            .confirmationDialog(LocalizedStringKey(isTrip ? "Delete this trip?" : "Delete this companion?"), isPresented: $confirmDelete) {
                 Button("Delete", role: .destructive) { Task { await save(deleting: true) } }
             }
         }
@@ -373,7 +392,10 @@ struct OrganizerEditor: View {
                         Button { editingStop = stop } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(stop.destination.isEmpty ? "New destination" : stop.destination)
+                                    Group {
+                                        if stop.destination.isEmpty { Text("New destination") }
+                                        else { Text(verbatim: stop.destination) }
+                                    }
                                     if !stop.hotel.isEmpty { Text(stop.hotel).font(.caption).foregroundStyle(.secondary) }
                                 }
                                 Spacer()
@@ -472,12 +494,15 @@ struct OrganizerStopEditor: View {
                 OptionalOrganizerDate(title: "Check-in", value: $stop.check_in)
                 OptionalOrganizerDate(title: "Check-out", value: $stop.check_out)
             }
-            Section(previous.map { "Travel from \($0)" } ?? "Travel to first destination (optional)") {
+            Section {
                 Picker("Transport", selection: $stop.transport) {
                     Text("Not decided").tag(""); Text("Plane").tag("plane")
                     Text("Train").tag("train"); Text("Car").tag("car")
                 }
                 TextField("Flight/train number, departure time or driving notes", text: $stop.transport_details, axis: .vertical)
+            } header: {
+                if let previous { Text("Travel from \(previous)") }
+                else { Text("Travel to first destination (optional)") }
             }
         }.navigationTitle("Destination")
     }
@@ -490,9 +515,9 @@ struct OptionalOrganizerDate: View {
         formatter.calendar = Calendar(identifier: .gregorian); formatter.dateFormat = "yyyy-MM-dd"; return formatter
     }
     var body: some View {
-        Toggle(title, isOn: Binding(get: { value != nil }, set: { value = $0 ? Self.formatter.string(from: Date()) : nil }))
+        Toggle(LocalizedStringKey(title), isOn: Binding(get: { value != nil }, set: { value = $0 ? Self.formatter.string(from: Date()) : nil }))
         if value != nil {
-            DatePicker(title, selection: Binding(get: { Self.formatter.date(from: value ?? "") ?? Date() }, set: { value = Self.formatter.string(from: $0) }), displayedComponents: .date)
+            DatePicker(LocalizedStringKey(title), selection: Binding(get: { Self.formatter.date(from: value ?? "") ?? Date() }, set: { value = Self.formatter.string(from: $0) }), displayedComponents: .date)
         }
     }
 }
@@ -506,6 +531,7 @@ struct TravelChatMessage: Codable, Identifiable, Sendable {
 struct TravelChatData: Codable, Sendable { var messages: [TravelChatMessage] = [] }
 struct TravelChatRequest: Codable, Sendable {
     var text: String
+    var new_conversation = false
     var conversation_context: ConversationContext = .snapshot()
 }
 
@@ -580,6 +606,14 @@ final class TravelChatStore {
             await retry()
         } catch { self.error = error.localizedDescription }
     }
+    func newConversation() async -> Bool {
+        guard loaded, !busy, !voice.active, !translator.active, pending == nil, composer.isEmpty else { return false }
+        do {
+            pending = try .put(.travelChat, body: TravelChatRequest(text: "", new_conversation: true), expectedVersion: version)
+            await retry()
+            return pending == nil && error == nil && conflict == nil
+        } catch { self.error = error.localizedDescription; return false }
+    }
     func retry() async {
         guard !busy, !voice.active, conflict == nil, let request = pending else { return }
         busy = true; let ticket = epoch
@@ -614,9 +648,7 @@ struct TravelChatView: View {
     @Bindable var organizer: OrganizerStore
     @State private var reviewingTrip: OrganizerTrip?
     @State private var savedTripName: String?
-    @State private var showVoice = false
-    @State private var voiceStartRequest: UUID?
-    @Environment(\.scenePhase) private var scenePhase
+    @FocusState private var composing: Bool
     var name: String? = nil
     @Environment(\.dismiss) private var dismiss
     private let suggestions = [
@@ -627,11 +659,24 @@ struct TravelChatView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
+                HStack {
+                    Button("Continue conversation") {
+                        Task { await store.load(); if store.error == nil { composing = true } }
+                    }
+                    .disabled(!store.loaded || store.messages.isEmpty || store.busy || store.pending != nil || store.voice.active || !store.composer.isEmpty)
+                    Spacer()
+                    Button("New conversation", systemImage: "square.and.pencil") {
+                        Task { if await store.newConversation() { composing = true } }
+                    }
+                    .disabled(!store.loaded || store.busy || store.pending != nil || store.voice.active || store.translator.active || !store.composer.isEmpty)
+                }
+                .font(.subheadline)
+                .padding()
                 ScrollViewReader { scroll in
                     ScrollView {
                         VStack(alignment: .leading, spacing: 16) {
-                            Text("\(name.map { "Hi, \($0)!" } ?? "Hi!") I'm Pip, your travel companion. How can I help with your trip?").font(.headline)
                             if store.messages.isEmpty {
+                                Text("\(name.map { "Hi, \($0)!" } ?? "Hi!") I'm Pip, your travel companion. How can I help with your trip?").font(.headline)
                                 ForEach(suggestions, id: \.self) { suggestion in
                                     Button { store.composer = suggestion } label: {
                                         Text(suggestion).frame(maxWidth: .infinity, alignment: .leading)
@@ -640,7 +685,7 @@ struct TravelChatView: View {
                             }
                             ForEach(store.messages) { message in
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(message.role == "user" ? "You" : "Pip").font(.caption.bold()).foregroundStyle(.secondary)
+                                    Text(LocalizedStringKey(message.role == "user" ? "You" : "Pip")).font(.caption.bold()).foregroundStyle(.secondary)
                                     if message.role == "assistant" { ChatMarkdownView(text: message.text) }
                                     else { Text(message.text).textSelection(.enabled) }
                                     if let draft = message.trip_draft {
@@ -684,14 +729,12 @@ struct TravelChatView: View {
                 }
                 VStack(spacing: 8) {
                     ConversationLocationView(store: store.locationDisplay)
-                    Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
-                        .buttonStyle(.bordered)
-                        .disabled(store.busy || store.pending != nil)
                     Text("Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps.")
                         .font(.caption2).foregroundStyle(.secondary)
                     HStack(alignment: .bottom) {
                         TextField("Ask about your trip…", text: $store.composer, axis: .vertical)
                             .lineLimit(1...5).textFieldStyle(.roundedBorder)
+                            .focused($composing)
                             .disabled(store.busy || store.pending != nil || store.voice.active)
                         Button { Task { await store.send() } } label: {
                             Image(systemName: "arrow.up.circle.fill").font(.title)
@@ -704,30 +747,15 @@ struct TravelChatView: View {
             .navigationTitle("Ask Pip")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                if store.voice.active { Button("End voice", role: .destructive) { store.voice.stop() } }
                 Button("Done") { dismiss() }
             }
-            .task { if !store.loaded { await store.load() } }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: store.voice, startRequest: voiceStartRequest) }
-            .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
-            .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
-            .onChange(of: reviewingTrip?.id) { _, _ in handleVoiceLaunch() }
-            .onChange(of: store.busy) { _, _ in handleVoiceLaunch() }
-            .onChange(of: store.pending == nil) { _, _ in handleVoiceLaunch() }
+            .task { await store.load() }
             .sheet(item: $reviewingTrip) { draft in
                 OrganizerEditor(store: organizer, kind: .trip(draft.id), initialTrip: draft) { _ in
                     savedTripName = organizer.data.trips.first { $0.id == draft.id }?.name
                 }
             }
         }
-    }
-    private func handleVoiceLaunch() {
-        guard let request = TalkToPipLaunch.shared.take(
-            isActive: scenePhase == .active,
-            blocked: reviewingTrip != nil || store.busy || store.pending != nil
-        ) else { return }
-        voiceStartRequest = request
-        showVoice = true
     }
 }
 
@@ -891,7 +919,7 @@ struct OrganizerBudgetView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     private func costSection(_ title: String, cost: Binding<OrganizerCategoryCost>) -> some View {
-        Section(title) {
+        Section(LocalizedStringKey(title)) {
             BudgetAmountField(title: "Estimated", value: cost.estimated)
             BudgetAmountField(title: "Actual", value: cost.actual)
         }
@@ -902,11 +930,11 @@ struct BudgetAmountField: View {
     @Binding var value: String
     var body: some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
             Spacer()
             TextField("Not entered", text: Binding(get: { value }, set: { value = $0.replacingOccurrences(of: ",", with: ".") }))
                 .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                .accessibilityLabel(title)
+                .accessibilityLabel(Text(LocalizedStringKey(title)))
         }
     }
 

@@ -307,6 +307,13 @@ final class LiveVoiceStore {
                     guard let event = try JSONSerialization.jsonObject(with: data) as? [String: Any], let type = event["type"] as? String else { continue }
                     switch type {
                     case "session.started":
+                        if mode == .pip, let history = event["messages"] as? [[String: Any]] {
+                            for message in history {
+                                if let text = message["text"] as? String {
+                                    transcript.append(text, speaker: message["role"] as? String == "user" ? .user : .pip, startMilliseconds: nil, endMilliseconds: nil)
+                                }
+                            }
+                        }
                         guard !connected else { continue }
                         let audio = VoiceAudio(); self.audio = audio
                         let stream = try await audio.start()
@@ -440,7 +447,7 @@ final class LiveVoiceStore {
         }
     }
 
-    static func request(baseURL: URL, token: String, mode: LiveVoiceMode = .pip) throws -> URLRequest {
+    static func request(baseURL: URL, token: String, mode: LiveVoiceMode = .pip, language: String? = nil) throws -> URLRequest {
         guard var components = URLComponents(url: baseURL.appending(path: mode.path), resolvingAgainstBaseURL: false),
               let scheme = components.scheme, ["https", "http"].contains(scheme), components.host != nil,
               components.user == nil, components.password == nil else { throw APIClientError.invalidRequest("Invalid backend URL.") }
@@ -453,6 +460,8 @@ final class LiveVoiceStore {
             request.setValue(pair.headerValue, forHTTPHeaderField: "X-Pip-Translate")
         } else {
             request.setValue("1", forHTTPHeaderField: "X-Pip-Navigation")
+            let selected = AppLanguage.selected(language ?? UserDefaults.standard.string(forKey: "pip.language") ?? "en")
+            request.setValue(selected.rawValue, forHTTPHeaderField: "X-Pip-Language")
         }
         return request
     }
@@ -594,7 +603,7 @@ struct LiveVoiceView: View {
                 }.buttonStyle(.borderedProminent).tint(.red).controlSize(.large)
             } else {
                 Button { store.start() } label: {
-                    Label(translating ? "Start translation" : "Start voice conversation", systemImage: translating ? "translate" : "mic.fill")
+                    Label(LocalizedStringKey(translating ? "Start translation" : "Continue last talk"), systemImage: translating ? "translate" : "mic.fill")
                         .frame(maxWidth: .infinity)
                 }.buttonStyle(.borderedProminent).controlSize(.large)
             }
@@ -607,18 +616,34 @@ struct LiveVoiceView: View {
 struct VoiceConversationSheet: View {
     let store: LiveVoiceStore
     var startRequest: UUID? = nil
+    var newTalk: (() async -> Bool)? = nil
+    var canCreateTalk = true
+    @State private var creatingTalk = false
     @State private var handledRequest: UUID?
     @Environment(\.scenePhase) private var scenePhase
     @Environment(\.dismiss) private var dismiss
     var body: some View {
         NavigationStack {
             LiveVoiceView(store: store)
+                .disabled(creatingTalk)
+                .interactiveDismissDisabled(creatingTalk)
                 .onChange(of: scenePhase, initial: true) { _, _ in startRequestedConversation() }
                 .onChange(of: startRequest) { _, _ in startRequestedConversation() }
                 .navigationTitle("Talk to Pip")
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    if let newTalk {
+                        Button("New talk", systemImage: "square.and.pencil") {
+                            creatingTalk = true
+                            Task {
+                                if await newTalk(), scenePhase == .active { store.start() }
+                                creatingTalk = false
+                            }
+                        }
+                        .disabled(store.active || creatingTalk || !canCreateTalk)
+                    }
                     Button("Done") { store.stop(clearCaptions: true); dismiss() }
+                        .disabled(creatingTalk)
                 }
         }
     }
