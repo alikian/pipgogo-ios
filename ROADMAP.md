@@ -102,6 +102,8 @@ Precise-location rollout: backend `0c3576f` deployed through successful [run 366
 
 Admin currency display: estimates now round to cents (for example $0.066667 → $0.07), retaining underlying calculation precision. Frontend `dc39a87`, Amplify job 6 deployed; 15 tests, build and audit passed.
 
+Admin layout rollout: latest working-tree layout, channel filters and j/k navigation deployed through Amplify app `d12w50ml3j5534` job 7. All 16 frontend tests, production build and npm audit passed (zero vulnerabilities). Live HTTPS index and JavaScript/CSS assets match the tested build byte-for-byte. Authenticated browser acceptance was not repeated.
+
 Location reliability and visible field: fresh-fix acquisition now waits through stale samples/transient errors, reports capture status, refreshes missing/stale typed context while preserving retries, and displays Current location with coordinates/accuracy/time in typed and voice screens. Typed Update and permission-settings guidance added. 212 backend tests (one skipped), 74 automated simulator tests and signed device build passed; physical diagnostic is opt-in.
 
 Deployment evidence: backend `c1940b3` through successful run 36656492499, ECS revision 29 stable with one running task and zero pending. Signed repaired app with the Current location field installed on Akiphone using devicectl. The opt-in physical diagnostic could not launch because the phone was locked; it was stopped, so no live GPS/permission result is claimed. Final focused simulator run passed all eight location/context tests after the last cleanup change.

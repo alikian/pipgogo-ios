@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 14 hours 13 minutes 10 seconds** — 6 hours estimated + 8 hours 13 minutes 10 seconds recorded.
+**Total logged time: 14 hours 14 minutes 3 seconds** — 6 hours estimated + 8 hours 14 minutes 3 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 8 hours 0 minutes 26 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 8 hours 14 minutes 3 seconds (Codex; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **14 hours 0 minutes 26 seconds (includes 6 hours estimated)** |
+| Total time spent | **14 hours 14 minutes 3 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -165,6 +165,8 @@ an approximation supplied later. Contributor should identify who did the work, s
 | 2026-09-29-33 | September 29, 2026 | Codex | Visible app startup | Replaced empty launch configuration with adaptive PipPipGo storyboard and matching session/account progress UI; 16 simulator tests, signed Dev build and signature passed; installed on Akiphone; physical launch timing/visual acceptance pending | September 30 04:02:36–04:05:34 UTC; no excluded pauses; bookkeeping excluded | 178 seconds | Recorded |
 | 2026-09-29-34 | September 29, 2026 | Codex | Voice driving-directions handoff | Added session-verified destination tool and capability-gated iOS Maps handoff; 249 backend and nine simulator checks passed; real speech/Google tool emitted navigation and spoken sign-off; signed Dev installed on retry; deployed fc34457 to stable ECS revision 34, HTTPS/auth checks passed | September 30 04:41:52–04:51:30 UTC; no excluded pauses; bookkeeping excluded | 578 seconds | Recorded |
 | 2026-09-29-35 | September 29, 2026 | Codex | Commit remaining changes | Checked both repositories, reviewed 21 pending iOS files, checked whitespace and credential patterns, confirmed mirrored time log/roadmap; saving all remaining changes at user request | September 30 04:55:59–04:56:07 UTC; no excluded pauses; bookkeeping and commit operations excluded | 8 seconds | Recorded |
+
+| 2026-09-29-36 | September 29, 2026 | Codex | Admin layout deployment | Deployed latest working-tree layout, channel filters and keyboard navigation through Amplify job 7; 16 tests, production build and audit passed; live HTTPS index/JS/CSS bytes match tested artifact; authenticated browser acceptance not repeated | September 30 05:06:40–05:07:55 UTC; initial inspection before clock capture unrecorded; no excluded pauses; bookkeeping excluded | 75 seconds | Recorded segment |
 
 ## Earlier work — user-supplied estimates
 
