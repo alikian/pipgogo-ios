@@ -5,7 +5,7 @@ import Testing
 struct AppConfigurationTests {
     private func info(_ environment: String = "local", url: String = "http://localhost:8765") -> [String: Any] {
         ["AppEnvironment": environment, "BackendBaseURL": url,
-         "CognitoDomain": "https://auth.pippipgo.com", "CognitoClientID": "public-client"]
+         "CognitoDomain": environment == "prod" ? "https://auth.pippipgo.com" : "https://auth-dev.pippipgo.com", "CognitoClientID": "public-client"]
     }
 
     @Test func localAcceptsSimulatorAndLAN() throws {
@@ -18,17 +18,17 @@ struct AppConfigurationTests {
     }
 
     @Test func hostedBuildsUseTheirOwnHTTPSHost() throws {
-        for (environment, host) in [("dev", "dev.pippipgo.com"), ("prod", "pippipgo.com")] {
+        for (environment, host) in [("dev", "api-dev.pippipgo.com"), ("prod", "api.pippipgo.com")] {
             let config = try AppConfiguration.from(info: info(environment, url: "https://\(host)"))
             #expect(config.environment.rawValue == environment)
             #expect(config.backendBaseURL.host == host)
-            #expect(config.cognitoDomain.host == "auth.pippipgo.com")
+            #expect(config.cognitoDomain.host == (environment == "prod" ? "auth.pippipgo.com" : "auth-dev.pippipgo.com"))
         }
     }
 
     @Test func hostedBuildsRejectLocalHTTPAndWrongEnvironment() {
-        for (environment, url) in [("dev", "http://dev.pippipgo.com"), ("dev", "http://localhost:8765"),
-                                   ("prod", "https://dev.pippipgo.com"), ("dev", "https://pippipgo.com"),
+        for (environment, url) in [("dev", "http://api-dev.pippipgo.com"), ("dev", "http://localhost:8765"),
+                                   ("prod", "https://api-dev.pippipgo.com"), ("dev", "https://pippipgo.com"),
                                    ("prod", "https://pippipgo.com:8765")] {
             #expect(throws: AppConfigurationError.invalidValue("BackendBaseURL")) {
                 try AppConfiguration.from(info: info(environment, url: url))
@@ -54,8 +54,19 @@ struct AppConfigurationTests {
                 try AppConfiguration.from(info: info("prod", url: url))
             }
         }
-        var values = info(); values["CognitoDomain"] = "http://auth.pippipgo.com"
+        var values = info(); values["CognitoDomain"] = "http://auth-dev.pippipgo.com"
         #expect(throws: AppConfigurationError.invalidValue("CognitoDomain")) { try AppConfiguration.from(info: values) }
+    }
+
+    @Test func productionRejectsDevelopmentIdentity() {
+        var values = info("prod", url: "https://api.pippipgo.com")
+        values["CognitoDomain"] = "https://auth-dev.pippipgo.com"
+        #expect(throws: AppConfigurationError.invalidValue("CognitoDomain")) { try AppConfiguration.from(info: values) }
+        values["CognitoDomain"] = "https://auth.pippipgo.com"
+        values["CognitoClientID"] = "5ungc4grbiid7de7rjbh0jn2ff"
+        #expect(throws: AppConfigurationError.invalidValue("CognitoClientID")) { try AppConfiguration.from(info: values) }
+        values["CognitoClientID"] = ""
+        #expect(throws: AppConfigurationError.invalidValue("CognitoClientID")) { try AppConfiguration.from(info: values) }
     }
 
     @Test func tokenNamespacesAreDistinctAndPreserveLocalSession() {

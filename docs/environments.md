@@ -12,8 +12,8 @@ have been replaced. The project, target and Swift module remain `pipgogo`.
 | Scheme | Home-screen name | API base URL | Status |
 | --- | --- | --- | --- |
 | Local | PipPipGo Local | Simulator: `http://localhost:8765`; device: `http://192.168.0.156:8765` | Uses the Mac backend, existing Cognito and development DynamoDB |
-| Dev | PipPipGo Dev | `https://dev.pippipgo.com` | App configuration ready; hosted API not deployed |
-| Prod | PipPipGo | `https://pippipgo.com` | App configuration ready; hosted API not deployed |
+| Dev | PipPipGo Dev | `https://api-dev.pippipgo.com` | Hosted Dev API deployed |
+| Prod | PipPipGo | `https://api.pippipgo.com` | Hosted Prod deployed; generated identity configured |
 
 All three retain bundle ID `com.pipgogo.ios` and the existing native OAuth URLs.
 They **replace one another** on a device, rather than installing side by side.
@@ -29,20 +29,20 @@ set. Browser Google sessions can still be shared.
   keys. The simulator override continues to use localhost.
 - `Configurations/Dev.xcconfig`: development API origin and app label.
 - `Configurations/Prod.xcconfig`: production API origin and app label.
-- `Configurations/Common.xcconfig`: current public Cognito domain and client ID.
-  Override these settings in the relevant environment file when separate
-  authentication resources are deployed. Never put secrets in these files.
+- `Configurations/Common.xcconfig`: shared URL syntax only; no authentication identity.
+- `Configurations/DevIdentity.xcconfig`: retained Dev Cognito identity, included by Local and Dev.
+- `Configurations/ProdIdentity.xcconfig`: ignored/generated public Prod client ID. Generate it using backend `scripts/export_prod_ios_config.py` after provisioning the isolated Prod foundation. Never put secrets in these files.
 
 Local includes the local-network usage description and narrowly scoped HTTP
 exceptions. Dev and Prod use the hosted plist with no HTTP exception or local
 network permission description. Runtime validation rejects HTTP or another
 host for Dev/Prod; there is no automatic fallback to the Mac backend.
 
-Authentication **currently uses the same existing Cognito foundation** in all
-three configurations. Separate token storage does not create separate accounts,
-user pools or databases. Hosting milestone 5.2 must establish the intended
-Dev/Prod authentication and data isolation before release. This work changes no
-AWS resources, DNS, OAuth callbacks or Google Console settings.
+Local and Dev share the retained development foundation. Prod uses `auth.pippipgo.com`
+and requires a separate Cognito client. It intentionally fails configuration validation
+until the real Prod identity is generated; there is no Dev fallback. See backend
+`infra/environments.md` for resource setup and the export command. Do not distribute
+an unconfigured Prod build. Historical build evidence below predates this separation.
 
 ## Run and verify
 
@@ -71,13 +71,12 @@ uv run python -m scripts.login_test --profile alikianus --region us-west-2 --lan
 ## Hosted API prerequisites
 
 Dev HTTPS hosting is deployed on standard ECS Fargate (September 27, 2026);
-Prod hosting remains pending. Complete device acceptance against Dev.
+Prod hosting is deployed; Google is test-user restricted and provider/device acceptance remains pending. Complete device acceptance against Dev.
 The client appends existing `/v1/...` API paths, for example
-`https://dev.pippipgo.com/v1/me` and `https://pippipgo.com/v1/me`.
-The production apex will also host the planned public website (5.3): configure
-routing so `/v1/*` reaches the API and website paths reach the website. Preserve
-`auth.pippipgo.com` and coordinate replacement of the root placeholder DNS record
-with the certificate stack. The build configuration alone does not prove device acceptance.
+`https://api-dev.pippipgo.com/v1/me` and `https://api.pippipgo.com/v1/me`.
+The production API has its own subdomain; the root domain remains available for the
+planned website. No parent DNS replacement is needed. Prod infrastructure and live sign-in/API isolation are verified; build configuration
+alone does not prove physical-device acceptance.
 
 Before release, verify the chosen identity/data environment and Google sign-in,
 refresh, logout, account isolation and trip flows on a physical phone without
@@ -101,3 +100,6 @@ The Dev build was installed on Ali’s iPhone 12 on September 27. Remote launch
 reported the device locked; do not count installation as sign-in or trip acceptance.
 Local and Dev share development accounts/data. Prod requires its own persistence
 and matching Cognito settings before release. Both repositories default to `develop`.
+
+
+Production was provisioned September 30. Generated public client `23sk8qfmpotjj40jbnl9tn33em` is configured locally; the signed Prod build and eight Prod simulator configuration tests pass. See backend `infra/prod-deployment.md`. No physical installation was performed. Independent Prod provider secrets still require keys.

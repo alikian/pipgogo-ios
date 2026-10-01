@@ -2,3 +2,6 @@
 xcuserdata/
 DerivedData/
 *.xcuserstate
+
+# Generated public identity from the verified production foundation.
+Configurations/ProdIdentity.xcconfig

@@ -38,13 +38,13 @@ struct LiveTranslationTests {
 
     @MainActor @Test func translationRequestUsesInterpreterEndpointWithoutNavigation() throws {
         let pair = try #require(TranslationPair(mine: "en", theirs: "it"))
-        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://dev.pippipgo.com")!, token: "test-access-token", mode: .translate(pair))
-        #expect(request.url?.absoluteString == "wss://dev.pippipgo.com/v1/translate/live")
+        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://api-dev.pippipgo.com")!, token: "test-access-token", mode: .translate(pair))
+        #expect(request.url?.absoluteString == "wss://api-dev.pippipgo.com/v1/translate/live")
         #expect(request.value(forHTTPHeaderField: "Authorization") == "Bearer test-access-token")
         #expect(request.value(forHTTPHeaderField: "X-Pip-Translate") == "en,it")
         #expect(request.value(forHTTPHeaderField: "X-Pip-Navigation") == nil)
         #expect(request.value(forHTTPHeaderField: "X-Pip-Context") == nil)
-        let voice = try LiveVoiceStore.request(baseURL: URL(string: "https://dev.pippipgo.com")!, token: "t")
+        let voice = try LiveVoiceStore.request(baseURL: URL(string: "https://api-dev.pippipgo.com")!, token: "t")
         #expect(voice.value(forHTTPHeaderField: "X-Pip-Translate") == nil)
         #expect(voice.value(forHTTPHeaderField: "X-Pip-Navigation") == "1")
     }

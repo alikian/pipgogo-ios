@@ -2,18 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>PipPipGo uses your location, including precise coordinates when allowed, for nearby travel suggestions and conversation context shared with OpenAI.</string>
-	<key>UIBackgroundModes</key>
-	<array>
-		<string>audio</string>
-	</array>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Talk to Pip or translate conversations live. Audio is shared with OpenAI while voice or translation is active.</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
-	<string>Turn your spoken trip plans into text for you to review before sending to Pip.</string>
-	<key>CFBundleDisplayName</key>
-	<string>$(PIPGOGO_DISPLAY_NAME)</string>
+	<key>AppEnvironment</key>
+	<string>$(PIPGOGO_APP_ENVIRONMENT)</string>
+	<key>BackendBaseURL</key>
+	<string>$(PIPGOGO_BACKEND_BASE_URL)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -25,15 +17,13 @@
 			</array>
 		</dict>
 	</array>
-	<key>BackendBaseURL</key>
-	<string>$(PIPGOGO_BACKEND_BASE_URL)</string>
-	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
-	<key>AppEnvironment</key>
-	<string>$(PIPGOGO_APP_ENVIRONMENT)</string>
-	<key>CognitoDomain</key>
-	<string>$(PIPGOGO_COGNITO_DOMAIN)</string>
 	<key>CognitoClientID</key>
 	<string>$(PIPGOGO_COGNITO_CLIENT_ID)</string>
+	<key>CognitoDomain</key>
+	<string>$(PIPGOGO_COGNITO_DOMAIN)</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 </dict>
 </plist>
