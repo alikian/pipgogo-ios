@@ -1,5 +1,5 @@
 #include "Common.xcconfig"
 #include "DevIdentity.xcconfig"
-PIPGOGO_APP_ENVIRONMENT = dev
-PIPGOGO_DISPLAY_NAME = PipPipGo Dev
-PIPGOGO_BACKEND_BASE_URL = https:$(PIPGOGO_URL_SLASH)$(PIPGOGO_URL_SLASH)api-dev.pippipgo.com
+PIPPIPGO_APP_ENVIRONMENT = dev
+PIPPIPGO_DISPLAY_NAME = PipPipGo Dev
+PIPPIPGO_BACKEND_BASE_URL = https:$(PIPPIPGO_URL_SLASH)$(PIPPIPGO_URL_SLASH)api-dev.pippipgo.com

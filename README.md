@@ -16,6 +16,6 @@ Dev API now serves the rebuilt journey endpoints. The selected model is GPT-6 As
 ECS runtime secret access and a live structured GPT-6 Astra response are verified.
 Full AI/device acceptance remains pending.
 
-Open `pipgogo.xcodeproj`; select Local, Dev or Prod. See [environments](docs/environments.md).
-The project, module, bundle ID and native authentication callbacks keep their configured identities.
+Open `pippipgo.xcodeproj`; select Local, Dev or Prod. See [environments](docs/environments.md).
+The project/module and bundle ID now use `pippipgo`; see [rename rollout](docs/ios-rename.md) before signing or distributing the renamed app.
 Deploy the matching backend before installing the rebuilt Dev app. Old product source is in Git history.

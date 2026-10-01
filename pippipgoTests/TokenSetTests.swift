@@ -1,6 +1,6 @@
 import Foundation
 import Testing
-@testable import pipgogo
+@testable import pippipgo
 
 struct TokenSetTests {
     @Test func googleProfilePhotoUsesHTTPSAndHandlesMissingPhoto() throws {

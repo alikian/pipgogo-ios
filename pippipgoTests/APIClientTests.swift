@@ -2,7 +2,7 @@ import AVFoundation
 import Foundation
 import SwiftUI
 import Testing
-@testable import pipgogo
+@testable import pippipgo
 
 @Suite(.serialized)
 struct APIClientTests {
@@ -250,7 +250,7 @@ struct APIClientTests {
         #expect(blocks[1].attributed.runs.contains { $0.inlinePresentationIntent?.contains(.stronglyEmphasized) == true })
         #expect(blocks[2].text == "**Hotel:** apartment")
         #expect(blocks[4].attributed.runs.contains { $0.link?.absoluteString == "https://example.com" })
-        let unsafe = ChatMarkdownBlock.parse("[Open](pipgogo://auth/logout)")[0]
+        let unsafe = ChatMarkdownBlock.parse("[Open](pippipgo://auth/logout)")[0]
         #expect(!unsafe.attributed.runs.contains { $0.link != nil })
     }
 
@@ -670,7 +670,7 @@ struct APIClientTests {
     }
 
     private var configuration: AppConfiguration {
-        AppConfiguration(cognitoDomain: URL(string: "https://auth-dev.pippipgo.com")!, clientID: "test-client", callbackURL: URL(string: "pipgogo://auth/callback")!, logoutURL: URL(string: "pipgogo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
+        AppConfiguration(cognitoDomain: URL(string: "https://auth-dev.pippipgo.com")!, clientID: "test-client", callbackURL: URL(string: "pippipgo://auth/callback")!, logoutURL: URL(string: "pippipgo://auth/logout")!, backendBaseURL: URL(string: "https://example.invalid")!)
     }
 
     @Test func authorizationUsesPKCEAndState() throws {
@@ -681,7 +681,7 @@ struct APIClientTests {
         #expect(url.host == "auth-dev.pippipgo.com")
         #expect(values["code_challenge_method"] == "S256")
         #expect(values["state"] == "random-state")
-        #expect(values["redirect_uri"] == "pipgogo://auth/callback")
+        #expect(values["redirect_uri"] == "pippipgo://auth/callback")
         #expect(values["identity_provider"] == "Google")
         #expect(values["prompt"] == "select_account")
     }
@@ -721,7 +721,7 @@ struct APIClientTests {
         let url = try client.logoutURL()
         #expect(url.path == "/logout")
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!
-        #expect(items.contains(URLQueryItem(name: "logout_uri", value: "pipgogo://auth/logout")))
+        #expect(items.contains(URLQueryItem(name: "logout_uri", value: "pippipgo://auth/logout")))
     }
 
 

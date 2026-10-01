@@ -81,20 +81,22 @@ class CloudHookTests(unittest.TestCase):
 
     def archive(self):
         archive = self.root / "PipPipGo.xcarchive"
-        app = archive / "Products/Applications/pipgogo.app"
+        app = archive / "Products/Applications/pippipgo.app"
         app.mkdir(parents=True)
         self.env["CI_ARCHIVE_PATH"] = str(archive)
         return app / "Info.plist"
 
     def test_archive_checks_actual_built_identity_and_version(self):
         plist = self.archive()
-        expected = dict(CFBundleIdentifier="com.pipgogo.ios", CFBundleDisplayName="PipPipGo",
+        expected = dict(CFBundleIdentifier="com.pippipgo.ios", CFBundleDisplayName="PipPipGo",
                         AppEnvironment="prod", BackendBaseURL="https://api.pippipgo.com",
                         CognitoDomain="https://auth.pippipgo.com", CognitoClientID=PROD_CLIENT,
-                        CFBundleVersion="42", CFBundleShortVersionString=VERSION)
+                        CFBundleVersion="42", CFBundleShortVersionString=VERSION,
+                        CFBundleURLTypes=[{"CFBundleURLSchemes": ["pippipgo"]}])
         plist.write_bytes(plistlib.dumps(expected))
         self.run_hook("ci_post_xcodebuild.sh")
-        for field, value in dict(BackendBaseURL="https://api-dev.pippipgo.com",
+        for field, value in dict(CFBundleURLTypes=[{"CFBundleURLSchemes": ["pipgogo"]}],
+                                 BackendBaseURL="https://api-dev.pippipgo.com",
                                  CognitoClientID="5ungc4grbiid7de7rjbh0jn2ff",
                                  CFBundleVersion="1", CFBundleShortVersionString=VERSION + ".99",
                                  NSAppTransportSecurity={"NSAllowsArbitraryLoads": True}).items():

@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct pipgogoApp: App {
+struct pippipgoApp: App {
     @State private var authenticationStore = AuthenticationStore()
 
     var body: some Scene {

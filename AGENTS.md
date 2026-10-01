@@ -44,7 +44,7 @@ Use the multi-destination acceptance scenario in docs/simple-travel-organizer.md
 - Development API: `https://api-dev.pippipgo.com`, deployed through the existing CloudFormation hosting/delivery stacks. The old `dev.pippipgo.com` alias was removed. iOS Dev, the admin viewer and deployment scripts use the new API hostname; Local still uses the Mac backend.
 - The Cognito user pool is `us-west-2_qPlEDatlA`; the public app client ID is `5ungc4grbiid7de7rjbh0jn2ff`.
 - A custom hosted domain does not change the JWT issuer: `https://cognito-idp.us-west-2.amazonaws.com/us-west-2_qPlEDatlA`.
-- Native app callback/logout URLs remain `pipgogo://auth/callback` and `pipgogo://auth/logout`. A hosted-domain change does not automatically migrate these to Universal Links.
+- User-requested iOS rename (September 30): source now uses `pippipgo.xcodeproj`, `com.pippipgo.ios` and `pippipgo://auth/callback` / `pippipgo://auth/logout`. User-approved Apple registration/App Store provisioning and additive Cognito callback deployment completed September 30; both environments accept old/new redirects. New-product Xcode Cloud enrollment and physical-device OAuth acceptance remain pending. Keep legacy `pipgogo://` callbacks for installed apps; see iOS `docs/ios-rename.md`. Historical AWS resource identifiers remain unchanged.
 
 ## Custom-domain implementation notes
 

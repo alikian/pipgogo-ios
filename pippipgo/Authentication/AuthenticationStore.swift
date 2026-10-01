@@ -60,7 +60,7 @@ final class AuthenticationStore {
             let url = try await authentication.authorizationURL(state: stateValue, challenge: PKCE.challenge(for: verifier))
             // Managed Login forwards select_account to Google. Share browser cookies
             // so Google can offer existing browser accounts rather than require email entry.
-            let callback = try await webAuthentication.authenticate(url: url, callbackScheme: configuration.callbackURL.scheme ?? "pipgogo", prefersEphemeral: false)
+            let callback = try await webAuthentication.authenticate(url: url, callbackScheme: configuration.callbackURL.scheme ?? "pippipgo", prefersEphemeral: false)
             let code = try OAuthCallback.authorizationCode(from: callback, expectedCallback: configuration.callbackURL, expectedState: stateValue)
             try await authentication.completeSignIn(code: code, verifier: verifier)
             await loadAccount()
@@ -102,7 +102,7 @@ final class AuthenticationStore {
 
         do {
             let logoutURL = try await authentication.logoutURL()
-            let callback = try await webAuthentication.authenticate(url: logoutURL, callbackScheme: configuration.logoutURL.scheme ?? "pipgogo", prefersEphemeral: false)
+            let callback = try await webAuthentication.authenticate(url: logoutURL, callbackScheme: configuration.logoutURL.scheme ?? "pippipgo", prefersEphemeral: false)
             try OAuthCallback.validateLogout(callback, expectedCallback: configuration.logoutURL)
         } catch AuthenticationError.cancelled {
             message = message ?? "You are signed out locally. Cognito browser logout was cancelled."

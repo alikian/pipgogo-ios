@@ -1,5 +1,5 @@
 #!/bin/sh
-# Usage: verify_release.sh /path/to/pipgogo.app expected-build expected-version
+# Usage: verify_release.sh /path/to/pippipgo.app expected-build expected-version
 set -eu
 [ "$#" -eq 3 ] || { echo "Usage: $0 app-path build-number marketing-version" >&2; exit 1; }
 plist="$1/Info.plist"
@@ -10,7 +10,8 @@ check() {
         exit 1
     fi
 }
-check CFBundleIdentifier com.pipgogo.ios
+check CFBundleIdentifier com.pippipgo.ios
+check CFBundleURLTypes:0:CFBundleURLSchemes:0 pippipgo
 check CFBundleDisplayName PipPipGo
 check AppEnvironment prod
 check BackendBaseURL https://api.pippipgo.com
