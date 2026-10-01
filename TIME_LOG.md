@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 16 hours 6 minutes 25 seconds** — 6 hours estimated + 10 hours 6 minutes 25 seconds recorded.
+**Total logged time: 16 hours 7 minutes 23 seconds** — 6 hours estimated + 10 hours 7 minutes 23 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 10 hours 6 minutes 25 seconds (Codex and Claude; overlapping sessions counted once) |
+| Recorded session time | 10 hours 7 minutes 23 seconds (Codex and Claude; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **16 hours 6 minutes 25 seconds (includes 6 hours estimated)** |
+| Total time spent | **16 hours 7 minutes 23 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -230,3 +230,5 @@ The master-prompt session excludes subsequent time-log bookkeeping and documenta
 | 2026-09-30-12 | September 30, 2026 | Codex | Approved iOS identity activation | Applied callback-only Dev/Prod CloudFormation changes; verified old/new live authorize/logout redirects, signed renamed archive and explicit App Store distribution profile/export; no upload/release or full device acceptance | October 1 06:11:57–06:14:25 UTC; no excluded pauses; documentation/publication excluded | 148 seconds | Recorded |
 
 | 2026-10-01-01 | October 1, 2026 | Codex | iOS distribution validation fix | Added supported iPhone/iPad orientations after Apple validation rejected missing metadata; added archive regression guard, retained user test signing team and restored environment display names; 10 CI tests, 8 Prod simulator configuration tests, signed archive and signature/metadata verification passed; Apple revalidation and cloud delivery pending | October 1 07:03:43–07:05:38 UTC; no excluded pauses; bookkeeping/publication excluded | 115 seconds | Recorded |
+
+| 2026-10-01-02 | October 1, 2026 | Codex | iOS encryption declaration | Added Boolean ITSAppUsesNonExemptEncryption=false to both app plists; plist lint and signed Prod archive/signature passed, actual archived value verified; existing builds still require their App Store Connect declarations | October 1 07:45:58–07:46:56 UTC; no excluded pauses; bookkeeping/publication excluded | 58 seconds | Recorded |
