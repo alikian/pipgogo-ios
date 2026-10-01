@@ -3701,6 +3701,9 @@
         }
       }
     },
+    "Speech is shared with OpenAI to translate it while translation is on. Your profile, trips and location are not shared." : {
+
+    },
     "Speech isn't available right now. You can still type." : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3751,6 +3754,9 @@
           }
         }
       }
+    },
+    "Start translation, then take turns speaking. Pip says each sentence in the other language." : {
+
     },
     "Starting from (city or pickup point)" : {
       "extractionState" : "stale",

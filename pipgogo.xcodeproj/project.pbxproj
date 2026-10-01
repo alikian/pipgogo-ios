@@ -12,6 +12,8 @@
 		A4E59977254D493A953F2190 = {isa = PBXBuildFile; fileRef = A4E59977254D493A953F2191; };
 		CCDDEE001122334455667700 = {isa = PBXBuildFile; fileRef = CCDDEE001122334455667701; };
 		BBCC00112233445566778800 = {isa = PBXBuildFile; fileRef = BBCC00112233445566778801; };
+		BBCC00112233445566779900 = {isa = PBXBuildFile; fileRef = BBCC00112233445566779901; };
+		EEFF00112233445566779900 = {isa = PBXBuildFile; fileRef = EEFF00112233445566779901; };
 		AABB00112233445566778800 = {isa = PBXBuildFile; fileRef = AABB00112233445566778801; };
 		079A596F004B80CE9ACD0DFB /* pipgogo/Views/WelcomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCCE157C7AAA02B8867AD4C2 /* pipgogo/Views/WelcomeView.swift */; };
 		115C62EF751601B1BEB250C6 /* pipgogo/Networking/APIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0FB40147CE94E8F6D0F626A /* pipgogo/Networking/APIClient.swift */; };
@@ -55,6 +57,8 @@
 		A4E59977254D493A953F2191 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/CurrentLocationStore.swift; sourceTree = SOURCE_ROOT; };
 		CCDDEE001122334455667701 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/App/TalkToPipIntent.swift; sourceTree = SOURCE_ROOT; };
 		BBCC00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/LiveVoice.swift; sourceTree = SOURCE_ROOT; };
+		BBCC00112233445566779901 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/LiveTranslation.swift; sourceTree = SOURCE_ROOT; };
+		EEFF00112233445566779901 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogoTests/LiveTranslationTests.swift; sourceTree = SOURCE_ROOT; };
 		AABB00112233445566778801 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Intelligence/TravelOrganizer.swift; sourceTree = SOURCE_ROOT; };
 		04B5A7AB86A3EEBC6072BDB7 /* pipgogo/Authentication/CognitoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Authentication/CognitoClient.swift; sourceTree = SOURCE_ROOT; };
 		0CD180DAD3324907BA95633D /* pipgogo/Authentication/KeychainStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pipgogo/Authentication/KeychainStore.swift; sourceTree = SOURCE_ROOT; };
@@ -117,6 +121,7 @@
 				DDEE00112233445566778801,
 				A4E59977254D493A953F2191,
                 BBCC00112233445566778801,
+                BBCC00112233445566779901,
 				F7432E3FE07086621256F7BE /* pipgogo/Intelligence/TravelerIntelligence.swift */,
 				56969A1272136C594F4850CE /* pipgogo/App/AppConfiguration.swift */,
 				53E7947F88D00B53FB6BE799 /* pipgogo/App/pipgogoApp.swift */,
@@ -168,6 +173,7 @@
 			children = (
 				09AAADA0DD1E499C8E85EA37 /* pipgogoTests/AppConfigurationTests.swift */,
 				EEFF00112233445566778801,
+				EEFF00112233445566779901,
 				0DCF3D26A0C5089D31AC26BA /* pipgogoTests/APIClientTests.swift */,
 				29707B315ECB0F7B45832291 /* pipgogoTests/OAuthCallbackTests.swift */,
 				B54AE6BF7A17282BD9447BE2 /* pipgogoTests/TokenSetTests.swift */,
@@ -291,6 +297,7 @@
 				DDEE00112233445566778800,
 				A4E59977254D493A953F2190,
                 BBCC00112233445566778800,
+                BBCC00112233445566779900,
 				FE92C7C39C5007460E9702EA /* pipgogo/Intelligence/TravelerIntelligence.swift in Sources */,
 				BBB91D69F28837490217694D /* pipgogo/App/AppConfiguration.swift in Sources */,
 				600834F9F70DBB19E2CB3C51 /* pipgogo/App/pipgogoApp.swift in Sources */,
@@ -316,6 +323,7 @@
 			files = (
 				AED50F1272344B44A096F419 /* pipgogoTests/AppConfigurationTests.swift */,
 				EEFF00112233445566778800,
+				EEFF00112233445566779900,
 				61CD483D2A54398A61F34769 /* pipgogoTests/APIClientTests.swift in Sources */,
 				13942DEE7CC5ED9161D3E70E /* pipgogoTests/OAuthCallbackTests.swift in Sources */,
 				9CE9C45DDE146537EF2B33C5 /* pipgogoTests/TokenSetTests.swift in Sources */,

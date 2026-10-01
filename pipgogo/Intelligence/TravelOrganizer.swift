@@ -140,6 +140,7 @@ struct TravelOrganizerView: View {
     let chat: TravelChatStore
     @State private var showChat = false
     @State private var showVoice = false
+    @State private var showTranslate = false
     @State private var voiceStartRequest: UUID?
     @Environment(\.scenePhase) private var scenePhase
     var profilePictureURL: URL? = nil
@@ -188,7 +189,9 @@ struct TravelOrganizerView: View {
                     Section {
                         Button("Ask Pip", systemImage: "bubble.left.and.bubble.right") { showChat = true }
                         Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
-                            .disabled(chat.busy || chat.pending != nil)
+                            .disabled(chat.busy || chat.pending != nil || chat.translator.active)
+                        Button("Translate", systemImage: "translate") { showTranslate = true }
+                            .disabled(chat.voice.active)
                     }
                     Section("Trips") {
                         ForEach(store.data.trips) { trip in
@@ -214,9 +217,11 @@ struct TravelOrganizerView: View {
             .sheet(item: $editor) { kind in OrganizerEditor(store: store, kind: kind) }
             .sheet(isPresented: $showChat) { TravelChatView(store: chat, organizer: store, name: store.data.profile?.name) }
             .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: chat.voice, startRequest: voiceStartRequest) }
+            .sheet(isPresented: $showTranslate) { TranslationSheet(store: chat.translator) }
             .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
             .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
             .onChange(of: showChat) { _, _ in handleVoiceLaunch() }
+            .onChange(of: showTranslate) { _, _ in handleVoiceLaunch() }
             .onChange(of: editor?.id) { _, _ in handleVoiceLaunch() }
             .onChange(of: chat.busy) { _, _ in handleVoiceLaunch() }
             .onChange(of: chat.pending == nil) { _, _ in handleVoiceLaunch() }
@@ -225,7 +230,7 @@ struct TravelOrganizerView: View {
     private func handleVoiceLaunch() {
         guard let request = TalkToPipLaunch.shared.take(
             isActive: scenePhase == .active,
-            blocked: showChat || editor != nil || chat.busy || chat.pending != nil
+            blocked: showChat || showTranslate || editor != nil || chat.busy || chat.pending != nil
         ) else { return }
         voiceStartRequest = request
         showVoice = true
@@ -507,6 +512,8 @@ struct TravelChatRequest: Codable, Sendable {
 @MainActor @Observable
 final class TravelChatStore {
     let voice: LiveVoiceStore
+    /// Two-way interpreter; shares no traveler context with the backend session.
+    let translator: LiveVoiceStore
     let locationDisplay: CurrentLocationStore
     var messages: [TravelChatMessage] = []
     var composer = ""
@@ -528,9 +535,11 @@ final class TravelChatStore {
         let display = CurrentLocationStore(capture: captureContext)
         self.locationDisplay = display
         self.voice = LiveVoiceStore(client: client, authentication: authentication, locationDisplay: display)
+        self.translator = LiveVoiceStore(client: client, authentication: authentication, mode: .translate(.saved()))
     }
     func reset() {
         voice.stop(clearCaptions: true)
+        translator.stop(clearCaptions: true)
         locationDisplay.reset()
         conversationContext = nil; capturingLocation = false
         epoch = UUID(); messages = []; composer = ""; version = 0; loaded = false

@@ -9,7 +9,7 @@
 		<string>audio</string>
 	</array>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Talk to Pip using live voice conversation. Audio is shared with OpenAI while voice is active.</string>
+    <string>Talk to Pip or translate conversations live. Audio is shared with OpenAI while voice or translation is active.</string>
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>Turn your spoken trip plans into text for you to review before sending to Pip.</string>
 	<key>CFBundleDisplayName</key>

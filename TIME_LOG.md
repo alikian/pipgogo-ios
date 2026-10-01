@@ -1,6 +1,6 @@
 # PipPipGo project time log
 
-**Total logged time: 14 hours 14 minutes 3 seconds** — 6 hours estimated + 8 hours 14 minutes 3 seconds recorded.
+**Total logged time: 14 hours 26 minutes 32 seconds** — 6 hours estimated + 8 hours 26 minutes 32 seconds recorded.
 
 Track time spent across the backend, iOS app, infrastructure, testing, and planning.
 
@@ -10,9 +10,9 @@ Started September 26, 2026 · Time zone: **America/Los_Angeles**
 
 | Measure | Time |
 | --- | --- |
-| Recorded session time | 8 hours 14 minutes 3 seconds (Codex; overlapping sessions counted once) |
+| Recorded session time | 8 hours 26 minutes 32 seconds (Codex and Claude; overlapping sessions counted once) |
 | Estimated historical time | **6 hours** |
-| Total time spent | **14 hours 14 minutes 3 seconds (includes 6 hours estimated)** |
+| Total time spent | **14 hours 26 minutes 32 seconds (includes 6 hours estimated)** |
 
 Unrecorded time is **not zero**. Keep recorded durations and estimates separate; never present
 an incomplete recorded total as the full project effort. AI session time is elapsed work time,
@@ -167,6 +167,13 @@ an approximation supplied later. Contributor should identify who did the work, s
 | 2026-09-29-35 | September 29, 2026 | Codex | Commit remaining changes | Checked both repositories, reviewed 21 pending iOS files, checked whitespace and credential patterns, confirmed mirrored time log/roadmap; saving all remaining changes at user request | September 30 04:55:59–04:56:07 UTC; no excluded pauses; bookkeeping and commit operations excluded | 8 seconds | Recorded |
 
 | 2026-09-29-36 | September 29, 2026 | Codex | Admin layout deployment | Deployed latest working-tree layout, channel filters and keyboard navigation through Amplify job 7; 16 tests, production build and audit passed; live HTTPS index/JS/CSS bytes match tested artifact; authenticated browser acceptance not repeated | September 30 05:06:40–05:07:55 UTC; initial inspection before clock capture unrecorded; no excluded pauses; bookkeeping excluded | 75 seconds | Recorded segment |
+| 2026-09-30-01 | September 30, 2026 | Claude | Live translation | Added two-way interpreter: backend `/v1/translate/live` on the GPT-Live relay with language validation and no traveler/location context; iOS Translate sheet, language picker and tests; 276 backend tests (one skipped) and Ruff passed; iOS not compiled in this session | October 1 00:09–00:17:39 UTC; start recorded to the minute; no excluded pauses; bookkeeping excluded | 519 seconds | Recorded segment |
+
+| 2026-09-30-02 | September 30, 2026 | Codex | Live translation restoration and Local test setup | Restored backend interpreter, blocked travel-tool dispatch, tightened iOS language parsing; 276 backend tests (one skipped), Ruff, six simulator tests and signed Dev build/signature passed; Local simulator launched and backend ready; live speech acceptance pending | October 1 00:31:26–00:34:24 UTC; initial inspection before clock capture unrecorded; no excluded pauses; bookkeeping excluded | 178 seconds | Recorded segment |
+
+| 2026-09-30-03 | September 30, 2026 | Codex | Local iPhone connectivity | Corrected loopback-only backend startup to LAN listener at 192.168.0.156:8765; LAN health/readiness passed and unauthenticated account access rejected; iPhone retry pending | October 1 00:35:50–00:36:15 UTC; no excluded pauses; bookkeeping excluded | 25 seconds | Recorded segment |
+
+| 2026-09-30-04 | September 30, 2026 | Codex | Commit translation changes | Reviewed backend/iOS changes, whitespace, credential patterns and remote divergence; preparing requested commits/pushes using previously recorded validation | October 1 00:38:46–00:39:13 UTC; no excluded pauses; bookkeeping and commit/push operations excluded | 27 seconds | Recorded segment |
 
 ## Earlier work — user-supplied estimates
 

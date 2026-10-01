@@ -220,6 +220,8 @@ struct VoiceTranscript: Equatable {
 @MainActor @Observable
 final class LiveVoiceStore {
     let locationDisplay: CurrentLocationStore
+    /// Talk to Pip, or a two-way interpreter. Changes only while no session is active.
+    private(set) var mode: LiveVoiceMode
     private(set) var active = false
     private(set) var connected = false
     private(set) var conversationContext: ConversationContext?
@@ -242,9 +244,15 @@ final class LiveVoiceStore {
     private let client: APIClient
     private let authentication: any AccessTokenProviding
 
-    init(client: APIClient, authentication: any AccessTokenProviding, locationDisplay: CurrentLocationStore? = nil) {
+    init(client: APIClient, authentication: any AccessTokenProviding, locationDisplay: CurrentLocationStore? = nil, mode: LiveVoiceMode = .pip) {
         self.locationDisplay = locationDisplay ?? CurrentLocationStore()
         self.client = client; self.authentication = authentication
+        self.mode = mode
+    }
+
+    func setMode(_ mode: LiveVoiceMode) {
+        guard !active else { return }
+        self.mode = mode
     }
 
     func start() {
@@ -253,22 +261,30 @@ final class LiveVoiceStore {
         conversationContext = nil; capturingLocation = false
         microphoneReceiving = false; microphoneLevel = 0; lastInputAt = nil
         let ticket = UUID(); epoch = ticket
+        let mode = self.mode
         worker = Task { [weak self] in
             guard let self else { return }
             do {
                 let allowed = await AVAudioApplication.requestRecordPermission()
                 guard self.epoch == ticket, !Task.isCancelled else { return }
-                guard allowed else { throw APIClientError.invalidRequest("Allow microphone access in Settings to talk to Pip.") }
+                guard allowed else {
+                    throw APIClientError.invalidRequest(mode.translation == nil
+                        ? "Allow microphone access in Settings to talk to Pip."
+                        : "Allow microphone access in Settings to translate conversations.")
+                }
                 let token = try await authentication.validAccessToken(forceRefresh: false)
                 guard self.epoch == ticket, !Task.isCancelled else { return }
-                capturingLocation = true
-                let context: ConversationContext
-                if let recent = locationDisplay.context, recent.hasFreshLocation() { context = recent }
-                else { context = await ConversationContext.capture() }
-                guard self.epoch == ticket, !Task.isCancelled else { return }
-                conversationContext = context; capturingLocation = false
-                var request = try Self.request(baseURL: client.baseURL, token: token)
-                request.setValue(try JSONEncoder().encode(context).base64EncodedString(), forHTTPHeaderField: "X-Pip-Context")
+                var request = try Self.request(baseURL: client.baseURL, token: token, mode: mode)
+                if mode == .pip {
+                    // Interpreter sessions never send location or other traveler context.
+                    capturingLocation = true
+                    let context: ConversationContext
+                    if let recent = locationDisplay.context, recent.hasFreshLocation() { context = recent }
+                    else { context = await ConversationContext.capture() }
+                    guard self.epoch == ticket, !Task.isCancelled else { return }
+                    conversationContext = context; capturingLocation = false
+                    request.setValue(try JSONEncoder().encode(context).base64EncodedString(), forHTTPHeaderField: "X-Pip-Context")
+                }
                 let session = URLSession(configuration: .ephemeral, delegate: VoiceSessionDelegate(), delegateQueue: nil)
                 self.session = session
                 let socket = session.webSocketTask(with: request)
@@ -277,7 +293,7 @@ final class LiveVoiceStore {
                 watchdog = Task { [weak self] in
                     try? await Task.sleep(for: .seconds(30))
                     guard let self, !Task.isCancelled, self.epoch == ticket, !self.connected else { return }
-                    self.fail("Pip could not connect. Please try again.", ticket: ticket)
+                    self.fail(mode.translation == nil ? "Pip could not connect. Please try again." : "Translation could not connect. Please try again.", ticket: ticket)
                 }
                 while !Task.isCancelled {
                     let message = try await socket.receive()
@@ -320,7 +336,7 @@ final class LiveVoiceStore {
                             } catch { self?.fail("The voice connection was interrupted. Please try again.", ticket: ticket) }
                         }
                     case "navigation.open":
-                        scheduleNavigation(event, ticket: ticket)
+                        if mode == .pip { scheduleNavigation(event, ticket: ticket) }
                     case "session.output_audio.delta":
                         lastOutputAt = Date()
                         if let delta = event["delta"] as? String, let bytes = Data(base64Encoded: delta) { try audio?.play(bytes) }
@@ -338,7 +354,9 @@ final class LiveVoiceStore {
                 if case APIClientError.invalidRequest(let message) = error {
                     fail(message, ticket: ticket)
                 } else {
-                    fail("Live voice could not connect. Check your connection, then try again.", ticket: ticket)
+                    fail(mode.translation == nil
+                         ? "Live voice could not connect. Check your connection, then try again."
+                         : "Translation could not connect. Check your connection, then try again.", ticket: ticket)
                 }
             }
         }
@@ -399,6 +417,16 @@ final class LiveVoiceStore {
         store.active = true; store.connected = true; store.microphoneReceiving = true; store.microphoneLevel = 0.04
         return store
     }
+
+    static var translationPreview: LiveVoiceStore {
+        let store = LiveVoiceStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!), authentication: VoicePreviewTokens(),
+                                   mode: .translate(TranslationPair(mine: "en", theirs: "es")!))
+        store.transcript.append("Where is the closest pharmacy?", speaker: .user, startMilliseconds: 0, endMilliseconds: 2000)
+        store.transcript.append("¿Dónde está la farmacia más cercana?", speaker: .pip, startMilliseconds: 2500, endMilliseconds: 4500)
+        store.transcript.append("Está a dos calles, a la izquierda.", speaker: .user, startMilliseconds: 6000, endMilliseconds: 8000)
+        store.transcript.append("It’s two blocks away, on the left.", speaker: .pip, startMilliseconds: 8500, endMilliseconds: 10000)
+        return store
+    }
     #endif
 
     nonisolated static func level(_ pcm: Data) -> Double {
@@ -412,8 +440,8 @@ final class LiveVoiceStore {
         }
     }
 
-    static func request(baseURL: URL, token: String) throws -> URLRequest {
-        guard var components = URLComponents(url: baseURL.appending(path: "/v1/travel-chat/live"), resolvingAgainstBaseURL: false),
+    static func request(baseURL: URL, token: String, mode: LiveVoiceMode = .pip) throws -> URLRequest {
+        guard var components = URLComponents(url: baseURL.appending(path: mode.path), resolvingAgainstBaseURL: false),
               let scheme = components.scheme, ["https", "http"].contains(scheme), components.host != nil,
               components.user == nil, components.password == nil else { throw APIClientError.invalidRequest("Invalid backend URL.") }
         components.scheme = scheme == "https" ? "wss" : "ws"
@@ -421,7 +449,11 @@ final class LiveVoiceStore {
         guard let url = components.url else { throw APIClientError.invalidRequest("Invalid backend URL.") }
         var request = URLRequest(url: url, timeoutInterval: 30)
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.setValue("1", forHTTPHeaderField: "X-Pip-Navigation")
+        if let pair = mode.translation {
+            request.setValue(pair.headerValue, forHTTPHeaderField: "X-Pip-Translate")
+        } else {
+            request.setValue("1", forHTTPHeaderField: "X-Pip-Navigation")
+        }
         return request
     }
 
@@ -447,17 +479,22 @@ final class LiveVoiceStore {
 
 struct VoiceMessageBubble: View {
     let message: VoiceMessage
+    var translating = false
     private var isUser: Bool { message.speaker == .user }
+    private var label: LocalizedStringKey {
+        translating ? (isUser ? "Heard" : "Translation") : (isUser ? "You" : "Pip")
+    }
 
     var body: some View {
         HStack(alignment: .bottom, spacing: 0) {
             if isUser { Spacer(minLength: 40) }
             VStack(alignment: .leading, spacing: 5) {
-                Text(message.speaker.label)
+                Text(label)
                     .font(.caption.weight(.semibold))
                     .foregroundStyle(isUser ? Color.white.opacity(0.85) : Color.secondary)
                 Text(verbatim: message.text)
-                    .font(.body)
+                    // Larger translations are easier to show to the other person.
+                    .font(translating && !isUser ? Font.title3 : Font.body)
                     .fixedSize(horizontal: false, vertical: true)
                     .textSelection(.enabled)
             }
@@ -475,6 +512,7 @@ struct LiveVoiceView: View {
     @Bindable var store: LiveVoiceStore
     @Environment(\.scenePhase) private var scenePhase
     @State private var followsLatest = true
+    private var translating: Bool { store.mode.translation != nil }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -482,12 +520,18 @@ struct LiveVoiceView: View {
                 ScrollView {
                     LazyVStack(spacing: 14) {
                         if store.transcript.messages.isEmpty {
-                            ContentUnavailableView("Say hello to Pip", systemImage: "bubble.left.and.bubble.right",
-                                                   description: Text("Your conversation will appear here as you speak."))
-                                .padding(.top, 32)
+                            if translating {
+                                ContentUnavailableView("Translate a conversation", systemImage: "translate",
+                                                       description: Text("Start translation, then take turns speaking. Pip says each sentence in the other language."))
+                                    .padding(.top, 32)
+                            } else {
+                                ContentUnavailableView("Say hello to Pip", systemImage: "bubble.left.and.bubble.right",
+                                                       description: Text("Your conversation will appear here as you speak."))
+                                    .padding(.top, 32)
+                            }
                         }
                         ForEach(store.transcript.messages) { message in
-                            VoiceMessageBubble(message: message).id(message.id)
+                            VoiceMessageBubble(message: message, translating: translating).id(message.id)
                         }
                         Color.clear.frame(height: 1).id("latestVoiceMessage")
                     }
@@ -538,19 +582,19 @@ struct LiveVoiceView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             if store.active {
-                Label(store.connected ? (store.microphoneReceiving ? "Listening — you can speak naturally" : "Starting microphone…") : "Connecting…", systemImage: "waveform")
+                Label(store.connected ? (store.microphoneReceiving ? (translating ? "Translating — take turns speaking" : "Listening — you can speak naturally") : "Starting microphone…") : "Connecting…", systemImage: "waveform")
                     .font(.subheadline).foregroundStyle(.secondary)
                 if store.microphoneReceiving {
                     ProgressView(value: min(1, store.microphoneLevel * 5))
                         .accessibilityLabel("Microphone input level")
                 }
                 Button(role: .destructive) { store.stop() } label: {
-                    Label("End voice conversation", systemImage: "phone.down.fill")
+                    Label(translating ? "Stop translating" : "End voice conversation", systemImage: translating ? "stop.fill" : "phone.down.fill")
                         .frame(maxWidth: .infinity)
                 }.buttonStyle(.borderedProminent).tint(.red).controlSize(.large)
             } else {
                 Button { store.start() } label: {
-                    Label("Start voice conversation", systemImage: "mic.fill")
+                    Label(translating ? "Start translation" : "Start voice conversation", systemImage: translating ? "translate" : "mic.fill")
                         .frame(maxWidth: .infinity)
                 }.buttonStyle(.borderedProminent).controlSize(.large)
             }
