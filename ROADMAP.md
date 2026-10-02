@@ -173,3 +173,5 @@ Shared conversation controls (October 1): Ask Pip offers Continue conversation/N
 Ask Pip text-only (October 1): voice entry and voice-launch handling removed from typed chat; home Talk to Pip remains a separate voice page using shared history. Updated device install pending.
 
 Dev backend rollout (October 1): `3b275fd` deployed via run 36939509105; ECS 37 completed, CloudFormation UPDATE_COMPLETE, one running/zero pending; public health/readiness 200 and account/chat unauthenticated 401. Ballad, selected voice language and shared conversation history deployed. Prod unchanged; app installation and live/device acceptance pending.
+
+Tab navigation redesign (October 1): the signed-in app now uses a tab bar — Trips, Pip, Translate, Profile — instead of one home list; see [navigation](docs/navigation.md). Organizer saves, retries, conflict review, chat/voice history and the API contract are unchanged. Source change only on branch `ui-redesign-tabs`: compile, simulator tests, signed build and device acceptance are all pending.

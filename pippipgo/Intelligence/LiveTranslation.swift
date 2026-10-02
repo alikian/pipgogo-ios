@@ -85,9 +85,9 @@ enum LiveVoiceMode: Equatable, Sendable {
     }
 }
 
-struct TranslationSheet: View {
+/// Leaving this tab stops the interpreter and clears its captions (see LiveVoiceView.onDisappear).
+struct TranslateTab: View {
     let store: LiveVoiceStore
-    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
@@ -95,9 +95,6 @@ struct TranslationSheet: View {
                 .safeAreaInset(edge: .top, spacing: 0) { TranslationLanguageBar(store: store) }
                 .navigationTitle("Translate")
                 .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    Button("Done") { store.stop(clearCaptions: true); dismiss() }
-                }
         }
     }
 }
@@ -164,6 +161,6 @@ struct TranslationLanguageBar: View {
 
 #if DEBUG
 #Preview("Translation") {
-    TranslationSheet(store: .translationPreview)
+    TranslateTab(store: .translationPreview)
 }
 #endif

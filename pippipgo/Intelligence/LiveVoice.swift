@@ -613,43 +613,36 @@ struct LiveVoiceView: View {
     }
 }
 
-struct VoiceConversationSheet: View {
+/// Talk to Pip page inside the Pip tab. The parent supplies the navigation bar.
+struct VoiceConversationView: View {
     let store: LiveVoiceStore
-    var startRequest: UUID? = nil
+    /// A pending Siri/Shortcuts launch; consumed once so returning to this page never restarts a call.
+    @Binding var startRequest: UUID?
     var newTalk: (() async -> Bool)? = nil
     var canCreateTalk = true
     @State private var creatingTalk = false
-    @State private var handledRequest: UUID?
     @Environment(\.scenePhase) private var scenePhase
-    @Environment(\.dismiss) private var dismiss
     var body: some View {
-        NavigationStack {
-            LiveVoiceView(store: store)
-                .disabled(creatingTalk)
-                .interactiveDismissDisabled(creatingTalk)
-                .onChange(of: scenePhase, initial: true) { _, _ in startRequestedConversation() }
-                .onChange(of: startRequest) { _, _ in startRequestedConversation() }
-                .navigationTitle("Talk to Pip")
-                .navigationBarTitleDisplayMode(.inline)
-                .toolbar {
-                    if let newTalk {
-                        Button("New talk", systemImage: "square.and.pencil") {
-                            creatingTalk = true
-                            Task {
-                                if await newTalk(), scenePhase == .active { store.start() }
-                                creatingTalk = false
-                            }
+        LiveVoiceView(store: store)
+            .disabled(creatingTalk)
+            .onChange(of: scenePhase, initial: true) { _, _ in startRequestedConversation() }
+            .onChange(of: startRequest) { _, _ in startRequestedConversation() }
+            .toolbar {
+                if let newTalk {
+                    Button("New talk", systemImage: "square.and.pencil") {
+                        creatingTalk = true
+                        Task {
+                            if await newTalk(), scenePhase == .active { store.start() }
+                            creatingTalk = false
                         }
-                        .disabled(store.active || creatingTalk || !canCreateTalk)
                     }
-                    Button("Done") { store.stop(clearCaptions: true); dismiss() }
-                        .disabled(creatingTalk)
+                    .disabled(store.active || creatingTalk || !canCreateTalk)
                 }
-        }
+            }
     }
     private func startRequestedConversation() {
-        guard scenePhase == .active, let startRequest, handledRequest != startRequest else { return }
-        handledRequest = startRequest
+        guard scenePhase == .active, startRequest != nil else { return }
+        startRequest = nil
         store.start() // Already-active calls are reused by the store.
     }
 }
@@ -660,6 +653,10 @@ private struct VoicePreviewTokens: AccessTokenProviding {
 }
 
 #Preview("Voice conversation") {
-    VoiceConversationSheet(store: .preview)
+    NavigationStack {
+        VoiceConversationView(store: .preview, startRequest: .constant(nil))
+            .navigationTitle("Talk to Pip")
+            .navigationBarTitleDisplayMode(.inline)
+    }
 }
 #endif
