@@ -176,6 +176,21 @@ struct APIClientTests {
         #expect(transcript.messages.map(\.text) == ["Hello hello", "Hi"])
     }
 
+    @Test func resumedTalkStreamsBelowHistoryWithoutMergingOldBubbles() {
+        var transcript = VoiceTranscript()
+        transcript.appendHistory("Old question", speaker: .user)
+        transcript.appendHistory("Old answer", speaker: .pip)
+        let oldID = transcript.messages.last?.id
+        transcript.append("New reply", speaker: .pip, startMilliseconds: 2000, endMilliseconds: 2500)
+        transcript.append("New question", speaker: .user, startMilliseconds: 1000, endMilliseconds: 1500)
+        transcript.append(" continues", speaker: .pip, startMilliseconds: 2500, endMilliseconds: 3000)
+        #expect(transcript.messages.map(\.text) == ["Old question", "Old answer", "New question", "New reply continues"])
+        #expect(transcript.messages[1].id == oldID)
+        transcript.clear()
+        transcript.append("Fresh talk", speaker: .pip, startMilliseconds: nil, endMilliseconds: nil)
+        #expect(transcript.messages.map(\.text) == ["Fresh talk"])
+    }
+
     @Test func voiceBubblesBoundSessionMemory() {
         var transcript = VoiceTranscript()
         for index in 0..<600 {
@@ -682,8 +697,16 @@ struct APIClientTests {
         #expect(values["code_challenge_method"] == "S256")
         #expect(values["state"] == "random-state")
         #expect(values["redirect_uri"] == "pippipgo://auth/callback")
-        #expect(values["identity_provider"] == "Google")
+        #expect(values["identity_provider"] == nil)
         #expect(values["prompt"] == "select_account")
+    }
+
+    @Test func productionStillUsesGoogleUntilSignupRollout() throws {
+        var prod = configuration
+        prod.environment = .prod
+        let url = try CognitoClient(configuration: prod).authorizationURL(state: "state", challenge: "challenge")
+        let items = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!
+        #expect(items.first { $0.name == "identity_provider" }?.value == "Google")
     }
 
     @Test func exchangesCodeWithVerifierAndEncodedPlus() async throws {

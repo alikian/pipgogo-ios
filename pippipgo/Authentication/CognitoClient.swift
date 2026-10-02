@@ -5,12 +5,16 @@ struct CognitoClient: Sendable {
     var urlSession: URLSession = .shared
 
     func authorizationURL(state: String, challenge: String) throws -> URL {
-        try endpoint("/oauth2/authorize", queryItems: [
+        var queryItems: [URLQueryItem] = [
             .init(name: "client_id", value: configuration.clientID), .init(name: "response_type", value: "code"),
             .init(name: "scope", value: "openid email profile"), .init(name: "redirect_uri", value: configuration.callbackURL.absoluteString),
-            .init(name: "identity_provider", value: "Google"), .init(name: "prompt", value: "select_account"), .init(name: "state", value: state),
+            .init(name: "prompt", value: "select_account"), .init(name: "state", value: state),
             .init(name: "code_challenge_method", value: "S256"), .init(name: "code_challenge", value: challenge)
-        ])
+        ]
+        if configuration.environment == .prod {
+            queryItems.append(.init(name: "identity_provider", value: "Google"))
+        }
+        return try endpoint("/oauth2/authorize", queryItems: queryItems)
     }
 
     func tokens(code: String, verifier: String) async throws -> TokenSet {

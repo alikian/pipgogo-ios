@@ -35,7 +35,7 @@ struct WelcomeView: View {
                     HStack(spacing: 12) {
                         if isBusy { ProgressView().tint(.white) }
                         Image(systemName: "person.crop.circle.badge.checkmark")
-                        Text(isBusy ? "Connecting…" : "Continue with Google")
+                        Text(LocalizedStringKey(isBusy ? "Connecting…" : (AppConfiguration.live.environment == .prod ? "Continue with Google" : "Sign in or create account")))
                             .fontWeight(.semibold)
                     }
                     .frame(maxWidth: .infinity)
@@ -44,7 +44,7 @@ struct WelcomeView: View {
                 .buttonStyle(.borderedProminent)
                 .tint(.indigo)
                 .disabled(isBusy)
-                Text("Sign-in is securely handled by Google and Amazon Cognito.")
+                Text(LocalizedStringKey(AppConfiguration.live.environment == .prod ? "Sign-in is securely handled by Google and Amazon Cognito." : "Use Google or email and password. When creating an account, enter your email address as both username and email."))
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

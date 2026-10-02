@@ -179,3 +179,5 @@ Tab navigation redesign (October 1): the signed-in app now uses a tab bar — Tr
 Tab redesign device acceptance (October 1): user confirmed testing on an iPhone and that the app is working fine. Overall UI acceptance recorded; device details and individual scenario coverage were not supplied. Automated redesign checks remain unrecorded.
 
 Default-branch merge (October 1): user-tested iOS UI redesign and multilingual/shared-conversation changes merged into `develop` and pushed as `0efb8fb`; checkout now uses `develop`. Unrelated local Xcode build/cloud edits preserved.
+
+Live-caption repair (October 1): keep restored history before current session captions so streamed speech stays visible at the bottom; prevent live/history bubble merging. 92 simulator tests and signed Dev build/signature passed; updated device installation and live-caption acceptance pending.

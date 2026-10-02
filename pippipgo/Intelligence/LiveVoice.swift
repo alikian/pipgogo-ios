@@ -176,6 +176,16 @@ struct VoiceMessage: Identifiable, Equatable {
 struct VoiceTranscript: Equatable {
     private(set) var messages: [VoiceMessage] = []
     private(set) var revision = 0
+    private var historyIDs: Set<UUID> = []
+
+    mutating func appendHistory(_ text: String, speaker: VoiceSpeaker) {
+        guard !text.isEmpty else { return }
+        let message = VoiceMessage(speaker: speaker, fragments: [VoiceTranscriptFragment(text: String(text.suffix(4000)), startMilliseconds: nil, endMilliseconds: nil)])
+        messages.append(message)
+        historyIDs.insert(message.id)
+        trim()
+        revision += 1
+    }
 
     mutating func append(_ text: String, speaker: VoiceSpeaker, startMilliseconds: Double?, endMilliseconds: Double?) {
         guard !text.isEmpty else { return }
@@ -186,7 +196,7 @@ struct VoiceTranscript: Equatable {
         let fragment = VoiceTranscriptFragment(text: String(text.suffix(4000)), startMilliseconds: start, endMilliseconds: end)
         let matching = messages.indices.reversed().first { index in
             let message = messages[index]
-            guard message.speaker == speaker else { return false }
+            guard !historyIDs.contains(message.id), message.speaker == speaker else { return false }
             if let start, let end, let previousStart = message.startMilliseconds, let previousEnd = message.endMilliseconds {
                 // Use speech timing rather than packet arrival time. Short acknowledgments
                 // from the other speaker must not break an ongoing utterance.
@@ -198,12 +208,17 @@ struct VoiceTranscript: Equatable {
             messages[matching].fragments.append(fragment)
         } else {
             let message = VoiceMessage(speaker: speaker, fragments: [fragment])
-            if let start, let index = messages.firstIndex(where: { ($0.startMilliseconds ?? .infinity) > start }) {
+            if let start, let index = messages.firstIndex(where: { !historyIDs.contains($0.id) && ($0.startMilliseconds ?? .infinity) > start }) {
                 messages.insert(message, at: index)
             } else {
                 messages.append(message)
             }
         }
+        trim()
+        revision += 1
+    }
+
+    private mutating func trim() {
         while messages.count > 64 { messages.removeFirst() }
         // Keep only recent captions, with the same 8,000-character total as before.
         while messages.reduce(0, { $0 + $1.text.count }) > 8000
@@ -211,10 +226,10 @@ struct VoiceTranscript: Equatable {
             messages[0].fragments.removeFirst()
             if messages[0].fragments.isEmpty { messages.removeFirst() }
         }
-        revision += 1
+        historyIDs.formIntersection(Set(messages.map(\.id)))
     }
 
-    mutating func clear() { messages.removeAll(); revision += 1 }
+    mutating func clear() { messages.removeAll(); historyIDs.removeAll(); revision += 1 }
 }
 
 @MainActor @Observable
@@ -310,7 +325,7 @@ final class LiveVoiceStore {
                         if mode == .pip, let history = event["messages"] as? [[String: Any]] {
                             for message in history {
                                 if let text = message["text"] as? String {
-                                    transcript.append(text, speaker: message["role"] as? String == "user" ? .user : .pip, startMilliseconds: nil, endMilliseconds: nil)
+                                    transcript.appendHistory(text, speaker: message["role"] as? String == "user" ? .user : .pip)
                                 }
                             }
                         }
