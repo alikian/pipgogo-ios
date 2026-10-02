@@ -17,7 +17,7 @@ final class VoiceAudioSession: @unchecked Sendable {
 
     init(activate: @escaping @Sendable () throws -> Void = {
         let session = AVAudioSession.sharedInstance()
-        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetooth])
+        try session.setCategory(.playAndRecord, mode: .voiceChat, options: [.defaultToSpeaker, .allowBluetoothHFP])
         try session.setActive(true)
     }, deactivate: @escaping @Sendable () -> Void = {
         try? AVAudioSession.sharedInstance().setActive(false, options: .notifyOthersOnDeactivation)
