@@ -135,105 +135,422 @@ final class OrganizerStore {
     }
 }
 
+enum AppTab: String, Hashable { case trips, pip, translate, profile }
+enum PipMode: String, Hashable { case chat, voice }
+
+/// Signed-in shell: one tab per top-level destination. Editors are modal tasks owned here so
+/// every tab presents the same sheet and Siri voice launches know when a sheet is open.
 struct TravelOrganizerView: View {
     @Bindable var store: OrganizerStore
     let chat: TravelChatStore
-    @State private var showChat = false
-    @State private var showVoice = false
-    @State private var showTranslate = false
-    @State private var voiceStartRequest: UUID?
-    @Environment(\.scenePhase) private var scenePhase
     var profilePictureURL: URL? = nil
     let signOut: () -> Void
+    @SceneStorage("pip.selectedTab") private var tab = AppTab.trips
+    @State private var pipMode = PipMode.chat
     @State private var editor: OrganizerEditorKind?
-    private var companionSummary: String {
-        let companions = store.data.companions
-        guard !companions.isEmpty else { return "Add travel companions" }
-        let names = companions.prefix(3).map(\.name).joined(separator: ", ")
-        return companions.count > 3 ? "\(names) +\(companions.count - 3)" : names
-    }
+    @State private var reviewingTrip: OrganizerTrip?
+    @State private var voiceStartRequest: UUID?
+    @Environment(\.scenePhase) private var scenePhase
+
     var body: some View {
-        NavigationStack {
-            List {
-                if let error = store.error {
-                    Section { Text(error).foregroundStyle(.red)
-                        if !store.loaded { Button("Try again") { Task { await store.load() } } }
-                    }
-                }
-                if store.busy { ProgressView() }
-                if store.loaded {
-                    Section("My Profile") {
-                        Button { editor = .profile } label: {
-                            HStack(spacing: 12) {
-                                AsyncImage(url: profilePictureURL) { phase in
-                                    if let image = phase.image { image.resizable().scaledToFill() }
-                                    else { Image(systemName: "person.crop.circle.fill").resizable().scaledToFit().foregroundStyle(.secondary) }
-                                }
-                                .frame(width: 52, height: 52)
-                                .clipShape(Circle())
-                                .accessibilityHidden(true)
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(store.data.profile?.name ?? "Add your profile")
-                                    Label(companionSummary, systemImage: "person.2")
-                                        .font(.caption).foregroundStyle(.secondary).lineLimit(1)
-                                }
-                                Spacer()
-                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                    Section {
-                        ConversationLocationView(store: chat.locationDisplay)
-                        .buttonStyle(.borderless)
-                    }
-                    Section {
-                        Button("Ask Pip", systemImage: "bubble.left.and.bubble.right") { showChat = true }
-                        Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
-                            .disabled(chat.busy || chat.pending != nil || chat.translator.active)
-                        Button("Translate", systemImage: "translate") { showTranslate = true }
-                            .disabled(chat.voice.active)
-                    }
-                    Section("Trips") {
-                        ForEach(store.data.trips) { trip in
-                            Button { editor = .trip(trip.id) } label: {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(trip.name).font(.headline)
-                                    Text(trip.stops.isEmpty ? "Add destinations when you're ready" : trip.stops.map(\.destination).joined(separator: " → "))
-                                        .font(.subheadline).foregroundStyle(.secondary)
-                                }
-                            }
-                        }
-                        Button("Add trip", systemImage: "plus") { editor = .trip(UUID()) }
-                    }
-                }
-            }
-            .refreshable { await store.load() }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) { Text("PipPipGo").font(.headline) }
-                ToolbarItem(placement: .topBarTrailing) { Button("Sign out", action: signOut) }
-            }
-            .task { if !store.loaded { await store.load() } }
-            .sheet(item: $editor) { kind in OrganizerEditor(store: store, kind: kind) }
-            .sheet(isPresented: $showChat) { TravelChatView(store: chat, organizer: store, name: store.data.profile?.name) }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: chat.voice, startRequest: voiceStartRequest) }
-            .sheet(isPresented: $showTranslate) { TranslationSheet(store: chat.translator) }
-            .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
-            .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
-            .onChange(of: showChat) { _, _ in handleVoiceLaunch() }
-            .onChange(of: showTranslate) { _, _ in handleVoiceLaunch() }
-            .onChange(of: editor?.id) { _, _ in handleVoiceLaunch() }
-            .onChange(of: chat.busy) { _, _ in handleVoiceLaunch() }
-            .onChange(of: chat.pending == nil) { _, _ in handleVoiceLaunch() }
+        TabView(selection: $tab) {
+            TripsTab(store: store, editor: $editor, askPip: { pipMode = .chat; tab = .pip })
+                .tabItem { Label("Trips", systemImage: "suitcase") }
+                .tag(AppTab.trips)
+            PipTab(chat: chat, organizer: store, mode: $pipMode, reviewingTrip: $reviewingTrip, voiceStartRequest: $voiceStartRequest)
+                .tabItem { Label("Pip", systemImage: "bubble.left.and.bubble.right") }
+                .tag(AppTab.pip)
+            TranslateTab(store: chat.translator)
+                .tabItem { Label("Translate", systemImage: "translate") }
+                .tag(AppTab.translate)
+            ProfileTab(store: store, location: chat.locationDisplay, profilePictureURL: profilePictureURL, editor: $editor, signOut: signOut)
+                .tabItem { Label("Profile", systemImage: "person.crop.circle") }
+                .tag(AppTab.profile)
+        }
+        .task { if !store.loaded { await store.load() } }
+        .sheet(item: $editor) { kind in OrganizerEditor(store: store, kind: kind) }
+        .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
+        .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
+        .onChange(of: editor?.id) { _, _ in handleVoiceLaunch() }
+        .onChange(of: reviewingTrip?.id) { _, _ in handleVoiceLaunch() }
+        .onChange(of: chat.busy) { _, _ in handleVoiceLaunch() }
+        .onChange(of: chat.pending == nil) { _, _ in handleVoiceLaunch() }
+        .onChange(of: chat.translator.active) { _, _ in handleVoiceLaunch() }
+        // The microphone is only ever live while the Talk to Pip page is on screen.
+        .onChange(of: chat.voice.active) { _, active in
+            if active && !(tab == .pip && pipMode == .voice) { chat.voice.stop(clearCaptions: true) }
         }
     }
     private func handleVoiceLaunch() {
         guard let request = TalkToPipLaunch.shared.take(
             isActive: scenePhase == .active,
-            blocked: showChat || showTranslate || editor != nil || chat.busy || chat.pending != nil
+            blocked: editor != nil || reviewingTrip != nil || chat.busy || chat.pending != nil || chat.translator.active
         ) else { return }
+        pipMode = .voice
+        tab = .pip
         voiceStartRequest = request
-        showVoice = true
+    }
+}
+
+// MARK: - Trips
+
+enum OrganizerDay {
+    private static let formatter: DateFormatter = {
+        let formatter = DateFormatter(); formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.calendar = Calendar(identifier: .gregorian); formatter.dateFormat = "yyyy-MM-dd"; return formatter
+    }()
+    static func date(_ value: String?) -> Date? {
+        guard let value else { return nil }
+        return formatter.date(from: value)
+    }
+}
+extension OrganizerTrip {
+    /// Earliest and latest saved day across all stops; nil until any date is entered.
+    var days: (start: Date, end: Date)? {
+        let all = stops.flatMap { [$0.arrival, $0.departure, $0.check_in, $0.check_out] }.compactMap { OrganizerDay.date($0) }
+        guard let start = all.min(), let end = all.max() else { return nil }
+        return (start, end)
+    }
+}
+/// Uses the environment locale, so dates follow the selected app language.
+struct OrganizerDateRange: View {
+    let start: Date?
+    let end: Date?
+    private static let style = Date.FormatStyle().month(.abbreviated).day()
+    var body: some View {
+        HStack(spacing: 4) {
+            if let start { Text(start, format: Self.style) }
+            if let start, let end, start != end { Text(verbatim: "–") }
+            if let end, end != start { Text(end, format: Self.style) }
+        }
+    }
+}
+
+struct TripsTab: View {
+    @Environment(\.locale) private var locale
+    @Bindable var store: OrganizerStore
+    @Binding var editor: OrganizerEditorKind?
+    let askPip: () -> Void
+
+    var body: some View {
+        NavigationStack {
+            List {
+                if let error = store.error {
+                    Section {
+                        Text(error).foregroundStyle(.red)
+                        if !store.loaded { Button("Try again") { Task { await store.load() } } }
+                    }
+                }
+                if store.loaded {
+                    ForEach(store.data.trips) { trip in
+                        NavigationLink(value: trip.id) { TripRow(trip: trip) }
+                    }
+                }
+            }
+            // List uses cached UIKit cells. Recreate its presentation on locale changes
+            // so an RTL -> LTR switch cannot retain mirrored row transforms.
+            .id(locale.identifier)
+            .overlay {
+                if !store.loaded {
+                    if store.busy { ProgressView() }
+                } else if store.data.trips.isEmpty && store.error == nil {
+                    ContentUnavailableView {
+                        Label("No trips yet", systemImage: "suitcase")
+                    } description: {
+                        Text("Add a trip yourself, or ask Pip to plan one with you.")
+                    } actions: {
+                        Button("Add trip") { editor = .trip(UUID()) }.buttonStyle(.borderedProminent)
+                        Button("Ask Pip", action: askPip)
+                    }
+                }
+            }
+            .refreshable { await store.load() }
+            .navigationTitle("Trips")
+            .navigationDestination(for: UUID.self) { id in
+                TripDetailView(store: store, tripID: id, editor: $editor)
+            }
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button("Add trip", systemImage: "plus") { editor = .trip(UUID()) }
+                        .disabled(!store.loaded)
+                }
+            }
+        }
+    }
+}
+
+struct TripRow: View {
+    let trip: OrganizerTrip
+    var body: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text(verbatim: trip.name).font(.headline)
+            Group {
+                if trip.stops.isEmpty { Text("Add destinations when you're ready") }
+                else { Text(verbatim: trip.stops.map(\.destination).joined(separator: " → ")) }
+            }
+            .font(.subheadline).foregroundStyle(.secondary).lineLimit(2)
+            if let days = trip.days {
+                OrganizerDateRange(start: days.start, end: days.end)
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+/// Read-only overview. Editing stays a modal draft with explicit Save, so versioned saves,
+/// retries and conflict review are unchanged.
+struct TripDetailView: View {
+    @Environment(\.locale) private var locale
+    @Environment(\.dismiss) private var dismiss
+    @Bindable var store: OrganizerStore
+    let tripID: UUID
+    @Binding var editor: OrganizerEditorKind?
+    private var trip: OrganizerTrip? { store.data.trips.first { $0.id == tripID } }
+
+    var body: some View {
+        List {
+            if let trip {
+                Section("Destinations · in travel order") {
+                    if trip.stops.isEmpty {
+                        Text("Add destinations when you're ready").foregroundStyle(.secondary)
+                    }
+                    ForEach(Array(trip.stops.enumerated()), id: \.element.id) { index, stop in
+                        TripStopSummary(stop: stop, previous: index > 0 ? trip.stops[index - 1].destination : nil)
+                    }
+                }
+                travelers(trip)
+                if let budget = trip.budget {
+                    Section("Budget & costs") {
+                        if let total = OrganizerBudget.amount(budget.total) {
+                            LabeledContent("Total budget", value: budget.formatted(total))
+                        }
+                        LabeledContent("Estimated total", value: budget.formatted(budget.estimatedTotal))
+                        LabeledContent("Actual spent", value: budget.formatted(budget.actualTotal))
+                        if let remaining = budget.remaining {
+                            LabeledContent(remaining < 0 ? "Over budget" : "Remaining budget", value: budget.formatted(abs(remaining)))
+                                .foregroundStyle(remaining < 0 ? Color.red : Color.primary)
+                        }
+                    }
+                }
+                if !trip.notes.isEmpty {
+                    Section("Trip notes") { Text(verbatim: trip.notes).textSelection(.enabled) }
+                }
+            }
+        }
+        .id(locale.identifier)
+        .navigationTitle(trip?.name ?? "")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("Edit") { editor = .trip(tripID) }.disabled(trip == nil)
+            }
+        }
+        // Deleted here or on another device: return to the list instead of showing an empty page.
+        .onChange(of: trip == nil) { _, missing in if missing { dismiss() } }
+    }
+
+    @ViewBuilder private func travelers(_ trip: OrganizerTrip) -> some View {
+        let companions = store.data.companions.filter { trip.companion_ids.contains($0.id) }
+        if trip.party != nil || trip.include_me || !companions.isEmpty {
+            Section("Who is traveling?") {
+                if let party = trip.party {
+                    Text("\(party.adults) adults · \(party.children) children · \(party.total) travelers total")
+                }
+                if trip.include_me {
+                    Label { Text("Me") } icon: { Image(systemName: "person.fill") }
+                }
+                ForEach(companions) { companion in
+                    Label { Text(verbatim: companion.name) } icon: { Image(systemName: "person") }
+                }
+            }
+        }
+    }
+}
+
+struct TripStopSummary: View {
+    let stop: OrganizerStop
+    let previous: String?
+    private var transport: (name: String, icon: String)? {
+        switch stop.transport {
+        case "plane": return ("Plane", "airplane")
+        case "train": return ("Train", "tram")
+        case "car": return ("Car", "car")
+        default: return nil
+        }
+    }
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            HStack(alignment: .firstTextBaseline) {
+                Group {
+                    if stop.destination.isEmpty { Text("New destination") }
+                    else { Text(verbatim: stop.destination) }
+                }
+                .font(.headline)
+                Spacer()
+                OrganizerDateRange(start: OrganizerDay.date(stop.arrival), end: OrganizerDay.date(stop.departure))
+                    .font(.subheadline).foregroundStyle(.secondary)
+            }
+            if transport != nil || !stop.transport_details.isEmpty {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        if let transport { Text(LocalizedStringKey(transport.name)) }
+                        if !stop.transport_details.isEmpty {
+                            Text(verbatim: stop.transport_details).foregroundStyle(.secondary)
+                        }
+                    }
+                } icon: {
+                    Image(systemName: transport?.icon ?? "arrow.triangle.turn.up.right.diamond")
+                }
+                .font(.subheadline)
+            }
+            if !stop.hotel.isEmpty {
+                Label {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(verbatim: stop.hotel)
+                        if !stop.hotel_address.isEmpty {
+                            Text(verbatim: stop.hotel_address).foregroundStyle(.secondary)
+                        }
+                        OrganizerDateRange(start: OrganizerDay.date(stop.check_in), end: OrganizerDay.date(stop.check_out))
+                            .foregroundStyle(.secondary)
+                    }
+                } icon: {
+                    Image(systemName: "bed.double")
+                }
+                .font(.subheadline)
+            }
+        }
+        .padding(.vertical, 2)
+        .accessibilityElement(children: .combine)
+    }
+}
+
+// MARK: - Pip
+
+/// Typed chat and live voice share one conversation but stay separate pages.
+struct PipTab: View {
+    @Bindable var chat: TravelChatStore
+    @Bindable var organizer: OrganizerStore
+    @Binding var mode: PipMode
+    @Binding var reviewingTrip: OrganizerTrip?
+    @Binding var voiceStartRequest: UUID?
+    private var voiceUnavailable: Bool {
+        !chat.voice.active && (chat.busy || chat.pending != nil || chat.translator.active)
+    }
+
+    var body: some View {
+        NavigationStack {
+            Group {
+                switch mode {
+                case .chat:
+                    TravelChatView(store: chat, organizer: organizer, reviewingTrip: $reviewingTrip, name: organizer.data.profile?.name)
+                case .voice:
+                    VoiceConversationView(store: chat.voice, startRequest: $voiceStartRequest, newTalk: {
+                        await chat.load()
+                        let started = await chat.newConversation()
+                        if !started { chat.voice.error = chat.error }
+                        return started
+                    }, canCreateTalk: !chat.busy && chat.pending == nil && !chat.translator.active && chat.composer.isEmpty)
+                    .disabled(voiceUnavailable)
+                }
+            }
+            .safeAreaInset(edge: .top, spacing: 0) {
+                Picker("Pip", selection: $mode) {
+                    Text("Ask Pip").tag(PipMode.chat)
+                    Text("Talk to Pip").tag(PipMode.voice)
+                }
+                .pickerStyle(.segmented)
+                // Leaving the voice page ends the call, so require an explicit End first.
+                .disabled(chat.voice.active || chat.busy)
+                .padding(.horizontal, 16).padding(.vertical, 8)
+                .background(.bar)
+            }
+            .navigationTitle("Pip")
+            .navigationBarTitleDisplayMode(.inline)
+        }
+    }
+}
+
+// MARK: - Profile
+
+struct ProfileTab: View {
+    @Environment(\.locale) private var locale
+    @Bindable var store: OrganizerStore
+    let location: CurrentLocationStore
+    var profilePictureURL: URL? = nil
+    @Binding var editor: OrganizerEditorKind?
+    let signOut: () -> Void
+    @State private var confirmSignOut = false
+
+    var body: some View {
+        NavigationStack {
+            List {
+                if let error = store.error, !store.loaded {
+                    Section {
+                        Text(error).foregroundStyle(.red)
+                        Button("Try again") { Task { await store.load() } }
+                    }
+                }
+                if store.loaded {
+                    Section {
+                        Button { editor = .profile } label: {
+                            HStack(spacing: 14) {
+                                AsyncImage(url: profilePictureURL) { phase in
+                                    if let image = phase.image { image.resizable().scaledToFill() }
+                                    else { Image(systemName: "person.crop.circle.fill").resizable().scaledToFit().foregroundStyle(.secondary) }
+                                }
+                                .frame(width: 60, height: 60)
+                                .clipShape(Circle())
+                                .accessibilityHidden(true)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Group {
+                                        if let name = store.data.profile?.name, !name.isEmpty { Text(verbatim: name) }
+                                        else { Text("Add your profile") }
+                                    }
+                                    .font(.title3.weight(.semibold)).foregroundStyle(.primary)
+                                    if let hometown = store.data.profile?.hometown, !hometown.isEmpty {
+                                        Text(verbatim: hometown).font(.subheadline).foregroundStyle(.secondary)
+                                    }
+                                }
+                                Spacer()
+                                Image(systemName: "chevron.forward").font(.caption).foregroundStyle(.tertiary)
+                            }
+                        }
+                    }
+                    Section("Travel companions") {
+                        ForEach(store.data.companions) { companion in
+                            Button { editor = .person(companion.id) } label: {
+                                HStack {
+                                    Text(verbatim: companion.name).foregroundStyle(.primary)
+                                    Spacer()
+                                    Image(systemName: "chevron.forward").font(.caption).foregroundStyle(.tertiary)
+                                }
+                            }
+                        }
+                        Button("Add companion", systemImage: "person.badge.plus") { editor = .person(UUID()) }
+                    }
+                } else if store.busy {
+                    ProgressView()
+                }
+                Section {
+                    ConversationLocationView(store: location).buttonStyle(.borderless)
+                }
+                Section {
+                    Button("Sign out", role: .destructive) { confirmSignOut = true }
+                }
+            }
+            .id(locale.identifier)
+            .refreshable { await store.load() }
+            .navigationTitle("Profile")
+            .toolbar {
+                // Stays outside the list so switching language never rebuilds its own menu.
+                ToolbarItem(placement: .topBarTrailing) { AppLanguageMenu() }
+            }
+            .confirmationDialog("Sign out of PipPipGo?", isPresented: $confirmSignOut, titleVisibility: .visible) {
+                Button("Sign out", role: .destructive, action: signOut)
+            }
+        }
     }
 }
 enum OrganizerEditorKind: Identifiable {
@@ -296,7 +613,7 @@ struct OrganizerEditor: View {
             .navigationDestination(item: $editingStop) { stop in
                 OrganizerStopEditor(stop: $trip.stop(stop), previous: previousStop(stop.id))
             }
-            .navigationTitle(isTrip ? "Trip" : isProfile ? "My Profile" : "Companion")
+            .navigationTitle(LocalizedStringKey(isTrip ? "Trip" : isProfile ? "My Profile" : "Companion"))
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.disabled(store.pending != nil || store.busy) }
                 ToolbarItem(placement: .confirmationAction) {
@@ -312,7 +629,7 @@ struct OrganizerEditor: View {
                 }
             }
             .interactiveDismissDisabled(store.pending != nil || store.busy)
-            .confirmationDialog("Delete this \(isTrip ? "trip" : "companion")?", isPresented: $confirmDelete) {
+            .confirmationDialog(LocalizedStringKey(isTrip ? "Delete this trip?" : "Delete this companion?"), isPresented: $confirmDelete) {
                 Button("Delete", role: .destructive) { Task { await save(deleting: true) } }
             }
         }
@@ -327,20 +644,6 @@ struct OrganizerEditor: View {
             Section("Optional") {
                 TextField("Interests", text: $person.interests, axis: .vertical)
                 TextField("Important notes, dietary or accessibility needs", text: $person.notes, axis: .vertical)
-            }
-            if isProfile {
-                Section("Travel companions") {
-                    ForEach(store.data.companions) { companion in
-                        Button { companionEditor = .person(companion.id) } label: {
-                            HStack {
-                                Text(companion.name)
-                                Spacer()
-                                Image(systemName: "chevron.right").font(.caption).foregroundStyle(.secondary)
-                            }
-                        }
-                    }
-                    Button("Add companion", systemImage: "person.badge.plus") { companionEditor = .person(UUID()) }
-                }
             }
         }
     }
@@ -373,7 +676,10 @@ struct OrganizerEditor: View {
                         Button { editingStop = stop } label: {
                             HStack {
                                 VStack(alignment: .leading) {
-                                    Text(stop.destination.isEmpty ? "New destination" : stop.destination)
+                                    Group {
+                                        if stop.destination.isEmpty { Text("New destination") }
+                                        else { Text(verbatim: stop.destination) }
+                                    }
                                     if !stop.hotel.isEmpty { Text(stop.hotel).font(.caption).foregroundStyle(.secondary) }
                                 }
                                 Spacer()
@@ -472,12 +778,15 @@ struct OrganizerStopEditor: View {
                 OptionalOrganizerDate(title: "Check-in", value: $stop.check_in)
                 OptionalOrganizerDate(title: "Check-out", value: $stop.check_out)
             }
-            Section(previous.map { "Travel from \($0)" } ?? "Travel to first destination (optional)") {
+            Section {
                 Picker("Transport", selection: $stop.transport) {
                     Text("Not decided").tag(""); Text("Plane").tag("plane")
                     Text("Train").tag("train"); Text("Car").tag("car")
                 }
                 TextField("Flight/train number, departure time or driving notes", text: $stop.transport_details, axis: .vertical)
+            } header: {
+                if let previous { Text("Travel from \(previous)") }
+                else { Text("Travel to first destination (optional)") }
             }
         }.navigationTitle("Destination")
     }
@@ -490,9 +799,9 @@ struct OptionalOrganizerDate: View {
         formatter.calendar = Calendar(identifier: .gregorian); formatter.dateFormat = "yyyy-MM-dd"; return formatter
     }
     var body: some View {
-        Toggle(title, isOn: Binding(get: { value != nil }, set: { value = $0 ? Self.formatter.string(from: Date()) : nil }))
+        Toggle(LocalizedStringKey(title), isOn: Binding(get: { value != nil }, set: { value = $0 ? Self.formatter.string(from: Date()) : nil }))
         if value != nil {
-            DatePicker(title, selection: Binding(get: { Self.formatter.date(from: value ?? "") ?? Date() }, set: { value = Self.formatter.string(from: $0) }), displayedComponents: .date)
+            DatePicker(LocalizedStringKey(title), selection: Binding(get: { Self.formatter.date(from: value ?? "") ?? Date() }, set: { value = Self.formatter.string(from: $0) }), displayedComponents: .date)
         }
     }
 }
@@ -506,6 +815,7 @@ struct TravelChatMessage: Codable, Identifiable, Sendable {
 struct TravelChatData: Codable, Sendable { var messages: [TravelChatMessage] = [] }
 struct TravelChatRequest: Codable, Sendable {
     var text: String
+    var new_conversation = false
     var conversation_context: ConversationContext = .snapshot()
 }
 
@@ -580,6 +890,14 @@ final class TravelChatStore {
             await retry()
         } catch { self.error = error.localizedDescription }
     }
+    func newConversation() async -> Bool {
+        guard loaded, !busy, !voice.active, !translator.active, pending == nil, composer.isEmpty else { return false }
+        do {
+            pending = try .put(.travelChat, body: TravelChatRequest(text: "", new_conversation: true), expectedVersion: version)
+            await retry()
+            return pending == nil && error == nil && conflict == nil
+        } catch { self.error = error.localizedDescription; return false }
+    }
     func retry() async {
         guard !busy, !voice.active, conflict == nil, let request = pending else { return }
         busy = true; let ticket = epoch
@@ -612,35 +930,34 @@ final class TravelChatStore {
 struct TravelChatView: View {
     @Bindable var store: TravelChatStore
     @Bindable var organizer: OrganizerStore
-    @State private var reviewingTrip: OrganizerTrip?
+    @Binding var reviewingTrip: OrganizerTrip?
     @State private var savedTripName: String?
-    @State private var showVoice = false
-    @State private var voiceStartRequest: UUID?
-    @Environment(\.scenePhase) private var scenePhase
+    @FocusState private var composing: Bool
     var name: String? = nil
-    @Environment(\.dismiss) private var dismiss
     private let suggestions = [
         "Plan a 3-day trip to New York next weekend.",
         "Where is the nearest luggage locker?",
         "What is a good Mediterranean restaurant nearby?"
     ]
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                ScrollViewReader { scroll in
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: 16) {
+        VStack(spacing: 0) {
+            ScrollViewReader { scroll in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 16) {
+                        if store.messages.isEmpty {
                             Text("\(name.map { "Hi, \($0)!" } ?? "Hi!") I'm Pip, your travel companion. How can I help with your trip?").font(.headline)
-                            if store.messages.isEmpty {
-                                ForEach(suggestions, id: \.self) { suggestion in
-                                    Button { store.composer = suggestion } label: {
-                                        Text(suggestion).frame(maxWidth: .infinity, alignment: .leading)
-                                    }.buttonStyle(.bordered).disabled(store.busy || store.pending != nil || store.voice.active)
-                                }
+                            ForEach(suggestions, id: \.self) { suggestion in
+                                Button { store.composer = suggestion } label: {
+                                    Text(suggestion).frame(maxWidth: .infinity, alignment: .leading)
+                                }.buttonStyle(.bordered).disabled(store.busy || store.pending != nil || store.voice.active)
                             }
-                            ForEach(store.messages) { message in
+                        }
+                        ForEach(store.messages) { message in
+                            let isUser = message.role == "user"
+                            HStack(spacing: 0) {
+                                if isUser { Spacer(minLength: 40) }
                                 VStack(alignment: .leading, spacing: 4) {
-                                    Text(message.role == "user" ? "You" : "Pip").font(.caption.bold()).foregroundStyle(.secondary)
+                                    Text(LocalizedStringKey(message.role == "user" ? "You" : "Pip")).font(.caption.bold()).foregroundStyle(.secondary)
                                     if message.role == "assistant" { ChatMarkdownView(text: message.text) }
                                     else { Text(message.text).textSelection(.enabled) }
                                     if let draft = message.trip_draft {
@@ -654,80 +971,69 @@ struct TravelChatView: View {
                                     }
                                 }
                                 .padding(12)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .background(message.role == "user" ? Color.accentColor.opacity(0.10) : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
-                                .id(message.id)
+                                .frame(maxWidth: isUser ? nil : .infinity, alignment: .leading)
+                                .background(isUser ? Color.accentColor.opacity(0.15) : Color(.secondarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 16))
                             }
-                            if let savedTripName { Text("Saved \(savedTripName) to your trips.").foregroundStyle(.green) }
-                            if !store.messages.isEmpty {
-                                Button("Create trip from this chat", systemImage: "suitcase") {
-                                    store.composer = "Prepare a new trip draft from the latest agreed plan in this chat for me to review and save."
-                                    Task { await store.send() }
-                                }
-                                .disabled(store.voice.active || !store.loaded || store.busy || store.pending != nil || !store.composer.isEmpty)
+                            .id(message.id)
+                        }
+                        if let savedTripName { Text("Saved \(savedTripName) to your trips.").foregroundStyle(.green) }
+                        if !store.messages.isEmpty {
+                            Button("Create trip from this chat", systemImage: "suitcase") {
+                                store.composer = "Prepare a new trip draft from the latest agreed plan in this chat for me to review and save."
+                                Task { await store.send() }
                             }
-                            if store.busy { ProgressView("Pip is thinking…") }
-                            if let error = store.error { Text(error).foregroundStyle(.red) }
-                            if store.conflict != nil {
-                                Text("This chat changed elsewhere. Load it to review before sending your draft again.")
-                                Button("Load latest chat") { store.useLatest() }
-                            } else if store.pending != nil && !store.busy {
-                                Button("Retry same message") { Task { await store.retry() } }
-                            } else if !store.loaded && !store.busy {
-                                Button("Try again") { Task { await store.load() } }
-                            }
-                        }.padding()
-                    }
-                    .onChange(of: store.messages.last?.id) { _, id in
-                        if let id { withAnimation { scroll.scrollTo(id, anchor: .bottom) } }
-                    }
+                            .disabled(store.voice.active || !store.loaded || store.busy || store.pending != nil || !store.composer.isEmpty)
+                        }
+                        if store.busy { ProgressView("Pip is thinking…") }
+                        if let error = store.error { Text(error).foregroundStyle(.red) }
+                        if store.conflict != nil {
+                            Text("This chat changed elsewhere. Load it to review before sending your draft again.")
+                            Button("Load latest chat") { store.useLatest() }
+                        } else if store.pending != nil && !store.busy {
+                            Button("Retry same message") { Task { await store.retry() } }
+                        } else if !store.loaded && !store.busy {
+                            Button("Try again") { Task { await store.load() } }
+                        }
+                    }.padding()
                 }
-                VStack(spacing: 8) {
-                    ConversationLocationView(store: store.locationDisplay)
-                    Button("Talk to Pip", systemImage: "mic.fill") { voiceStartRequest = nil; showVoice = true }
-                        .buttonStyle(.bordered)
-                        .disabled(store.busy || store.pending != nil)
-                    Text("Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps.")
-                        .font(.caption2).foregroundStyle(.secondary)
-                    HStack(alignment: .bottom) {
-                        TextField("Ask about your trip…", text: $store.composer, axis: .vertical)
-                            .lineLimit(1...5).textFieldStyle(.roundedBorder)
-                            .disabled(store.busy || store.pending != nil || store.voice.active)
-                        Button { Task { await store.send() } } label: {
-                            Image(systemName: "arrow.up.circle.fill").font(.title)
-                        }.accessibilityLabel("Send message")
-                            .disabled(store.voice.active || !store.loaded || store.busy || store.pending != nil || store.composer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || store.composer.count > 4000)
-                    }
-                    if store.composer.count > 4000 { Text("Keep your message under 4,000 characters.").font(.caption).foregroundStyle(.red) }
-                }.padding().background(.bar)
-            }
-            .navigationTitle("Ask Pip")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                if store.voice.active { Button("End voice", role: .destructive) { store.voice.stop() } }
-                Button("Done") { dismiss() }
-            }
-            .task { if !store.loaded { await store.load() } }
-            .sheet(isPresented: $showVoice) { VoiceConversationSheet(store: store.voice, startRequest: voiceStartRequest) }
-            .onChange(of: TalkToPipLaunch.shared.requestID, initial: true) { _, _ in handleVoiceLaunch() }
-            .onChange(of: scenePhase) { _, _ in handleVoiceLaunch() }
-            .onChange(of: reviewingTrip?.id) { _, _ in handleVoiceLaunch() }
-            .onChange(of: store.busy) { _, _ in handleVoiceLaunch() }
-            .onChange(of: store.pending == nil) { _, _ in handleVoiceLaunch() }
-            .sheet(item: $reviewingTrip) { draft in
-                OrganizerEditor(store: organizer, kind: .trip(draft.id), initialTrip: draft) { _ in
-                    savedTripName = organizer.data.trips.first { $0.id == draft.id }?.name
+                .scrollDismissesKeyboard(.interactively)
+                .background(Color(.systemGroupedBackground))
+                .onChange(of: store.messages.last?.id) { _, id in
+                    if let id { withAnimation { scroll.scrollTo(id, anchor: .bottom) } }
                 }
+            }
+            VStack(spacing: 8) {
+                ConversationLocationView(store: store.locationDisplay)
+                Text("Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps.")
+                    .font(.caption2).foregroundStyle(.secondary)
+                HStack(alignment: .bottom) {
+                    TextField("Ask about your trip…", text: $store.composer, axis: .vertical)
+                        .lineLimit(1...5).textFieldStyle(.roundedBorder)
+                        .focused($composing)
+                        .disabled(store.busy || store.pending != nil || store.voice.active)
+                    Button { Task { await store.send() } } label: {
+                        Image(systemName: "arrow.up.circle.fill").font(.title)
+                    }.accessibilityLabel("Send message")
+                        .disabled(store.voice.active || !store.loaded || store.busy || store.pending != nil || store.composer.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || store.composer.count > 4000)
+                }
+                if store.composer.count > 4000 { Text("Keep your message under 4,000 characters.").font(.caption).foregroundStyle(.red) }
+            }.padding().background(.bar)
+        }
+        .toolbar {
+            ToolbarItem(placement: .primaryAction) {
+                Button("New conversation", systemImage: "square.and.pencil") {
+                    Task { if await store.newConversation() { composing = true } }
+                }
+                .disabled(!store.loaded || store.busy || store.pending != nil || store.voice.active || store.translator.active || !store.composer.isEmpty)
             }
         }
-    }
-    private func handleVoiceLaunch() {
-        guard let request = TalkToPipLaunch.shared.take(
-            isActive: scenePhase == .active,
-            blocked: reviewingTrip != nil || store.busy || store.pending != nil
-        ) else { return }
-        voiceStartRequest = request
-        showVoice = true
+        // Runs whenever this page appears, so talks held on the voice page show up here.
+        .task { await store.load() }
+        .sheet(item: $reviewingTrip) { draft in
+            OrganizerEditor(store: organizer, kind: .trip(draft.id), initialTrip: draft) { _ in
+                savedTripName = organizer.data.trips.first { $0.id == draft.id }?.name
+            }
+        }
     }
 }
 
@@ -891,7 +1197,7 @@ struct OrganizerBudgetView: View {
         .navigationBarTitleDisplayMode(.inline)
     }
     private func costSection(_ title: String, cost: Binding<OrganizerCategoryCost>) -> some View {
-        Section(title) {
+        Section(LocalizedStringKey(title)) {
             BudgetAmountField(title: "Estimated", value: cost.estimated)
             BudgetAmountField(title: "Actual", value: cost.actual)
         }
@@ -902,11 +1208,11 @@ struct BudgetAmountField: View {
     @Binding var value: String
     var body: some View {
         HStack {
-            Text(title)
+            Text(LocalizedStringKey(title))
             Spacer()
             TextField("Not entered", text: Binding(get: { value }, set: { value = $0.replacingOccurrences(of: ",", with: ".") }))
                 .keyboardType(.decimalPad).multilineTextAlignment(.trailing)
-                .accessibilityLabel(title)
+                .accessibilityLabel(Text(LocalizedStringKey(title)))
         }
     }
 

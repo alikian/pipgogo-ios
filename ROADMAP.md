@@ -147,3 +147,33 @@ iOS rename (September 30): user-requested `pippipgo.xcodeproj`, module/product, 
 Approved iOS identity activation (September 30): both foundation stacks reached UPDATE_COMPLETE with callback-only changes and no resource replacement; old/new native authorize and logout redirects passed on Dev/Prod after propagation. Signed `com.pippipgo.ios` archive and App Store export passed; embedded distribution profile confirms explicit registration under team U47SMLD234. No App Store upload/release performed. New-product Xcode Cloud enrollment, full OAuth exchange and physical-device acceptance remain pending.
 
 App Store validation correction (October 1): new Xcode Cloud product is enrolled and internal TestFlight group configured, but distribution failed. Local Apple validation identified missing supported orientations in `com.pippipgo.ios`. Added all four orientations in app plists and an archive metadata guard, retained test signing-team edits and restored configuration-driven display names. Ten CI tests, eight Prod simulator configuration tests and a signed archive/signature check passed; orientation build warning cleared. Apple revalidation, successful cloud delivery and iPad/device layout acceptance remain pending.
+
+Voice selection (October 1): Talk to Pip and live translation configured for Ballad at the user’s request. Deployment and live/device acceptance pending.
+
+App languages (October 1): English/Persian home and welcome language picker, persistent app-wide locale and Persian right-to-left layout; current organizer translations completed. Simulator and signed build validation recorded in the time log; physical-device acceptance pending. See iOS `docs/app-languages.md`.
+
+App language extension (October 1): Japanese (日本語) and Spanish (Español) added to the existing home/welcome picker with current interface translations and packaged-resource regression checks. Physical-device acceptance pending.
+
+App language extension (October 1): French (Français), Italian (Italiano) and Simplified Chinese (简体中文) added to the home/welcome picker, with 208 translated current-interface entries per language. Packaged-resource tests and signed build validation recorded in the time log; physical-device acceptance pending.
+
+Home language placement (October 1): moved the language picker from the navigation toolbar into a visible first row on the organizer home, showing the current selection and available before data loading completes.
+
+Home header adjustment (October 1): language picker moved to the leading side of the home navigation bar and PipPipGo header title removed at the user’s request.
+
+Voice app language (October 1): new Talk to Pip sessions capture the home-page language and use it for greeting/default speech and Responses delegation, with backend allowlisting and English fallback for older clients. Deployment and live/device acceptance pending.
+
+Conversation continuation (October 1): current typed/voice history resumes by default; explicit New conversation archives previous history through idempotent/versioned mutation. Late voice writes fenced against restarted conversations. Mocked backend/iOS validation recorded in time log; deployment and live/device acceptance pending.
+
+Language-switch presentation repair (October 1): rebuild home List presentation on locale changes to clear mirrored rows during Persian/English switching; preserve parent account/editor/chat state. Physical regression acceptance pending.
+
+Conversation control placement (October 1): removed New conversation from home, retained it on Ask Pip; added explicit New talk on the voice page while normal voice startup continues saved history. App/backend rollout remains pending.
+
+Shared conversation controls (October 1): Ask Pip offers Continue conversation/New conversation; Talk to Pip offers Continue last talk/New talk. Both continue the same saved history; either New action explicitly starts fresh. Updated iOS tests/build evidence in time log; rollout pending.
+
+Ask Pip text-only (October 1): voice entry and voice-launch handling removed from typed chat; home Talk to Pip remains a separate voice page using shared history. Updated device install pending.
+
+Dev backend rollout (October 1): `3b275fd` deployed via run 36939509105; ECS 37 completed, CloudFormation UPDATE_COMPLETE, one running/zero pending; public health/readiness 200 and account/chat unauthenticated 401. Ballad, selected voice language and shared conversation history deployed. Prod unchanged; app installation and live/device acceptance pending.
+
+Tab navigation redesign (October 1): the signed-in app now uses a tab bar — Trips, Pip, Translate, Profile — instead of one home list; see [navigation](docs/navigation.md). Organizer saves, retries, conflict review, chat/voice history and the API contract are unchanged. Source change only on branch `ui-redesign-tabs`: compile, simulator tests, signed build and device acceptance are all pending.
+
+Tab redesign device acceptance (October 1): user confirmed testing on an iPhone and that the app is working fine. Overall UI acceptance recorded; device details and individual scenario coverage were not supplied. Automated redesign checks remain unrecorded.

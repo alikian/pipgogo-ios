@@ -61,3 +61,12 @@ struct LiveTranslationTests {
 private struct NoTokens: AccessTokenProviding {
     func validAccessToken(forceRefresh: Bool) async throws -> String { throw APIClientError.connection }
 }
+
+
+@MainActor struct VoiceLanguageRequestTests {
+    @Test(arguments: ["en", "fa", "ja", "es", "fr", "it", "zh-Hans"])
+    func voiceCarriesAppLanguage(language: String) throws {
+        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://api-dev.pippipgo.com")!, token: "test", language: language)
+        #expect(request.value(forHTTPHeaderField: "X-Pip-Language") == language)
+    }
+}
