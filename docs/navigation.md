@@ -1,6 +1,6 @@
 # Navigation
 
-October 1, 2026 (user-requested redesign): the signed-in app is a four-tab `TabView`, replacing the single organizer home list. Source is on branch `ui-redesign-tabs`; it has not yet been compiled, tested or accepted on a device.
+October 1, 2026 (user-requested redesign): the signed-in app is a four-tab `TabView`, replacing the single organizer home list. Source is on branch `ui-redesign-tabs`. The user confirmed on October 1 that it was tested on an iPhone and is working fine. This is user-reported physical-device acceptance; automated simulator/build validation for the redesign remains unrecorded.
 
 | Tab | Contents |
 | --- | --- |
@@ -18,3 +18,5 @@ Rules kept from the previous design:
 - The selected tab is restored per scene (`pip.selectedTab`).
 
 Travel companions are managed on the Profile tab and are no longer listed inside the My Profile editor; the trip editor's **Add someone** is unchanged.
+
+October 1 physical-device acceptance: the user reported “I tested on iphone is working fine.” Device model, iOS version and individual test scenarios were not specified; this records overall UI acceptance without inferring specific regression coverage.
