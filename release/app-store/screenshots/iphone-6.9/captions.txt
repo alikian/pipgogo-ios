@@ -1,0 +1,8 @@
+01-trips.png — Your next trip, all together.
+02-details.png — Every stop. Every stay.
+03-chat.png — Plan a trip that feels like you.
+04-voice.png — Talk through your travel ideas.
+05-translate.png — Find the words while you explore.
+06-budget.png — More exploring. Less budget guessing.
+
+These captions are supplied separately; PNGs are unedited native screenshots.

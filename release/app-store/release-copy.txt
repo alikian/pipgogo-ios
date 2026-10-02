@@ -1,0 +1,46 @@
+PipPipGo — English App Store copy
+Prepared October 2, 2026.
+
+APP NAME
+PipPipGo
+
+SUBTITLE
+Travel plans, chat & translate
+
+PROMOTIONAL TEXT
+Meet Pip, your AI travel companion. Organize trips, talk through ideas, keep track of costs, and translate conversations while you explore.
+
+DESCRIPTION
+A little less planning. A little more exploring.
+
+PipPipGo brings your travel plans and an AI travel companion together. Keep the details in one place, ask Pip for ideas, and use voice translation when you need help communicating.
+
+PLAN YOUR TRIP
+Organize multiple destinations, hotel stays, and travel by plane, train, or car. Add dates and notes as your plans take shape—even before every booking is decided.
+
+KEEP YOUR PEOPLE AND COSTS TOGETHER
+Create your traveler profile, add companions, and choose who is coming on each trip. Track a trip budget, estimated costs, and actual spending.
+
+MEET PIP
+Type a question or talk to Pip about your trip. Share your interests, travel style, and what matters to you so Pip can tailor its replies. Ask follow-up questions and refine ideas together. When Pip prepares a trip draft, review it before saving.
+
+TRANSLATE AS YOU EXPLORE
+Use spoken translation to help communicate across languages. Choose the languages you and the other person speak, then start translation when you need it.
+
+ANSWERS THAT FIT YOU
+Every traveler is different. Pip keeps what you share in mind—from your favorite activities to the plans you've talked about—so suggestions feel more personal. Tell Pip what you love, ask questions, and shape a trip that feels like you.
+
+AI features use OpenAI to process messages, speech, and the relevant context supplied by the feature. Conversation transcripts and available AI context are stored by PipPipGo and can be reviewed by its authorized administrator. Voice audio is handled transiently. Translation shares speech with OpenAI, without your profile, trips, or location. Review the app's privacy information before using AI features.
+
+AI and translation can make mistakes. Confirm travel details and translations before relying on them. AI features require an internet connection; microphone access is needed for voice features.
+
+KEYWORDS
+travel,trip,planner,itinerary,companion,AI,voice,translation,budget,hotel,train,vacation
+
+SHORT AI EXPLANATION — for onboarding/help
+Your interests. Your travel style. Your kind of adventure. Pip keeps what you share in mind to help you discover ideas and plan a trip that feels like you.
+
+INTERNAL RELEASE NOTES — do not paste into the description
+The personalization wording refers to saved profile information and relevant conversation history; it does not promise perfect or unlimited recall. Publish a matching privacy policy before submission.
+Confirm feature availability in the actual selected release build. Provide working support and privacy-policy URLs, complete App Privacy disclosures, and review access separately. No URLs or reviewer credentials have been invented here.
+Current Prod launch limitations are recorded in backend infra/prod-deployment.md. This package does not establish release readiness or physical-device acceptance.

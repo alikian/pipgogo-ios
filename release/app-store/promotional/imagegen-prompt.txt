@@ -1,0 +1,9 @@
+Built-in image_gen tool; generation using the supplied duck collage as a character/style reference.
+Output: duck-travel-hat-coming-soon.png. Promotional concept; not an app screenshot.
+
+Use case: ads-marketing. Asset type: polished portrait promotional poster for PipPipGo, separate from App Store app screenshots.
+Reference image 1: supplied character/style reference, not an edit target. Preserve the recognizable white travel duck with an orange bill, small dark eyes, fluffy feathers and red plaid scarf, peeking out of an olive travel hat, as in the main panel. Use the same warm, friendly photorealistic character style.
+Primary request: include this duck and announce that the travel hat is coming soon.
+Composition: one clean portrait poster, not a collage. A softly blurred sunlit Mediterranean travel backdrop. Large duck and olive hat in the lower two thirds. Generous clean space for large legible copy in the top third. Navy and orange brand typography, pale sky and warm travel colors. Premium, friendly travel advertising with restrained details.
+Exact text, only these three text lines: "PipPipGo" then "Your kind of adventure." then "Travel hat · Coming soon".
+The coming-soon line must clearly apply to the travel hat, not the app. Spell PipPipGo exactly with the indicated capitalization. No fake app UI, no feature list, no offline claims, no Bluetooth, battery, availability dates, price, microphone specifications or claims of working hardware. Do not carry over technical promises from the reference collage. No watermark.
