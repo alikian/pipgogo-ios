@@ -539,6 +539,9 @@ struct ProfileTab: View {
                 Section {
                     Button("Sign out", role: .destructive) { confirmSignOut = true }
                 }
+                Section {
+                    AppVersionView()
+                }
             }
             .id(locale.identifier)
             .refreshable { await store.load() }

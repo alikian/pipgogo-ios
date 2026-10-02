@@ -56,3 +56,15 @@ struct AppLanguageMenu: View {
         .accessibilityValue(AppLanguage.selected(language).nativeName)
     }
 }
+
+struct AppVersionView: View {
+    private let version = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
+    private let build = Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "—"
+
+    var body: some View {
+        Text("Version \(version) (Build \(build))")
+            .font(.footnote)
+            .foregroundStyle(.secondary)
+            .accessibilityIdentifier("app.versionAndBuild")
+    }
+}

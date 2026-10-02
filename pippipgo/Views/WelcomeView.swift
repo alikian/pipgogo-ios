@@ -48,6 +48,7 @@ struct WelcomeView: View {
                     .font(.footnote)
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
+                AppVersionView()
             }
             .padding(28)
         }
