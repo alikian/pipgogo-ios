@@ -1,6 +1,6 @@
 # Navigation
 
-October 1, 2026 (user-requested redesign): the signed-in app is a four-tab `TabView`, replacing the single organizer home list. Source is on branch `ui-redesign-tabs`. The user confirmed on October 1 that it was tested on an iPhone and is working fine. This is user-reported physical-device acceptance; automated simulator/build validation for the redesign remains unrecorded.
+October 1, 2026 (user-requested redesign): the signed-in app is a four-tab `TabView`, replacing the single organizer home list. Source was merged from `ui-redesign-tabs` into the default `develop` branch on October 1 (`0efb8fb`). The user confirmed on October 1 that it was tested on an iPhone and is working fine. This is user-reported physical-device acceptance; automated simulator/build validation for the redesign remains unrecorded.
 
 | Tab | Contents |
 | --- | --- |
