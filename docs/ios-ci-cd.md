@@ -142,3 +142,7 @@ prove signing or App Store availability for `com.pippipgo.ios`.
 - [Cloud environment variables](https://developer.apple.com/documentation/xcode/environment-variable-reference)
 - [Cloud build numbering](https://developer.apple.com/documentation/xcode/setting-the-next-build-number-for-xcode-cloud-builds)
 - [Distribution workflow](https://developer.apple.com/documentation/xcode/creating-a-workflow-that-builds-your-app-for-distribution)
+
+## Prod email/password release — October 2, 2026
+
+The sign-in chooser now supports Google or native Cognito username/password in Prod as well as Dev. `pippipgo-prod-foundation` was updated without replacing the pool/client. An isolated checkout of the authentication changes passed 93 Prod simulator tests and a signed archive with verified Prod metadata. The active Default cloud workflow was inspected and uses Prod for Build and Archive, the verified public client, App Store Connect distribution, and internal TestFlight group Pips. Email confirmation/recovery and device acceptance remain separate from form inspection and mocked tests. See backend `docs/email-password-signup.md` for infrastructure evidence.

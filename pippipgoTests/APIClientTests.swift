@@ -701,12 +701,18 @@ struct APIClientTests {
         #expect(values["prompt"] == "select_account")
     }
 
-    @Test func productionStillUsesGoogleUntilSignupRollout() throws {
-        var prod = configuration
-        prod.environment = .prod
+    @Test func productionOffersProviderChoiceWithIsolatedIdentityAndPKCE() throws {
+        let prod = AppConfiguration(cognitoDomain: URL(string: "https://auth.pippipgo.com")!, clientID: "23sk8qfmpotjj40jbnl9tn33em", callbackURL: configuration.callbackURL, logoutURL: configuration.logoutURL, backendBaseURL: URL(string: "https://api.pippipgo.com")!, environment: .prod)
         let url = try CognitoClient(configuration: prod).authorizationURL(state: "state", challenge: "challenge")
         let items = URLComponents(url: url, resolvingAgainstBaseURL: false)!.queryItems!
-        #expect(items.first { $0.name == "identity_provider" }?.value == "Google")
+        let values = Dictionary(uniqueKeysWithValues: items.map { ($0.name, $0.value ?? "") })
+        #expect(url.host == "auth.pippipgo.com")
+        #expect(values["client_id"] == prod.clientID)
+        #expect(values["identity_provider"] == nil)
+        #expect(values["state"] == "state")
+        #expect(values["code_challenge"] == "challenge")
+        #expect(values["code_challenge_method"] == "S256")
+        #expect(values["redirect_uri"] == "pippipgo://auth/callback")
     }
 
     @Test func exchangesCodeWithVerifierAndEncodedPlus() async throws {
