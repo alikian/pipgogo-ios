@@ -837,3 +837,20 @@ private final class AudioSessionChanges: @unchecked Sendable {
     func append(_ value: String) { lock.lock(); defer { lock.unlock() }; recorded.append(value) }
     var values: [String] { lock.lock(); defer { lock.unlock() }; return recorded }
 }
+
+
+struct ChatMapDestinationTests {
+    @Test func previewsOnlySupportedMapsLinksAndDeduplicates() {
+        let text = "[Cafe](https://www.google.com/maps/search/?api=1&query=Cafe%20Paris) [Again](https://www.google.com/maps/search/?api=1&query=Cafe%20Paris) [Other](https://example.com/?q=Paris)"
+        let destinations = ChatMapDestination.parse(text)
+        #expect(destinations.count == 1)
+        #expect(destinations.first?.query == "Cafe Paris")
+        #expect(destinations.first?.title == "Cafe")
+    }
+    @Test func rejectsUntrustedAndUnresolvableLinks() throws {
+        #expect(ChatMapDestination(url: try #require(URL(string: "https://google.com.evil.invalid/maps?q=Paris")), title: "") == nil)
+        #expect(ChatMapDestination(url: try #require(URL(string: "https://www.google.com/search?q=Paris")), title: "") == nil)
+        #expect(ChatMapDestination(url: try #require(URL(string: "https://www.google.com/maps?q=place_id:abc")), title: "") == nil)
+        #expect(ChatMapDestination.parse("Visit Paris tomorrow.").isEmpty)
+    }
+}

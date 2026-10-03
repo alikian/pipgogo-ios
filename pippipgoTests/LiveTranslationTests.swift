@@ -49,6 +49,27 @@ struct LiveTranslationTests {
         #expect(voice.value(forHTTPHeaderField: "X-Pip-Navigation") == "1")
     }
 
+    @MainActor @Test func headphoneModePersistsAndUsesDedicatedHeader() throws {
+        let defaults = try #require(UserDefaults(suiteName: "HeadphoneTranslation-\(UUID())"))
+        let pair = try #require(TranslationPair(mine: "en", theirs: "ja", listenOnly: true))
+        pair.save(defaults)
+        #expect(TranslationPair.saved(defaults).listenOnly)
+        #expect(pair.swapped.listenOnly)
+        let request = try LiveVoiceStore.request(baseURL: URL(string: "https://api.pippipgo.com")!, token: "test", mode: .translate(pair))
+        #expect(request.value(forHTTPHeaderField: "X-Pip-Translate") == "en,ja")
+        #expect(request.value(forHTTPHeaderField: "X-Pip-Translate-Listen-Only") == "1")
+        let twoWay = try LiveVoiceStore.request(baseURL: URL(string: "https://api.pippipgo.com")!, token: "test", mode: .translate(TranslationPair(mine: "en", theirs: "ja")!))
+        #expect(twoWay.value(forHTTPHeaderField: "X-Pip-Translate-Listen-Only") == nil)
+    }
+
+    @MainActor @Test func headphoneModeRequiresBackendConfirmation() {
+        let mode = LiveVoiceMode.translate(TranslationPair(mine: "en", theirs: "fa", listenOnly: true)!)
+        #expect(!LiveVoiceStore.acceptsTranslationSession(["type": "session.started"], mode: mode))
+        #expect(!LiveVoiceStore.acceptsTranslationSession(["translation_mode": "two_way"], mode: mode))
+        #expect(LiveVoiceStore.acceptsTranslationSession(["translation_mode": "listen_only"], mode: mode))
+        #expect(LiveVoiceStore.acceptsTranslationSession([:], mode: .translate(TranslationPair(mine: "en", theirs: "fa")!)))
+    }
+
     @MainActor @Test func languagesChangeOnlyWhileInactive() throws {
         let store = LiveVoiceStore(client: APIClient(baseURL: URL(string: "https://example.invalid")!), authentication: NoTokens(),
                                    mode: .translate(TranslationPair(mine: "en", theirs: "es")!))

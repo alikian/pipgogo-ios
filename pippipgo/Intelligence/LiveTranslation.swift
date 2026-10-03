@@ -40,15 +40,16 @@ struct TranslationLanguage: Identifiable, Hashable, Sendable {
 struct TranslationPair: Equatable, Sendable {
     let mine: TranslationLanguage
     let theirs: TranslationLanguage
+    var listenOnly = false
 
-    init?(mine: String, theirs: String) {
+    init?(mine: String, theirs: String, listenOnly: Bool = false) {
         guard mine != theirs, let a = TranslationLanguage.language(mine), let b = TranslationLanguage.language(theirs) else { return nil }
-        self.mine = a; self.theirs = b
+        self.mine = a; self.theirs = b; self.listenOnly = listenOnly
     }
 
     /// Value of the `X-Pip-Translate` WebSocket header.
     var headerValue: String { "\(mine.code),\(theirs.code)" }
-    var swapped: TranslationPair { TranslationPair(mine: theirs.code, theirs: mine.code)! }
+    var swapped: TranslationPair { TranslationPair(mine: theirs.code, theirs: mine.code, listenOnly: listenOnly)! }
 
     init?(headerValue: String) {
         let parts = headerValue.split(separator: ",", omittingEmptySubsequences: false).map(String.init)
@@ -64,9 +65,14 @@ struct TranslationPair: Equatable, Sendable {
 
     private static let storageKey = "translationLanguages"
     static func saved(_ defaults: UserDefaults = .standard) -> TranslationPair {
-        defaults.string(forKey: storageKey).flatMap(TranslationPair.init(headerValue:)) ?? defaultPair()
+        var pair = defaults.string(forKey: storageKey).flatMap(TranslationPair.init(headerValue:)) ?? defaultPair()
+        pair.listenOnly = defaults.bool(forKey: "translationListenOnly")
+        return pair
     }
-    func save(_ defaults: UserDefaults = .standard) { defaults.set(headerValue, forKey: Self.storageKey) }
+    func save(_ defaults: UserDefaults = .standard) {
+        defaults.set(headerValue, forKey: Self.storageKey)
+        defaults.set(listenOnly, forKey: "translationListenOnly")
+    }
 }
 
 enum LiveVoiceMode: Equatable, Sendable {
@@ -100,6 +106,7 @@ struct TranslateTab: View {
 }
 
 struct TranslationLanguageBar: View {
+    @Environment(\.layoutDirection) private var layoutDirection
     let store: LiveVoiceStore
     private var pair: TranslationPair { store.mode.translation ?? .saved() }
 
@@ -109,17 +116,31 @@ struct TranslationLanguageBar: View {
                 languageMenu(title: "You speak", selection: pair.mine) { code in
                     update(mine: code, theirs: code == pair.theirs.code ? pair.mine.code : pair.theirs.code)
                 }
-                Button { setPair(pair.swapped) } label: {
-                    Image(systemName: "arrow.left.arrow.right")
-                }
-                .buttonStyle(.bordered)
-                .accessibilityLabel("Swap languages")
+                Image(systemName: pair.listenOnly
+                      ? (layoutDirection == .rightToLeft ? "arrow.right" : "arrow.left")
+                      : "arrow.left.arrow.right")
+                    .font(.title3)
+                    .foregroundStyle(.tint)
+                    .frame(width: 40, height: 40)
+                    .accessibilityLabel(pair.listenOnly ? "Translation from their language to yours" : "Two-way translation")
                 languageMenu(title: "They speak", selection: pair.theirs) { code in
                     update(mine: code == pair.mine.code ? pair.theirs.code : pair.mine.code, theirs: code)
                 }
             }
             .disabled(store.active)
-            Text("Speech is shared with OpenAI to translate it while translation is on. Your profile, trips and location are not shared.")
+            Toggle(isOn: Binding(get: { pair.listenOnly }, set: { enabled in
+                var next = pair
+                next.listenOnly = enabled
+                setPair(next)
+            })) {
+                Label("Headphone mode", systemImage: "headphones")
+                    .font(.subheadline)
+            }
+            .disabled(store.active)
+            Text(pair.listenOnly ? "Hear only their translation." : "Translate both ways.")
+                .font(.caption).foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+            Text("Speech goes to OpenAI; profile, trips and location don’t.")
                 .font(.caption2).foregroundStyle(.secondary)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -149,7 +170,7 @@ struct TranslationLanguageBar: View {
     }
 
     private func update(mine: String, theirs: String) {
-        if let next = TranslationPair(mine: mine, theirs: theirs) { setPair(next) }
+        if let next = TranslationPair(mine: mine, theirs: theirs, listenOnly: pair.listenOnly) { setPair(next) }
     }
 
     private func setPair(_ next: TranslationPair) {

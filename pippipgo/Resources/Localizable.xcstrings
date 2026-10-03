@@ -1,52 +1,6 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    "Version %@ (Build %@)" : {
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version %1$@ (Build %2$@)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versión %1$@ (compilación %2$@)"
-          }
-        },
-        "fa" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "نسخهٔ %1$@ (بیلد %2$@)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Version %1$@ (build %2$@)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Versione %1$@ (build %2$@)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "バージョン %1$@（ビルド %2$@）"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "版本 %1$@（构建 %2$@）"
-          }
-        }
-      }
-    },
     "%@ · %@" : {
       "localizations" : {
         "en" : {
@@ -2527,6 +2481,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更改语言不会删除旅行或记忆。"
+          }
+        }
+      }
+    },
+    "Chat Pip" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chat Pip"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chatea con Pip"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "گفت‌وگو با پیپ"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discuter avec Pip"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chatta con Pip"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pipとチャット"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "与 Pip 聊天"
           }
         }
       }
@@ -5902,6 +5903,53 @@
         }
       }
     },
+    "Live Translation" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Live Translation"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traducción en vivo"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترجمهٔ زنده"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduction en direct"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Traduzione dal vivo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ライブ翻訳"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "实时翻译"
+          }
+        }
+      }
+    },
     "Load latest chat" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7051,6 +7099,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "只需填写本次旅行的重要信息，以后还可以补充。"
+          }
+        }
+      }
+    },
+    "Open in Apple Maps" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open in Apple Maps"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir en Apple Maps"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "باز کردن در نقشه‌های اپل"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ouvrir dans Plans"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apri in Mappe Apple"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appleマップで開く"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在苹果地图中打开"
           }
         }
       }
@@ -9750,7 +9845,58 @@
         }
       }
     },
+    "Speak naturally, taking turns. Pip translates your conversation aloud in real time." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speak naturally, taking turns. Pip translates your conversation aloud in real time."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hablen con naturalidad, por turnos. Pip traduce su conversación en voz alta en tiempo real."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "به‌نوبت و طبیعی صحبت کنید. پیپ گفت‌وگوی شما را هم‌زمان با صدای بلند ترجمه می‌کند."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parlez naturellement, à tour de rôle. Pip traduit votre conversation à voix haute en temps réel."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Parlate naturalmente, a turno. Pip traduce la conversazione ad alta voce in tempo reale."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "交代で自然に話してください。Pipが会話をリアルタイムで音声翻訳します。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自然地轮流说话。Pip 会实时朗读你们对话的翻译。"
+          }
+        }
+      }
+    },
+    "Speech goes to OpenAI; profile, trips and location don’t." : {
+
+    },
     "Speech is shared with OpenAI to translate it while translation is on. Your profile, trips and location are not shared." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -9883,6 +10029,7 @@
       }
     },
     "Start translation, then take turns speaking. Pip says each sentence in the other language." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {
@@ -10375,6 +10522,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "与 Pip 交谈"
+          }
+        }
+      }
+    },
+    "Tap Start translation once, then speak naturally. Pip translates aloud in real time—no need to hold a button." : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tap Start translation once, then speak naturally. Pip translates aloud in real time—no need to hold a button."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca Iniciar traducción una vez y habla con naturalidad. Pip traduce en voz alta en tiempo real, sin mantener pulsado ningún botón."
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "یک بار روی شروع ترجمه بزنید، سپس طبیعی صحبت کنید. پیپ هم‌زمان با صدای بلند ترجمه می‌کند؛ نیازی به نگه داشتن دکمه نیست."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Touchez Démarrer la traduction une fois, puis parlez naturellement. Pip traduit à voix haute en temps réel, sans maintenir de bouton enfoncé."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tocca Avvia traduzione una volta, poi parla naturalmente. Pip traduce ad alta voce in tempo reale, senza tenere premuto un pulsante."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "「翻訳を開始」を一度タップして、自然に話してください。Pipがリアルタイムで音声翻訳します。ボタンを押し続ける必要はありません。"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "轻点一次“开始翻译”，然后自然说话。Pip 会实时朗读翻译，无需按住按钮。"
           }
         }
       }
@@ -12221,6 +12415,52 @@
         }
       }
     },
+    "Version %@ (Build %@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %1$@ (Build %2$@)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %1$@ (compilación %2$@)"
+          }
+        },
+        "fa" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخهٔ %1$@ (بیلد %2$@)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %1$@ (build %2$@)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione %1$@ (build %2$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "バージョン %1$@（ビルド %2$@）"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本 %1$@（构建 %2$@）"
+          }
+        }
+      }
+    },
     "View" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -12688,6 +12928,7 @@
       }
     },
     "Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps." : {
+      "extractionState" : "stale",
       "localizations" : {
         "es" : {
           "stringUnit" : {

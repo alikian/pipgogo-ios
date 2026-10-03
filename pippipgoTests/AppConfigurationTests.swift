@@ -135,13 +135,13 @@ struct TalkToPipLaunchTests {
 }
 
 @MainActor struct VoiceNavigationTests {
-    @Test func directionsUseFixedGoogleHostAndEncodeDestination() throws {
+    @Test func directionsUseFixedAppleHostAndEncodeDestination() throws {
         let url = try #require(LiveVoiceStore.drivingURL(["place_id": "id&other=bad", "name": "Shell & Cafe"]))
         let parts = try #require(URLComponents(url: url, resolvingAgainstBaseURL: false))
         #expect(parts.scheme == "https")
-        #expect(parts.host == "www.google.com")
-        #expect(parts.queryItems?.first(where: { $0.name == "destination_place_id" })?.value == "id&other=bad")
-        #expect(parts.queryItems?.first(where: { $0.name == "travelmode" })?.value == "driving")
+        #expect(parts.host == "maps.apple.com")
+        #expect(parts.queryItems?.first(where: { $0.name == "daddr" })?.value == "Shell & Cafe")
+        #expect(parts.queryItems?.first(where: { $0.name == "dirflg" })?.value == "d")
         #expect(parts.queryItems?.contains(where: { $0.name == "origin" }) == false)
     }
     @Test func malformedDestinationDoesNotOpen() {

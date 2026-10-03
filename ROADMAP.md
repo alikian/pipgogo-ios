@@ -181,3 +181,38 @@ Tab redesign device acceptance (October 1): user confirmed testing on an iPhone 
 Default-branch merge (October 1): user-tested iOS UI redesign and multilingual/shared-conversation changes merged into `develop` and pushed as `0efb8fb`; checkout now uses `develop`. Unrelated local Xcode build/cloud edits preserved.
 
 Live-caption repair (October 1): keep restored history before current session captions so streamed speech stays visible at the bottom; prevent live/history bubble merging. 92 simulator tests and signed Dev build/signature passed; updated device installation and live-caption acceptance pending.
+
+Apple Maps chat previews (October 2, 2026): iOS renders up to three destination snapshots from explicit supported map links in assistant messages, resolves destinations with MapKit, and opens Apple Maps driving directions on tap. Failed previews retain a directions link. Plain place names, shortened Google links, and place-ID-only links do not generate previews. Existing Google place search is unchanged. Dev simulator tests and signed build passed; live map rendering and physical-device navigation acceptance remain pending.
+
+Apple Maps backend Dev deployment (October 2, 2026): deployed current local app/places.py, app/voice_navigation.py and prompt.md to pippipgo-dev-backend task revision 38, image sha256:9b3d1da56c4ad4e6ee30ba7438eb3115d701124b016d26e463ca3dff5461aab3. CloudFormation update and ECS rollout completed; live HTTPS /health and /ready returned 200, unauthenticated /v1/me returned 401. Python default CA verification failed locally; smoke checks passed using /etc/ssl/cert.pem and independently with curl. Prod unchanged; no live AI response or iPhone navigation acceptance inferred. iOS changes still require a new app build.
+
+
+Production Google Maps repair (October 2, 2026): configured a dedicated Places New/Routes/Weather restricted key in the existing Prod secret after the retained gas-station voice session failed because AWSCURRENT was absent. Live local backend/provider checks with Prod credentials and GPT-6 Luna passed; production HTTPS health/readiness 200. No image/app deployment or Dev credential copying. Production phone retry remains pending; see backend infra/prod-deployment.md.
+
+
+Translation headphone mode (October 2, 2026): shortened startup to “Ready to translate.” Added an optional saved Headphone mode toggle that translates only the other person’s selected language into the traveler’s language, staying silent for the traveler’s language; two-way remains the default. Languages/mode change only while inactive. Backend header X-Pip-Translate-Listen-Only=1 supplies interpreter-only instructions without traveler/organizer/location context. Deploy backend support before releasing the new iOS control; source validation is separate from live provider/device acceptance.
+
+
+Translation direction UI (October 2, 2026): language-bar arrows now indicate two-way translation or, in headphone mode, one-way translation from the other person to the traveler; follows layout direction. Replaced swap action with a noninteractive direction indicator. Shortened headphone help and speech-sharing disclosure. No backend behavior change or deployment.
+
+
+Production backend rollout (October 2, 2026): deployed manual runtime image sha256:d6a9d6f773226ea00f7df72d271e42c9de0edee4a9fe5070fb896cecc54efc6e through reviewed image-only CloudFormation update. Prod task revision 3 completed, one running/zero pending; health/readiness 200 and unauthorized account/admin/translation rejection passed. Headphone interpreter and short greeting are deployed, along with pending Maps/prompt runtime changes. 328 backend tests passed (one skipped), Ruff passed. No iOS release; headphone UI/direction arrows and physical-device audio acceptance remain pending.
+
+
+Local headphone regression repair (October 2, 2026): real synthetic English audio exposed old headphone prompt translating the traveler’s speech; tightened one-way role and verified English silence plus allowed French-to-English output. Added backend mode acknowledgement and iOS fail-closed headphone startup. 328 backend tests (one skipped), Ruff and eight Local simulator tests passed; verified Xcode Cloud 17, installed Local simulator build 18 pointing to localhost:8765. User English/Persian retry pending. No cloud deployment; updated backend deployment required in Dev/Prod before app rollout.
+
+
+Talk to Pip corrected-goodbye hangup repair (October 2, 2026): the retained user transcript was “No, I said Goodbye,” followed by Pip’s sign-off but no presence_goodbye event. The farewell parser now accepts explicit correction prefixes; punctuation-only late transcript fragments no longer cancel pending closure. Regression replays the exact captured fragment timings and closes after sign-off drainage, while mention/correction-resume protections remain. 333 backend tests passed (one skipped), Ruff passed. Restarted Local backend on all interfaces at port 8765; LAN health 200. No cloud deployment or app build; backend deployment required after local acceptance. Akiphone retry pending.
+
+
+Local live-voice startup credit exhaustion (October 2, 2026): Akiphone reached the LAN backend, but OpenAI rejected session.start with invalid_request_error/credit_balance_exhausted. Default TLS upstream connection passed; a direct synthetic empty-account Talk to Pip startup reproduced the same provider error. No provider model substitution or billing action was performed. Added credential-free exception type/location logging and a safe explicit AI-service-credit exhaustion message instead of generic disconnect. 335 backend tests passed (one skipped), Ruff passed; restarted LAN local backend and health 200. Actual voice remains blocked until account credits are replenished. No hosted deployment; backend deployment required for this improved error handling.
+
+- October 2: Admin conversation list USD estimates implemented and locally validated; Dev backend-before-admin deployment and authenticated browser acceptance pending.
+
+- October 2: Conversation list estimates now separate LLM token costs (including delegation) from Voice session costs; Dev deployment pending.
+
+- October 2: Separate conversation LLM/Voice USD columns deployed to Dev (backend revision 41 then admin job 10); hosted assets and health verified, authenticated browser acceptance pending. Prod unchanged.
+
+- October 2: Production admin USD columns and backend 5-second inactivity/4-second reply timing deployed; full repository publication underway. CI Prod automatic-deploy gate remains disabled.
+
+- October 2: All pending admin/backend/iOS work prepared for develop/main pushes. Current cloud build 17 verified, signed Local build 18 and 96 tests passed (one skipped). Backend Dev CI release running; Prod CI gate remains false.

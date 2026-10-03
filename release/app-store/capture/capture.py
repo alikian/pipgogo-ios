@@ -6,7 +6,8 @@ import sys
 build = Path(sys.argv[1])
 device = sys.argv[2]
 bundle = 'com.pippipgo.screenshots'
-out = Path(__file__).resolve().parent.parent / 'screenshots' / 'iphone-6.9'
+size_group = sys.argv[3] if len(sys.argv) > 3 else 'iphone-6.5'
+out = Path(__file__).resolve().parent.parent / 'screenshots' / size_group
 out.mkdir(parents=True, exist_ok=True)
 def sim(*args, check=True):
     return subprocess.run(['xcrun', 'simctl', *args], check=check)

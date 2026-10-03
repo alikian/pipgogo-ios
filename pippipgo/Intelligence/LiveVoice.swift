@@ -322,6 +322,10 @@ final class LiveVoiceStore {
                     guard let event = try JSONSerialization.jsonObject(with: data) as? [String: Any], let type = event["type"] as? String else { continue }
                     switch type {
                     case "session.started":
+                        guard Self.acceptsTranslationSession(event, mode: mode) else {
+                            fail("This backend does not support headphone mode yet. Use the updated local backend or turn headphone mode off.", ticket: ticket)
+                            return
+                        }
                         if mode == .pip, let history = event["messages"] as? [[String: Any]] {
                             for message in history {
                                 if let text = message["text"] as? String {
@@ -388,12 +392,11 @@ final class LiveVoiceStore {
         guard let placeID = event["place_id"] as? String, !placeID.isEmpty, placeID.count <= 512,
               let name = event["name"] as? String, !name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
               name.count <= 200 else { return nil }
-        var url = URLComponents(string: "https://www.google.com/maps/dir/")!
-        url.queryItems = [URLQueryItem(name: "api", value: "1"),
-                          URLQueryItem(name: "destination", value: name),
-                          URLQueryItem(name: "destination_place_id", value: placeID),
-                          URLQueryItem(name: "travelmode", value: "driving"),
-                          URLQueryItem(name: "dir_action", value: "navigate")]
+        var url = URLComponents(string: "https://maps.apple.com/")!
+        let address = event["address"] as? String ?? ""
+        let destination = address.isEmpty ? name : "\(name), \(address.prefix(512))"
+        url.queryItems = [URLQueryItem(name: "daddr", value: destination),
+                          URLQueryItem(name: "dirflg", value: "d")]
         return url.url
     }
 
@@ -462,6 +465,11 @@ final class LiveVoiceStore {
         }
     }
 
+    static func acceptsTranslationSession(_ event: [String: Any], mode: LiveVoiceMode) -> Bool {
+        guard mode.translation?.listenOnly == true else { return true }
+        return event["translation_mode"] as? String == "listen_only"
+    }
+
     static func request(baseURL: URL, token: String, mode: LiveVoiceMode = .pip, language: String? = nil) throws -> URLRequest {
         guard var components = URLComponents(url: baseURL.appending(path: mode.path), resolvingAgainstBaseURL: false),
               let scheme = components.scheme, ["https", "http"].contains(scheme), components.host != nil,
@@ -473,6 +481,7 @@ final class LiveVoiceStore {
         request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         if let pair = mode.translation {
             request.setValue(pair.headerValue, forHTTPHeaderField: "X-Pip-Translate")
+            if pair.listenOnly { request.setValue("1", forHTTPHeaderField: "X-Pip-Translate-Listen-Only") }
         } else {
             request.setValue("1", forHTTPHeaderField: "X-Pip-Navigation")
             let selected = AppLanguage.selected(language ?? UserDefaults.standard.string(forKey: "pip.language") ?? "en")
@@ -545,8 +554,8 @@ struct LiveVoiceView: View {
                     LazyVStack(spacing: 14) {
                         if store.transcript.messages.isEmpty {
                             if translating {
-                                ContentUnavailableView("Translate a conversation", systemImage: "translate",
-                                                       description: Text("Start translation, then take turns speaking. Pip says each sentence in the other language."))
+                                ContentUnavailableView("Live Translation", systemImage: "translate",
+                                                       description: Text("Tap Start translation once, then speak naturally. Pip translates aloud in real time—no need to hold a button."))
                                     .padding(.top, 32)
                             } else {
                                 ContentUnavailableView("Say hello to Pip", systemImage: "bubble.left.and.bubble.right",

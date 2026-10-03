@@ -1,3 +1,4 @@
+import MapKit
 import SwiftUI
 import Observation
 
@@ -457,7 +458,7 @@ struct PipTab: View {
             }
             .safeAreaInset(edge: .top, spacing: 0) {
                 Picker("Pip", selection: $mode) {
-                    Text("Ask Pip").tag(PipMode.chat)
+                    Text("Chat Pip").tag(PipMode.chat)
                     Text("Talk to Pip").tag(PipMode.voice)
                 }
                 .pickerStyle(.segmented)
@@ -937,11 +938,6 @@ struct TravelChatView: View {
     @State private var savedTripName: String?
     @FocusState private var composing: Bool
     var name: String? = nil
-    private let suggestions = [
-        "Plan a 3-day trip to New York next weekend.",
-        "Where is the nearest luggage locker?",
-        "What is a good Mediterranean restaurant nearby?"
-    ]
     var body: some View {
         VStack(spacing: 0) {
             ScrollViewReader { scroll in
@@ -949,11 +945,6 @@ struct TravelChatView: View {
                     VStack(alignment: .leading, spacing: 16) {
                         if store.messages.isEmpty {
                             Text("\(name.map { "Hi, \($0)!" } ?? "Hi!") I'm Pip, your travel companion. How can I help with your trip?").font(.headline)
-                            ForEach(suggestions, id: \.self) { suggestion in
-                                Button { store.composer = suggestion } label: {
-                                    Text(suggestion).frame(maxWidth: .infinity, alignment: .leading)
-                                }.buttonStyle(.bordered).disabled(store.busy || store.pending != nil || store.voice.active)
-                            }
                         }
                         ForEach(store.messages) { message in
                             let isUser = message.role == "user"
@@ -980,13 +971,6 @@ struct TravelChatView: View {
                             .id(message.id)
                         }
                         if let savedTripName { Text("Saved \(savedTripName) to your trips.").foregroundStyle(.green) }
-                        if !store.messages.isEmpty {
-                            Button("Create trip from this chat", systemImage: "suitcase") {
-                                store.composer = "Prepare a new trip draft from the latest agreed plan in this chat for me to review and save."
-                                Task { await store.send() }
-                            }
-                            .disabled(store.voice.active || !store.loaded || store.busy || store.pending != nil || !store.composer.isEmpty)
-                        }
                         if store.busy { ProgressView("Pip is thinking…") }
                         if let error = store.error { Text(error).foregroundStyle(.red) }
                         if store.conflict != nil {
@@ -1007,8 +991,6 @@ struct TravelChatView: View {
             }
             VStack(spacing: 8) {
                 ConversationLocationView(store: store.locationDisplay)
-                Text("Your chat, profile, local time and location, including precise coordinates when allowed, are shared with OpenAI. Saved trips and companions stay separate. Place queries and location are sent to Google for place search, road distances and current weather. Place results: Google Maps.")
-                    .font(.caption2).foregroundStyle(.secondary)
                 HStack(alignment: .bottom) {
                     TextField("Ask about your trip…", text: $store.composer, axis: .vertical)
                         .lineLimit(1...5).textFieldStyle(.roundedBorder)
@@ -1103,9 +1085,14 @@ struct ChatMarkdownBlock: Identifiable, Equatable {
 
 struct ChatMarkdownView: View {
     let text: String
+    private var displayText: String {
+        text.replacingOccurrences(of: "According to Google Maps, ", with: "")
+            .replacingOccurrences(of: "According to Google Maps", with: "")
+            .replacingOccurrences(of: "Google Maps directions", with: "Apple Maps directions")
+    }
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            ForEach(ChatMarkdownBlock.parse(text)) { block in
+            ForEach(ChatMarkdownBlock.parse(displayText)) { block in
                 switch block.kind {
                 case .heading(let level):
                     Text(block.attributed).font(level == 1 ? .title3.bold() : .headline)
@@ -1124,7 +1111,16 @@ struct ChatMarkdownView: View {
                     Text(block.attributed)
                 }
             }
-        }.textSelection(.enabled)
+            ForEach(ChatMapDestination.parse(text)) { destination in
+                ChatMapPreview(destination: destination)
+            }
+        }
+        .textSelection(.enabled)
+        .environment(\.openURL, OpenURLAction { url in
+            guard let destination = ChatMapDestination(url: url, title: "") else { return .systemAction }
+            destination.openDirections()
+            return .handled
+        })
     }
 }
 
@@ -1219,4 +1215,99 @@ struct BudgetAmountField: View {
         }
     }
 
+}
+
+
+/// Only explicit map links produce previews; ordinary prose is never guessed as a place.
+struct ChatMapDestination: Identifiable {
+    let query: String
+    let title: String
+    var id: String { query }
+
+    init?(url: URL, title: String) {
+        guard url.scheme == "https", let host = url.host?.lowercased(),
+              host == "maps.apple.com" || host == "maps.google.com" || host == "www.google.com" || host == "google.com",
+              host == "maps.apple.com" || host == "maps.google.com" || url.path.hasPrefix("/maps"),
+              let parts = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+        let values = parts.queryItems ?? []
+        let query = ["destination", "daddr", "query", "q", "ll"].compactMap { key in
+            values.first { $0.name == key }?.value
+        }.first ?? (url.path.components(separatedBy: "/place/").dropFirst().first?.components(separatedBy: "/").first?.removingPercentEncoding)
+        guard let query, !query.isEmpty, query.count <= 512, !query.hasPrefix("place_id:") else { return nil }
+        self.query = query.replacingOccurrences(of: "+", with: " ")
+        self.title = title.isEmpty ? self.query : title
+    }
+
+    static func parse(_ text: String) -> [Self] {
+        guard let attributed = try? AttributedString(markdown: text) else { return [] }
+        var result: [Self] = []
+        for run in attributed.runs {
+            if let url = run.link,
+               let destination = Self(url: url, title: String(attributed[run.range].characters)),
+               !result.contains(where: { $0.id == destination.id }) {
+                result.append(destination)
+            }
+        }
+        return Array(result.prefix(3))
+    }
+
+    func openDirections() {
+        var parts = URLComponents(string: "https://maps.apple.com/")!
+        parts.queryItems = [.init(name: "daddr", value: query), .init(name: "dirflg", value: "d")]
+        if let url = parts.url { UIApplication.shared.open(url) }
+    }
+}
+
+struct ChatMapPreview: View {
+    let destination: ChatMapDestination
+    @State private var image: UIImage?
+    @State private var mapItem: MKMapItem?
+    @State private var failed = false
+    @Environment(\.colorScheme) private var colorScheme
+
+    var body: some View {
+        Button {
+            if let mapItem { mapItem.openInMaps(launchOptions: [MKLaunchOptionsDirectionsModeKey: MKLaunchOptionsDirectionsModeDriving]) }
+            else { destination.openDirections() }
+        } label: {
+            VStack(alignment: .leading, spacing: 8) {
+                if let image {
+                    Image(uiImage: image).resizable().scaledToFit()
+                        .overlay { Image(systemName: "mappin.circle.fill").font(.largeTitle).foregroundStyle(.red).accessibilityHidden(true) }
+                } else if !failed {
+                    ProgressView().frame(maxWidth: .infinity).frame(height: 160)
+                }
+                Text(verbatim: destination.title).font(.headline)
+                Label("Open in Apple Maps", systemImage: "arrow.triangle.turn.up.right.diamond")
+                    .font(.caption)
+            }.padding(10)
+                .background(Color(.tertiarySystemGroupedBackground), in: RoundedRectangle(cornerRadius: 12))
+        }
+        .buttonStyle(.plain)
+        .task(id: "\(destination.id)-\(colorScheme)") { await load() }
+    }
+
+    @MainActor private func load() async {
+        image = nil; mapItem = nil; failed = false
+        let request = MKLocalSearch.Request()
+        request.naturalLanguageQuery = destination.query
+        let search = MKLocalSearch(request: request)
+        do {
+            let response = try await withTaskCancellationHandler { try await search.start() } onCancel: { search.cancel() }
+            try Task.checkCancellation()
+            guard let place = response.mapItems.first else { failed = true; return }
+            mapItem = place
+            let options = MKMapSnapshotter.Options()
+            options.region = MKCoordinateRegion(center: place.placemark.coordinate, latitudinalMeters: 1500, longitudinalMeters: 2200)
+            options.size = CGSize(width: 600, height: 320)
+            options.scale = 2
+            options.traitCollection = UITraitCollection(userInterfaceStyle: colorScheme == .dark ? .dark : .light)
+            let snapshotter = MKMapSnapshotter(options: options)
+            let snapshot = try await withTaskCancellationHandler { try await snapshotter.start() } onCancel: { snapshotter.cancel() }
+            try Task.checkCancellation()
+            image = snapshot.image
+        } catch {
+            if !Task.isCancelled { failed = true }
+        }
+    }
 }

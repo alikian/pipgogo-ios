@@ -2,13 +2,13 @@ PipPipGo — App Store screenshot set
 Prepared October 2, 2026
 
 DELIVERED
-Six unedited native PNGs in screenshots/iphone-6.9, each 1320 × 2868 pixels (iPhone 16 Pro Max, iOS 18.5). Marketing captions are in captions.txt. index.html provides a local preview gallery. pippipgo-app-store-screenshots.zip packages the PNGs and captions.
+Six unedited native PNGs in screenshots/iphone-6.5, each 1284 × 2778 pixels (iPhone 14 Plus, iOS 18.5). Marketing captions are in captions.txt. index.html provides a local preview gallery. pippipgo-app-store-screenshots.zip packages the PNGs and captions.
 
 CAPTURE EVIDENCE
 The app's current working-tree SwiftUI views were compiled in a disposable copy of the project, using com.pippipgo.screenshots. Fictional organizer, chat and transcript data are injected by capture/ScreenshotFixture.swift. All API requests use a local URLProtocol fixture; no backend/provider request or real authentication occurs. Microphone/audio sessions were not started. A capture-only shell selects existing views; it omits the diagnostic environment badge and opens detail/budget screens directly. Shipping source, credentials, account data and deployment were not changed. Fixture output does not establish live inference or physical-device acceptance.
 
 REPRODUCE
-python3 capture/prepare.py prints a disposable checkout path. Build its Dev scheme for the simulator with PRODUCT_BUNDLE_IDENTIFIER=com.pippipgo.screenshots, CODE_SIGNING_ALLOWED=NO and ARCHS=arm64, with a chosen derived-data path. Then run python3 capture/capture.py DERIVED_DATA_PATH SIMULATOR_UUID on a booted iPhone 16 Pro Max. The capture script temporarily overrides that simulator's status bar, restores it afterward, and leaves the isolated app installed.
+python3 capture/prepare.py prints a disposable checkout path. Build its Dev scheme for the simulator with PRODUCT_BUNDLE_IDENTIFIER=com.pippipgo.screenshots, CODE_SIGNING_ALLOWED=NO and ARCHS=arm64, with a chosen derived-data path. Then run python3 capture/capture.py DERIVED_DATA_PATH SIMULATOR_UUID on a booted iPhone 14 Plus. The capture script temporarily overrides that simulator's status bar, restores it afterward, and leaves the isolated app installed.
 
 BEFORE UPLOAD
 Confirm release-build UI parity and availability of the depicted features. These images use no real user data. The earlier screenshots/current-screen.png remains only a historical Dev reference and is excluded from the package.
@@ -16,3 +16,6 @@ Confirm release-build UI parity and availability of the depicted features. These
 REFERENCES
 https://developer.apple.com/help/app-store-connect/reference/app-information/screenshot-specifications/
 https://developer.apple.com/app-store/asset-best-practices/
+
+SIZE CORRECTION
+The primary gallery and ZIP now use native 1284 × 2778 portrait captures, one of the requested accepted dimensions. The earlier iphone-6.9 set remains archived in its original folder and is excluded from the updated ZIP. Images were recaptured at the requested resolution, not stretched or cropped.
